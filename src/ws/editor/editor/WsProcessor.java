@@ -1,10 +1,10 @@
-package ws.editor;
+package ws.editor.editor;
 
 public class WsProcessor {
 	public WsProcessor (){}
 	
 	//注册各种组件
-	public void registerComp(CompFeature obj) {
+	public void registerComp(PluginFeature obj) {
 		
 	}
 	

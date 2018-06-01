@@ -1,4 +1,4 @@
-package ws.editor.plugmanage;
+package ws.editor.editor;
 
 public class PluginManage {
 

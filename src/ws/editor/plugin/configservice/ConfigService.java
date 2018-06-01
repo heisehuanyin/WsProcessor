@@ -1,12 +1,15 @@
-package ws.editor.config;
+package ws.editor.plugin.configservice;
+
+import java.util.Properties;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-import ws.editor.CompFeature;
+import ws.editor.editor.PluginFeature;
 
-public class ConfigService implements CompFeature{
+public class ConfigService implements PluginFeature{
 	private String tmptrans = null;
+	private Properties PropCollect = new Properties();
 	
 	public ConfigService(String cfgPath) {
 		
@@ -14,29 +17,26 @@ public class ConfigService implements CompFeature{
 
 	@Override
 	public int getCompMark() {
-		return CompFeature.ConfigService;
+		return PluginFeature.Service_Config;
 	}
 
 	@Override
 	public JMenuItem getCustomMenu() {
-		JMenu custom = new JMenu(this.getCompName());
+		JMenu custom = new JMenu(this.getClass().getName());
 		
 		return custom;
 	}
-	public CompFeature getInstance(String cfgPath) {
-		
-	}
 
 	@Override
-	public CompFeature getInstance() {
+	public PluginFeature getDefaultInstance() {
 		// TODO Auto-generated method stub
 		return new ConfigService("");
 	}
 
 	@Override
-	public String getCompName() {
+	public void saveOperation() {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 }
