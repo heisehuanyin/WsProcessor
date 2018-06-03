@@ -17,9 +17,8 @@ public interface ProjectManager extends PluginFeature {
 	/**
 	 * 创建新工程实例，传入项目路径和工厂
 	 * @param schedule 软件核心模块
-	 * @param asFactory 项目路径
-	 * @param p_path 新的项目路径
+	 * @param p_port 项目路径
 	 * @return 返回的新实例*/
-	ProjectManager newPorject(WsProcessor schedule, ContentPort asFactory, String p_path);
+	ProjectManager newPorject(WsProcessor schedule, ContentPort p_port);
 
 }

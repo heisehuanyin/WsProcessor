@@ -84,7 +84,7 @@ public class SimpleProjectMake implements ProjectManager{
 		return rtn;
 	}
 	@Override
-	public ProjectManager newPorject(WsProcessor schedule, ContentPort asFactory, String p_path) {
+	public ProjectManager newPorject(WsProcessor schedule, ContentPort p_port) {
 		// TODO 新建项目需要设计
 		
 		return null;

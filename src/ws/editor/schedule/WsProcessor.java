@@ -190,7 +190,7 @@ public class WsProcessor {
 		
 		ProjectManager pmake = ((ProjectManager)factory).openProject(this, b_port);
 		if(pmake == null)
-			pmake = ((ProjectManager)factory)
+			pmake = ((ProjectManager)factory).newPorject(this, b_port);
 		
 		
 		return null;
