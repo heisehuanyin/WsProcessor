@@ -16,6 +16,7 @@ import ws.editor.configservice.ConfigService;
 import ws.editor.contentport.BinaryDiskFileAccess;
 import ws.editor.logport.LogWriter;
 import ws.editor.menubar.WMenuBar;
+import ws.editor.projectmanager.SimpleProjectMake;
 import ws.editor.window.WWindow;
 
 public class WsProcessor {
@@ -61,11 +62,12 @@ public class WsProcessor {
 	}
 	
 	/**
-	 * 综合配置文件和默认设置对提供的factory_id进行校验，获取合法的factory用于生成实例
+	 * 综合配置文件和默认设置对提供的factory_id进行校验，获取由三者中合法的id组成的factory。
 	 * @param factory_id 指明的工厂类id
 	 * @param configItems_Item 指明配置项条目作为默认配置项目
-	 * @param defaultf_id 指名配置项目出现意外后的默认factory_id*/
-	private PluginFeature getValidateFactory(String factory_id, String configItems_Item, String defaultf_id) {
+	 * @param defaultf_id 指名配置项目出现意外后的默认factory_id
+	 * @return 合适的合法的插件工厂*/
+	public PluginFeature getValidateFactory(String factory_id, String configItems_Item, String defaultf_id) {
 		//获取合法的factory_id
 		if(factory_id == null) {
 			factory_id = this.getMainConfigUnit().getValue(configItems_Item, defaultf_id);
@@ -78,6 +80,7 @@ public class WsProcessor {
 		}
 		return factory;
 	}
+	
 	
 	//插件实例获取接口===================================================================
 	/**
@@ -131,34 +134,32 @@ public class WsProcessor {
 	
 	
 	/**
-	 * 获取frontwindow用于显示界面,可以指定frontwindow种类
-	 * @param factory_id 指明window种类，值为null获取配置中控件或者默认控件
-	 * @param id 窗口的id
-	 * @param configUnit TODO
-	 * @return 实例*/
-	public FrontWindow getAppWindow(String factory_id, String id, ConfigUnit configUnit) {
+	 * 获取frontwindow用于配置界面，获取何种插件有配置文件决定，配置文件错误可以返回默认实例
+	 * 如果此id已经存在，那么会返回一个新id组成的实例，因此获取实例后需要更新插件id
+	 * @param id 预设窗口的id
+	 * @return 新实例*/
+	public FrontWindow getNewDefaultWindow(String id) {
 		PluginFeature one = this.getExistsPlugin(PluginFeature.UI_Window, id);
 		if(one != null)
-			return (FrontWindow) one;
+			id = "other" + id;
 		
 		//获取合法的factory
-		PluginFeature factory = this.getValidateFactory(factory_id, ConfigItems.DefaultWindow, WWindow.class.getName());
+		PluginFeature factory = this.getValidateFactory(null,ConfigItems.DefaultWindow, WWindow.class.getName());
 		//获取一份实例
 		FrontWindow window = ((FrontWindow)factory).getInstance(this, id);
 		this.manager.registerPluginInstance(window);
 		return window;
 	}
 	/**
-	 * 获取menubar用于构建显示界面
-	 * @param factory_id 获取指定类型控件,当为null的时候，返回配置控件
+	 * 获取menubar用于构建显示界面,种类由配置文件和默认值共同指定，如果id存在，则返回新id实例，记得及时更新id
 	 * @param id 菜单栏的id
 	 * @return 返回实例*/
-	public PMenuBar getAppMenubar(String factory_id, String id) {
+	public PMenuBar getNewDefaultMenubar(String id) {
 		PluginFeature one = this.getExistsPlugin(PluginFeature.UI_MenuBar, id);
 		if(one != null)
-			return (PMenuBar) one;
+			id = "other" + id;
 		
-		PluginFeature factory = this.getValidateFactory(factory_id, ConfigItems.DefaultMenuBar, WMenuBar.class.getName());
+		PluginFeature factory = this.getValidateFactory(null,ConfigItems.DefaultMenuBar, WMenuBar.class.getName());
 		
 		PMenuBar menubar = ((PMenuBar)factory).getInstance(this, id);
 		this.manager.registerPluginInstance(menubar);
@@ -172,10 +173,10 @@ public class WsProcessor {
 	 * @return 返回实例*/
 	public ContentPort getContentPort(String factory_id, String id) {
 		PluginFeature one = this.getExistsPlugin(PluginFeature.IO_ChannelPort, id);
-		if(one!=null)
-			return (ContentPort)one;
+		if(one != null)
+			id = "other" + id;
 		
-		PluginFeature factory = this.getValidateFactory(factory_id, ConfigItems.DefaultBinaryPort,
+		PluginFeature factory = this.getValidateFactory(factory_id,	ConfigItems.DefaultBinaryPort,
 				BinaryDiskFileAccess.class.getName());
 		ContentPort b_port = ((ContentPort)factory).openExistsFile(this, id);
 		this.manager.registerPluginInstance(b_port);
@@ -213,7 +214,7 @@ public class WsProcessor {
 	public void openGraphicMode() {
 		this.initDefaultGraphicPlugin();
 		
-		FrontWindow win = this.getAppWindow(null, "mainwindow", this.getMainConfigUnit());
+		FrontWindow win = this.getNewDefaultWindow("mainwindow");
 		win.displayWindow();
 	}
 	
@@ -227,6 +228,7 @@ public class WsProcessor {
 	private void initDefaultSilentPlugin() {
 		this.registerCompFectory(new LogWriter());
 		this.registerCompFectory(new ConfigService());
+		this.registerCompFectory(new SimpleProjectMake());
 	}
 	/**
 	 * 初始化静默模式插件和图形模式插件，能够保证最低限度的正常使用*/

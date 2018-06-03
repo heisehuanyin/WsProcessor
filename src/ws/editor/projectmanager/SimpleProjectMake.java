@@ -20,12 +20,12 @@ import ws.editor._plugin_define.ProjectManager;
 import ws.editor.contentport.BinaryDiskFileAccess;
 import ws.editor.schedule.WsProcessor;
 
-public class SignalProjectMake implements ProjectManager{
+public class SimpleProjectMake implements ProjectManager{
 	private String pjt_id = this.getClass().getName();
 	private WsProcessor sch = null;
 	private FileSymbo p_tree = null;
 	
-	public SignalProjectMake() {}
+	public SimpleProjectMake() {}
 
 	@Override
 	public int getCompMark() {
@@ -75,7 +75,7 @@ public class SignalProjectMake implements ProjectManager{
 	
 	@Override
 	public PluginFeature openProject(WsProcessor schedule, ContentPort p_file) {
-		SignalProjectMake rtn = new SignalProjectMake();
+		SimpleProjectMake rtn = new SimpleProjectMake();
 		
 		rtn.sch = schedule;
 		rtn.p_tree = this.parseProject(p_file);

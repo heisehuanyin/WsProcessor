@@ -40,7 +40,7 @@ public class WWindow implements FrontWindow{
 	}
 	
 	private void buildWindow(JFrame window) {
-		PMenuBar menubar = this.schedule.getAppMenubar(null, "menubar");
+		PMenuBar menubar = this.schedule.getNewDefaultMenubar("menubar");
 		if(menubar != null)
 			window.setJMenuBar((JMenuBar) menubar);
 		
