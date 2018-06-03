@@ -191,9 +191,9 @@ public class WsProcessor {
 		ProjectManager pmake = ((ProjectManager)factory).openProject(this, b_port);
 		if(pmake == null)
 			pmake = ((ProjectManager)factory).newPorject(this, b_port);
+		this.manager.registerPluginInstance(pmake);
 		
-		
-		return null;
+		return pmake;
 	}
 	
 	
