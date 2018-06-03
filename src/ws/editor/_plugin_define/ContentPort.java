@@ -8,7 +8,7 @@ import ws.editor.schedule.WsProcessor;
 public interface ContentPort extends PluginFeature{
 	
 	/**
-	 * 创建一个实例，创建磁盘文件
+	 * 创建一个实例，创建磁盘文件，如果文件已经存在，换一个名称创建新文件
 	 * @param sch 软件控制核心实例
 	 * @param f_path 文件路径
 	 * @return 返回插件实例*/
@@ -18,7 +18,7 @@ public interface ContentPort extends PluginFeature{
 	 * @return 返回InputStream是一个二进制的接口*/
 	InputStream getBinaryPort();
 	/**
-	 * 创建一个实例，连接磁盘文件
+	 * 创建一个实例，连接磁盘文件,如果文件不存在，返回null
 	 * @param sch 软件控制核心实例
 	 * @param f_path 文件路径
 	 * @return 返回插件实例*/

@@ -25,14 +25,14 @@ public class WsProcessor {
 	private String wsProcessor_configPath = "."+File.separator+"Software.wscfg";
 	
 	public WsProcessor (){
-		this.registerCompFectory(new LogWriter());
+		this.registerComponentFectory(new LogWriter());
 	}
 	
 	/**
 	 * 注册各种工厂组件
 	 * @param obj 组件的实例，这个实例作为工厂，用于派生新实例的，不能够用于工作
 	 * */
-	public void registerCompFectory(PluginFeature obj) {
+	public void registerComponentFectory(PluginFeature obj) {
 		this.manager.registerFectory(obj);
 	}
 	
@@ -40,7 +40,7 @@ public class WsProcessor {
 	 * 获取特定的注册了的工厂类
 	 * @param f_id 工厂类的唯一标识
 	 * */
-	private PluginFeature getCompFactory(String f_id) {
+	private PluginFeature getComponentFactory(String f_id) {
 		PluginFeature factory = this.manager.getRegisteredFactory(f_id);
 		
 		if(factory == null) {
@@ -49,16 +49,6 @@ public class WsProcessor {
 		}
 		
 		return factory;
-	}
-	
-	/**
-	 * 获取已经存在的实例，这是一个集合接口
-	 * @param pluginMark 插件种类,定义域PluginFeature接口中
-	 * @param id 插件的唯一标识
-	 * @return 返回新的插件实例，如果不存在则返回null
-	 * */
-	public PluginFeature getExistsPlugin(int pluginMark, String id) {
-		return this.manager.getRegisteredPluginInstance(pluginMark, id);
 	}
 	
 	/**
@@ -74,11 +64,22 @@ public class WsProcessor {
 		}
 		
 		//该factory是否注册,未注册切换为基础窗口
-		PluginFeature factory = this.getCompFactory(factory_id);
+		PluginFeature factory = this.getComponentFactory(factory_id);
 		if(factory == null) {
-			factory = this.getCompFactory(defaultf_id);
+			factory = this.getComponentFactory(defaultf_id);
 		}
 		return factory;
+	}
+	
+	
+	/**
+	 * 获取已经存在的实例，这是一个集合接口
+	 * @param pluginMark 插件种类,定义域PluginFeature接口中
+	 * @param id 插件的唯一标识
+	 * @return 返回新的插件实例，如果不存在则返回null
+	 * */
+	public PluginFeature getExistsPlugin(int pluginMark, String id) {
+		return this.manager.getRegisteredPluginInstance(pluginMark, id);
 	}
 	
 	
@@ -91,7 +92,7 @@ public class WsProcessor {
 		PluginFeature one = this.getExistsPlugin(PluginFeature.Service_LogPort, path);
 		if(one != null)
 			return (LogPort) one;
-		PluginFeature factory =  this.getCompFactory(LogPort.class.getName());
+		PluginFeature factory =  this.getComponentFactory(LogPort.class.getName());
 		
 		LogPort writer = ((LogPort)factory).createNewPort(path);
 		this.manager.registerPluginInstance(writer);
@@ -110,7 +111,7 @@ public class WsProcessor {
 		PluginFeature one = this.getExistsPlugin(PluginFeature.Service_ConfigUnit, path);
 		if(one != null)
 			return (ConfigUnit) one;
-		PluginFeature factory = this.getCompFactory(ConfigUnit.class.getName());
+		PluginFeature factory = this.getComponentFactory(ConfigUnit.class.getName());
 		if(factory == null)
 			return null;
 		
@@ -171,10 +172,10 @@ public class WsProcessor {
 	 * @param factory_id 指定插件类型
 	 * @param id port的id
 	 * @return 返回实例*/
-	public ContentPort getContentPort(String factory_id, String id) {
+	public ContentPort getBinaryPort(String factory_id, String id) {
 		PluginFeature one = this.getExistsPlugin(PluginFeature.IO_ChannelPort, id);
 		if(one != null)
-			id = "other" + id;
+			return (ContentPort) one;
 		
 		PluginFeature factory = this.getValidateFactory(factory_id,	ConfigItems.DefaultBinaryPort,
 				BinaryDiskFileAccess.class.getName());
@@ -226,17 +227,17 @@ public class WsProcessor {
 	/**
 	 * 初始化静默模式默认的组件,能够保证最低限度的正常使用*/
 	private void initDefaultSilentPlugin() {
-		this.registerCompFectory(new LogWriter());
-		this.registerCompFectory(new ConfigService());
-		this.registerCompFectory(new SimpleProjectMake());
+		this.registerComponentFectory(new LogWriter());
+		this.registerComponentFectory(new ConfigService());
+		this.registerComponentFectory(new SimpleProjectMake());
 	}
 	/**
 	 * 初始化静默模式插件和图形模式插件，能够保证最低限度的正常使用*/
 	private void initDefaultGraphicPlugin() {
 		this.initDefaultSilentPlugin();
 		
-		this.registerCompFectory(new WWindow());
-		this.registerCompFectory(new WMenuBar());
+		this.registerComponentFectory(new WWindow());
+		this.registerComponentFectory(new WMenuBar());
 	}
 	
 	
