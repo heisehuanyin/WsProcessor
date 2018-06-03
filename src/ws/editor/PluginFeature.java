@@ -23,9 +23,10 @@ public interface PluginFeature {
 	/**
 	 * 获取组件代码，标定组件类别
 	 * @return 返回的组件标记代码*/
-	int getCompMark();
+	int getPluginMark();
 	/**
-	 * 获取组件id
+	 * 获取组件id,组件id由本插件拓展的端口名称和字符串组成。例如PluginFeature.class.getName()+Str。
+	 * 只传入Str，在获取插件的接口中重组id变为可能。
 	 * @return 返回的组件id*/
 	String getCompid();
 	/**

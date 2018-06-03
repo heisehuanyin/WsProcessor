@@ -38,10 +38,10 @@ public class PluginManage {
 	 * */
 	public void registerPluginInstance(PluginFeature obj) {
 		
-		Map<String, PluginFeature> con1 = this.instances.get(obj.getCompMark());
+		Map<String, PluginFeature> con1 = this.instances.get(obj.getPluginMark());
 		if(con1 == null) {//如果未注册过该类插件，连容器也不会有
 			con1 = new HashMap<String, PluginFeature>();
-			this.instances.put(obj.getCompMark(), con1);
+			this.instances.put(obj.getPluginMark(), con1);
 		}
 		
 		con1.put(obj.getCompid(), obj);

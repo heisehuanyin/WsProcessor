@@ -18,13 +18,13 @@ public class BinaryDiskFileAccess implements ContentPort {
 	private FileInputStream b_port = null;
 
 	@Override
-	public int getCompMark() {
+	public int getPluginMark() {
 		return PluginFeature.IO_ChannelPort;
 	}
 
 	@Override
 	public String getCompid() {
-		return this.file_id;
+		return ContentPort.class.getName() + this.file_id;
 	}
 
 	@Override
@@ -90,5 +90,15 @@ public class BinaryDiskFileAccess implements ContentPort {
 
 	@Override
 	public void saveOperation() {}
+
+	@Override
+	public int getContentPortType() {
+		return ContentPort.LocalFilePort;
+	}
+
+	@Override
+	public String getPath() {
+		return this.file_id;
+	}
 
 }

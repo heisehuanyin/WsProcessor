@@ -15,13 +15,13 @@ public class WMenuBar extends JMenuBar implements PMenuBar{
 	private WsProcessor sch = null;
 
 	@Override
-	public int getCompMark() {
+	public int getPluginMark() {
 		return PluginFeature.UI_MenuBar;
 	}
 
 	@Override
 	public String getCompid() {
-		return this.mbid;
+		return PMenuBar.class.getName()+ this.mbid;
 	}
 
 	@Override

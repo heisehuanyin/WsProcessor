@@ -96,11 +96,11 @@ public class ConfigService implements ConfigUnit{
 
 	@Override
 	public String getCompid() {
-		return this.cfgPath;
+		return ConfigUnit.class.getName()+this.cfgPath;
 	}
 	
 	@Override
-	public int getCompMark() {
+	public int getPluginMark() {
 		return PluginFeature.Service_ConfigUnit;
 	}
 

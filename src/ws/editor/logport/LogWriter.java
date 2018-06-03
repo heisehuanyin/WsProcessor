@@ -94,7 +94,7 @@ public class LogWriter implements LogPort{
 		}
 	}
 	@Override
-	public int getCompMark() {
+	public int getPluginMark() {
 		return PluginFeature.Service_LogPort;
 	}
 
@@ -106,8 +106,7 @@ public class LogWriter implements LogPort{
 
 	@Override
 	public String getCompid() {
-		// TODO Auto-generated method stub
-		return this.id_path;
+		return LogPort.class.getName() + this.id_path;
 	}
 
 	@Override

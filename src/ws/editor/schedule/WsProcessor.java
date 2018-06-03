@@ -12,8 +12,10 @@ import ws.editor._plugin_define.ContentPort;
 import ws.editor._plugin_define.FrontWindow;
 import ws.editor._plugin_define.LogPort;
 import ws.editor._plugin_define.PMenuBar;
+import ws.editor._plugin_define.ProjectManager;
 import ws.editor.configservice.ConfigService;
 import ws.editor.contentport.BinaryDiskFileAccess;
+import ws.editor.contentport.SimpleNetworkPort;
 import ws.editor.logport.LogWriter;
 import ws.editor.menubar.WMenuBar;
 import ws.editor.projectmanager.SimpleProjectMake;
@@ -23,13 +25,14 @@ public class WsProcessor {
 	private PluginManage manager = new PluginManage();
 	private String wsProcessor_logPath = "."+File.separator+"Software.wslog";
 	private String wsProcessor_configPath = "."+File.separator+"Software.wscfg";
+	private ProjectManager projectSymbo = null;
 	
 	public WsProcessor (){
 		this.registerComponentFectory(new LogWriter());
 	}
 	
 	/**
-	 * 注册各种工厂组件
+	 * 注册各种工厂组件,在管理器中的id格式：接口名+类名
 	 * @param obj 组件的实例，这个实例作为工厂，用于派生新实例的，不能够用于工作
 	 * */
 	public void registerComponentFectory(PluginFeature obj) {
@@ -83,16 +86,19 @@ public class WsProcessor {
 	}
 	
 	
-	//插件实例获取接口===================================================================
+	//插件实例获取接口:基础===================================================================
 	/**
-	 * 获取logport用于输出log,如果已存在指定的log则获取，否则新建一个
+	 * 获取logport用于输出log,如果已存在指定的log则获取，否则新建一个。
+	 * 由于此接口在配置接口建立之前使用，因此无法根据配置文件动态获取，
+	 * 根据PluginManager的机制，只能获取最后加载进入的logport插件。
+	 * 规定每次启动相关位置只能放置一个logport插件。
 	 * @param path log文件路径
 	 * @return 实例*/
 	public LogPort getLogPortInstance(String path) {
-		PluginFeature one = this.getExistsPlugin(PluginFeature.Service_LogPort, path);
+		PluginFeature one = this.getExistsPlugin(PluginFeature.Service_LogPort, LogPort.class.getName()+path);
 		if(one != null)
 			return (LogPort) one;
-		PluginFeature factory =  this.getComponentFactory(LogPort.class.getName());
+		PluginFeature factory =  this.getComponentFactory(LogPort.class.getName()+LogPort.class.getName());
 		
 		LogPort writer = ((LogPort)factory).createNewPort(path);
 		this.manager.registerPluginInstance(writer);
@@ -108,10 +114,10 @@ public class WsProcessor {
 	 * @param path 配置文件存放路径
 	 * @return 实例*/
 	public ConfigUnit getConfigUnitInstance(String path) {
-		PluginFeature one = this.getExistsPlugin(PluginFeature.Service_ConfigUnit, path);
+		PluginFeature one = this.getExistsPlugin(PluginFeature.Service_ConfigUnit, ConfigUnit.class.getName()+path);
 		if(one != null)
 			return (ConfigUnit) one;
-		PluginFeature factory = this.getComponentFactory(ConfigUnit.class.getName());
+		PluginFeature factory = this.getComponentFactory(ConfigUnit.class.getName()+ConfigUnit.class.getName());
 		if(factory == null)
 			return null;
 		
@@ -129,11 +135,81 @@ public class WsProcessor {
 	
 	
 	
+
+	/**
+	 * 获取binaryport用于访问数据,如果文件存在就返回连接，如果不存在，就创建文件，再返回连接
+	 * 根据配置文件设定，每次启动只能使用统一的一套ContentPort组件
+	 * @param fpath port的id
+	 * @return 返回实例*/
+	public ContentPort getBinaryPort(String fpath) {
+		PluginFeature one = this.getExistsPlugin(PluginFeature.IO_ChannelPort, ContentPort.class.getName() + fpath);
+		if(one != null)
+			return (ContentPort) one;
+		
+		String ConfigStr = ConfigItems.DefaultLocalPort;
+		String DefaultStr = ContentPort.class.getName()+BinaryDiskFileAccess.class.getName();
+		if(fpath.startsWith("http")) {
+			ConfigStr = ConfigItems.DefaultNetworkPort;
+			DefaultStr = ContentPort.class.getName()+SimpleNetworkPort.class.getName();
+		}
+		
+		PluginFeature factory = this.getValidateFactory(null, ConfigStr, DefaultStr);
+		ContentPort b_port = ((ContentPort)factory).openExistsFile(this, fpath);
+		if(b_port == null)
+			b_port = ((ContentPort)factory).createNewFile(this, fpath);
+		this.manager.registerPluginInstance(b_port);
+		return b_port;
+	}
+
+	/**
+	 * 替换当前活动项目
+	 * @param pjt_symbo 项目符号*/
+	public void ReplaceProjectManager(ProjectManager pjt_symbo) {
+		if(this.projectSymbo != null) {
+			this.projectSymbo.saveOperation();
+			this.projectSymbo.close();
+		}
+		this.projectSymbo = pjt_symbo;
+	}
+	
+	/**
+	 * 根据指定条件返回特定的项目模块
+	 * @param factory_id 插件种类
+	 * @param p_path 项目路径
+	 * @return 打开的项目实例*/
+	public ProjectManager getProjectManager(String factory_id, ContentPort b_port) {
+		String p_path = b_port.getPath();
+		PluginFeature one = this.getExistsPlugin(PluginFeature.Service_ProjectManage, 
+				ProjectManager.class.getName()+p_path);
+		if(one != null)
+			return (ProjectManager) one;
+		
+		String formatStr = p_path.substring(p_path.lastIndexOf(".")+1);
+		PluginFeature factory = this.getValidateFactory(factory_id,
+				ConfigItems.getKey_ProjectManager_FOR(formatStr), SimpleProjectMake.class.getName());
+		
+		ProjectManager pmake = ((ProjectManager)factory).openProject(this, b_port);
+		if(pmake == null)
+			pmake = ((ProjectManager)factory)
+		
+		
+		return null;
+	}
 	
 	
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//插件实例获取接口：图形===========================================================================
 	/**
 	 * 获取frontwindow用于配置界面，获取何种插件有配置文件决定，配置文件错误可以返回默认实例
 	 * 如果此id已经存在，那么会返回一个新id组成的实例，因此获取实例后需要更新插件id
@@ -167,22 +243,9 @@ public class WsProcessor {
 		return menubar;
 	}
 	
-	/**
-	 * 获取binaryport用于访问数据,如果文件存在就返回连接，如果不存在，就创建文件，再返回连接
-	 * @param factory_id 指定插件类型
-	 * @param id port的id
-	 * @return 返回实例*/
-	public ContentPort getBinaryPort(String factory_id, String id) {
-		PluginFeature one = this.getExistsPlugin(PluginFeature.IO_ChannelPort, id);
-		if(one != null)
-			return (ContentPort) one;
-		
-		PluginFeature factory = this.getValidateFactory(factory_id,	ConfigItems.DefaultBinaryPort,
-				BinaryDiskFileAccess.class.getName());
-		ContentPort b_port = ((ContentPort)factory).openExistsFile(this, id);
-		this.manager.registerPluginInstance(b_port);
-		return b_port;
-	}
+	
+	
+	
 	
 	
 	

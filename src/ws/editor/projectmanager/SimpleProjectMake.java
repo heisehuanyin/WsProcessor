@@ -28,13 +28,13 @@ public class SimpleProjectMake implements ProjectManager{
 	public SimpleProjectMake() {}
 
 	@Override
-	public int getCompMark() {
+	public int getPluginMark() {
 		return PluginFeature.Service_ProjectManage;
 	}
 
 	@Override
 	public String getCompid() {
-		return this.pjt_id;
+		return ProjectManager.class.getName()+this.pjt_id;
 	}
 
 	@Override
@@ -74,18 +74,18 @@ public class SimpleProjectMake implements ProjectManager{
 
 	
 	@Override
-	public PluginFeature openProject(WsProcessor schedule, ContentPort p_file) {
+	public ProjectManager openProject(WsProcessor schedule, ContentPort p_file) {
 		SimpleProjectMake rtn = new SimpleProjectMake();
 		
 		rtn.sch = schedule;
 		rtn.p_tree = this.parseProject(p_file);
-		rtn.pjt_id = this.p_tree.fileName()+ p_file.getCompid();
+		rtn.pjt_id = p_file.getPath();
 		
 		return rtn;
 	}
-	
-	public PluginFeature newPorject(WsProcessor schedule, ContentPort asFactory, String p_path) {
-		// TODO 新建项目
+	@Override
+	public ProjectManager newPorject(WsProcessor schedule, ContentPort asFactory, String p_path) {
+		// TODO 新建项目需要设计
 		
 		return null;
 	}
@@ -153,7 +153,13 @@ public class SimpleProjectMake implements ProjectManager{
 
 	@Override
 	public void saveOperation() {
+		// TODO 保存操作需要设计
 		
+	}
+
+	@Override
+	public void close() {
+		// TODO 关闭操作需要设计
 		
 	}
 	

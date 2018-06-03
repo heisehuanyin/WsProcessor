@@ -48,14 +48,14 @@ public class WWindow implements FrontWindow{
 
 
 	@Override
-	public int getCompMark() {
+	public int getPluginMark() {
 		return PluginFeature.UI_Window;
 	}
 
 
 	@Override
 	public String getCompid() {
-		return this.w_id;
+		return FrontWindow.class.getName()+this.w_id;
 	}
 
 
