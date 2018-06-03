@@ -1,4 +1,4 @@
-package ws.editor.plugin.configservice;
+package ws.editor.configservice;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,11 +11,10 @@ import java.io.OutputStreamWriter;
 import java.util.Properties;
 
 import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 
 import ws.editor.PluginFeature;
-import ws.editor.WsProcessor;
-import ws.editor.plugin.ConfigUnit;
+import ws.editor._plugin_define.ConfigUnit;
+import ws.editor.schedule.WsProcessor;
 /**
  * 用于获取配置文件中的信息
  * ConfigUnit虽然也被设计成为插件模式，但是软件本身只需要一种配置文件格式，
@@ -55,7 +54,7 @@ public class ConfigService implements ConfigUnit{
 	 * @return 返回新的实例
 	 * */
 	@Override
-	public ConfigService getInstance(String path) {
+	public ConfigService createNewPort(String path) {
 
 		File log = new File(path);
 		
@@ -85,14 +84,6 @@ public class ConfigService implements ConfigUnit{
 		return rtn;
 	}
 	/**
-	 * 获取一个默认的新实例，该实例与本实例没有关系
-	 * @return 新实例*/
-	@Override
-	public PluginFeature getDefaultInstance(WsProcessor schedule) {
-		
-		return this.getInstance("./software.wsconfig");
-	}
-	/**
 	 * 保存操作*/
 	@Override
 	public void saveOperation() {
@@ -114,7 +105,7 @@ public class ConfigService implements ConfigUnit{
 	}
 
 	@Override
-	public JMenuItem getCustomMenu() {
+	public JMenu getCustomMenu() {
 		JMenu custom = new JMenu(this.getClass().getName());
 		//TODO 详细定制菜单需要完善
 		return custom;

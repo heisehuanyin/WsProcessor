@@ -1,8 +1,10 @@
-package ws.editor;
+package ws.editor.schedule;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import ws.editor.PluginFeature;
 
 /**
  * 用于管理插件，本身不是插件，不需要两步实例化直接实例化得到的就是可用组件

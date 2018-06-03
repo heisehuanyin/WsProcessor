@@ -1,4 +1,4 @@
-package ws.editor.plugin.window;
+package ws.editor.window;
 
 import java.awt.Component;
 import java.awt.event.ComponentEvent;
@@ -7,14 +7,15 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import ws.editor.ConfigItems;
 import ws.editor.PluginFeature;
-import ws.editor.WsProcessor;
-import ws.editor.plugin.FrontWindow;
-import ws.editor.plugin.PMenuBar;
+import ws.editor._plugin_define.FrontWindow;
+import ws.editor._plugin_define.PMenuBar;
+import ws.editor.schedule.WsProcessor;
 
 /**
  * 界面窗口，用于摆放各种控件和面板*/
@@ -59,17 +60,10 @@ public class WWindow implements FrontWindow{
 
 
 	@Override
-	public JMenuItem getCustomMenu() {
-		return new JMenuItem(this.getClass().getName());
+	public JMenu getCustomMenu() {
+		return new JMenu(this.getClass().getName());
 	}
 
-
-	
-	
-	@Override
-	public PluginFeature getDefaultInstance(WsProcessor schedule) {
-		return this.getInstance(schedule, "mainwindow");
-	}
 
 
 	@Override

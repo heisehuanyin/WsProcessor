@@ -1,6 +1,8 @@
 package ws.editor;
 
-import javax.swing.JMenuItem;
+import javax.swing.JMenu;
+
+import ws.editor.schedule.WsProcessor;
 /**
  * 所有插件的共同接口，插件的实例既可以作为插件实体，也可以作为工厂类
  * 注册插件的时候使用的实例，被软件作为工厂类使用，获取新的实例
@@ -29,12 +31,7 @@ public interface PluginFeature {
 	/**
 	 * 获取每个组件都拥有的配置菜单
 	 * @return 返回每个组件自定义的定制菜单，供上级调用*/
-	JMenuItem getCustomMenu();
-	/**
-	 * 获取一个默认新实例，然而每个类拥有自己的独特的构造方法
-	 * @param schedule 中心调度组件，需要什么自己获取
-	 * @return 新实例*/
-	PluginFeature getDefaultInstance(WsProcessor schedule);
+	JMenu getCustomMenu();
 	/**
 	 * 组件自带保存操作，需要保存过程的组件需要实现*/
 	void saveOperation();

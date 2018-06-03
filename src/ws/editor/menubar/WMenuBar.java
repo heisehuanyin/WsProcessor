@@ -1,4 +1,4 @@
-package ws.editor.plugin.menubar;
+package ws.editor.menubar;
 
 import java.util.ArrayList;
 
@@ -7,8 +7,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import ws.editor.PluginFeature;
-import ws.editor.WsProcessor;
-import ws.editor.plugin.PMenuBar;
+import ws.editor._plugin_define.PMenuBar;
+import ws.editor.schedule.WsProcessor;
 
 public class WMenuBar extends JMenuBar implements PMenuBar{
 	private String mbid = this.getClass().getName();
@@ -25,14 +25,9 @@ public class WMenuBar extends JMenuBar implements PMenuBar{
 	}
 
 	@Override
-	public JMenuItem getCustomMenu() {
+	public JMenu getCustomMenu() {
 		// TODO 创建自定义菜单
-		return new JMenuItem(this.getClass().getName());
-	}
-
-	@Override
-	public PluginFeature getDefaultInstance(WsProcessor schedule) {
-		return this.getInstance(schedule, "menubar");
+		return new JMenu(this.getClass().getName());
 	}
 	
 	@Override

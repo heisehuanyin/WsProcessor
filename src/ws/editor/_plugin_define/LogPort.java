@@ -1,7 +1,7 @@
-package ws.editor.plugin;
+package ws.editor._plugin_define;
 
 import ws.editor.PluginFeature;
-import ws.editor.plugin.logwriter.LogWriter;
+import ws.editor.logport.LogWriter;
 /**
  * 用于输出log到文件中
  * LogPort虽然也被设计成为插件模式，但是软件本身只需要一种log文件格式，
@@ -13,12 +13,18 @@ public interface LogPort  extends PluginFeature{
 	 * @param path 实际地址作为唯一参数
 	 * @return 文件路径合法返回新实例，不合法返回null
 	 */
-	LogWriter getInstance(String path);
+	LogWriter createNewPort(String path);
 
 	/**
 	 * 写log信息接口,每次调用接口，将log信息按照规定格式写入log文件
 	 * @param obj 写信息的对象
 	 * @param msg 具体信息*/
 	void writeLog(Object obj, String msg);
+	
+	/**
+	 * 写errorlog到文件，格式化错误信息
+	 * @param obj 写信息的对象
+	 * @param msg 具体信息*/
+	void errorLog(Object obj, String msg);
 
 }

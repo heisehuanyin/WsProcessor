@@ -1,4 +1,4 @@
-package ws.editor.plugin;
+package ws.editor._plugin_define;
 
 import ws.editor.PluginFeature;
 /**
@@ -10,7 +10,7 @@ public interface ConfigUnit  extends PluginFeature{
 	 * @param path 配置文件位置
 	 * @return 返回新的实例
 	 * */
-	ConfigUnit getInstance(String path);
+	ConfigUnit createNewPort(String path);
 
 	/**
 	 * 设置一个配置属性

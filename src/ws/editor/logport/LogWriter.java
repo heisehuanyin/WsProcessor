@@ -1,4 +1,4 @@
-package ws.editor.plugin.logwriter;
+package ws.editor.logport;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -8,11 +8,12 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import ws.editor.PluginFeature;
-import ws.editor.WsProcessor;
-import ws.editor.plugin.LogPort;
+import ws.editor._plugin_define.LogPort;
+import ws.editor.schedule.WsProcessor;
 /**
  * 用于输出log到文件中
  * LogPort虽然也被设计成为插件模式，但是软件本身只需要一种log文件格式，
@@ -32,7 +33,7 @@ public class LogWriter implements LogPort{
 	 * @param msg 具体信息*/
 	@Override
 	public void writeLog(Object obj, String msg) {
-		msg = obj.getClass().getName() + ":" + msg;
+		msg = "Log:"+obj.getClass().getName() + ":" + msg;
 		
 		try {
 			this.port.write(msg);
@@ -50,7 +51,7 @@ public class LogWriter implements LogPort{
 	 * @return 文件路径合法返回新实例，不合法返回null
 	 */
 	@Override
-	public LogWriter getInstance(String path) {
+	public LogWriter createNewPort(String path) {
 		File log = new File(path);
 		
 		if(! log.getParentFile().exists()) {
@@ -79,13 +80,6 @@ public class LogWriter implements LogPort{
 		return rtn;
 	}
 	//====================================================================
-	/**
-	 * 无参构造器用于构建默认实例
-	 * 默认生成log位于主目录之下*/
-	@Override
-	public PluginFeature getDefaultInstance(WsProcessor schedule) {
-		return this.getInstance("."+ File.separator + "log.wslog");
-	}
 
 	/**
 	 * 保存过程调用flush
@@ -105,14 +99,27 @@ public class LogWriter implements LogPort{
 	}
 
 	@Override
-	public JMenuItem getCustomMenu() {
+	public JMenu getCustomMenu() {
 		//TODO 详细定制菜单需要完善
-		return new JMenuItem(this.getClass().getName());
+		return new JMenu(this.getClass().getName());
 	}
 
 	@Override
 	public String getCompid() {
 		// TODO Auto-generated method stub
 		return this.id_path;
+	}
+
+	@Override
+	public void errorLog(Object obj, String msg) {
+		msg = "Error:"+obj.getClass().getName() + ":" + msg;
+		
+		try {
+			this.port.write(msg);
+			this.port.newLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

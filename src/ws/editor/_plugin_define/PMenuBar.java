@@ -1,11 +1,11 @@
-package ws.editor.plugin;
+package ws.editor._plugin_define;
 
 import java.util.ArrayList;
 
 import javax.swing.JMenu;
 
 import ws.editor.PluginFeature;
-import ws.editor.WsProcessor;
+import ws.editor.schedule.WsProcessor;
 
 public interface PMenuBar extends PluginFeature{
 
