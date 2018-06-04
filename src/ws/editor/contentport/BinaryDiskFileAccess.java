@@ -48,7 +48,8 @@ public class BinaryDiskFileAccess implements ContentPort {
 			try {
 				String path = f.getCanonicalPath();
 				String name = path.substring(p.getCanonicalPath().length() + 1);
-				name = "other_" + name;
+				long number = (int) (Math.random() * 1000000000);
+				name = "" + number + name;
 				
 				f = new File(p.getCanonicalPath() + File.separator + name);
 			} catch (IOException e) {
