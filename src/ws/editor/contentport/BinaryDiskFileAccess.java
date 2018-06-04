@@ -44,11 +44,12 @@ public class BinaryDiskFileAccess implements ContentPort {
 		if(! p.exists())
 			p.mkdirs();
 		
-		if(f.exists()) {
+		while(f.exists()) {
 			try {
 				String path = f.getCanonicalPath();
 				String name = path.substring(p.getCanonicalPath().length() + 1);
 				name = "other_" + name;
+				
 				f = new File(p.getCanonicalPath() + File.separator + name);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
