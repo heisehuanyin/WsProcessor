@@ -208,11 +208,11 @@ public class WsProcessor {
 	}
 	
 	/**
-	 * 打开项目模块，并返回此模块，如果项目已经被打开，那么返回null
+	 * 打开项目模块，并返回此模块，如果项目已经被打开，那么返回打开的Manager，确保只有一个能够解析的实例
 	 * @param factory_id 插件种类
 	 * @param b_port 项目文件接口
 	 * @return 打开的项目实例*/
-	public ProjectManager getNewProjectManagerAndOpen(String factory_id, ContentPort b_port) {
+	public ProjectManager openProjectFromFormatFile(String factory_id, ContentPort b_port) {
 		String p_path = b_port.getPath();
 		PluginFeature one = this.getExistsPlugin(PluginFeature.Service_ProjectManage, 
 				ProjectManager.class.getName()+p_path);
@@ -220,7 +220,7 @@ public class WsProcessor {
 			return (ProjectManager) one;
 		
 		String formatStr = p_path.substring(p_path.lastIndexOf(".")+1);
-		PluginFeature factory = this.getValidateFactory(factory_id,ConfigItems.getKey_ProjectManager_FOR(formatStr),
+		PluginFeature factory = this.getValidateFactory(factory_id, ConfigItems.getKey_ProjectManager_FOR(formatStr),
 				ProjectManager.class.getName()+SimpleProjectMake.class.getName());
 		
 		ProjectManager pmake = ((ProjectManager)factory).openProject(this, b_port);
@@ -230,8 +230,27 @@ public class WsProcessor {
 		return pmake;
 	}
 	
-	
-	
+	/**
+	 * 打开空白的项目文件，如果格式文件传入，会被覆盖，如果项目已经打开，那么返回null
+	 * 
+	 * */
+	public ProjectManager openProjectFromEmptyFile(String factory_id, ContentPort b_port) {
+		String path = b_port.getPath();
+		PluginFeature one = this.getExistsPlugin(PluginFeature.Service_ProjectManage,
+				ProjectManager.class.getName()+path);
+		if(one != null)
+			return null;
+		
+		String formatStr = path.substring(path.lastIndexOf(".")+1);
+		PluginFeature factory = this.getValidateFactory(factory_id, ConfigItems.getKey_ProjectManager_FOR(formatStr),
+				ProjectManager.class.getName()+SimpleProjectMake.class.getName());
+		
+		ProjectManager pmake = ((ProjectManager)factory).createNewProject(this, b_port);
+		this.manager.registerPluginInstance(pmake);
+		this.ManageManager(pmake);
+		
+		return pmake;
+	}
 	
 	
 	
@@ -255,7 +274,8 @@ public class WsProcessor {
 			id = "other" + id;
 		
 		//获取合法的factory
-		PluginFeature factory = this.getValidateFactory(null,ConfigItems.DefaultWindow, WWindow.class.getName());
+		PluginFeature factory = this.getValidateFactory(null,ConfigItems.DefaultWindow, 
+				FrontWindow.class.getName()+WWindow.class.getName());
 		//获取一份实例
 		FrontWindow window = ((FrontWindow)factory).getInstance(this, id);
 		this.manager.registerPluginInstance(window);
@@ -270,7 +290,8 @@ public class WsProcessor {
 		if(one != null)
 			id = "other" + id;
 		
-		PluginFeature factory = this.getValidateFactory(null,ConfigItems.DefaultMenuBar, WMenuBar.class.getName());
+		PluginFeature factory = this.getValidateFactory(null,ConfigItems.DefaultMenuBar,
+				PMenuBar.class.getName()+WMenuBar.class.getName());
 		
 		PMenuBar menubar = ((PMenuBar)factory).getInstance(this, id);
 		this.manager.registerPluginInstance(menubar);
@@ -339,8 +360,7 @@ public class WsProcessor {
 		this.registerComponentFectory(new WMenuBar());
 		
 		ContentPort port = this.createNewFileContentPort("./Default.wspjt");
-			
-		
+		this.openProjectFromEmptyFile(null, port);
 	}
 	
 	

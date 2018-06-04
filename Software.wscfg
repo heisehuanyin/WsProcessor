@@ -1,6 +1,8 @@
 #config items as list
-#Sun Jun 03 17:17:05 CST 2018
+#Mon Jun 04 21:58:11 CST 2018
 editor.window.description=ws.editor.window.WWindow
-editor.window.width=720
+editor.window.width=907
+editor.binaryport.description=ws.editor._plugin_define.ContentPortws.editor.contentport.BinaryDiskFileAccess
 editor.window.height=707
 editor.menubar.description=ws.editor.menubar.WMenuBar
+editor.projectparse.for.wspjt=ws.editor._plugin_define.ProjectManagerws.editor.projectmanager.SimpleProjectMake

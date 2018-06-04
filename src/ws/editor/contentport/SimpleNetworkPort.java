@@ -1,6 +1,7 @@
 package ws.editor.contentport;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.swing.JMenu;
 
@@ -59,6 +60,12 @@ public class SimpleNetworkPort implements ContentPort {
 	public String getPath() {
 		// TODO Auto-generated method stub
 		return this.id;
+	}
+
+	@Override
+	public OutputStream getOutputBinaryPort() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

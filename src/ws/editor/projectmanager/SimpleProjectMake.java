@@ -156,8 +156,9 @@ public class SimpleProjectMake implements ProjectManager {
 		OutputStreamWriter out;
 		try {
 			out = new OutputStreamWriter(pport.getOutputBinaryPort(), "UTF-8");
-			out.write("<? xml version=\"1.0\" ?>\n"
+			out.write("<?xml version=\"1.0\"?>\n"
 					+ "<project name=\"pjt_name\" fileurl=\"./xxx.xx\" encoding=\"utf-8\">\n" + "</project>");
+			out.flush();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -195,7 +196,6 @@ public class SimpleProjectMake implements ProjectManager {
 			writer.writeAttribute("fileurl", node.fileURL());
 			writer.writeAttribute("encoding", node.Encoding());
 		} catch (XMLStreamException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
