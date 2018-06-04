@@ -345,6 +345,7 @@ public class WsProcessor {
 	/**
 	 * 初始化静默模式默认的组件,能够保证最低限度的正常使用*/
 	private void initDefaultSilentPlugin() {
+		this.addShutDownHook();
 		this.registerComponentFectory(new LogWriter());
 		this.registerComponentFectory(new ConfigService());
 		this.registerComponentFectory(new BinaryDiskFileAccess());
@@ -363,7 +364,20 @@ public class WsProcessor {
 		this.openProjectFromEmptyFile(null, port);
 	}
 	
-	
+	private void addShutDownHook() {
+		Runtime.getRuntime().addShutdownHook(new shutdownHook(this));
+	}
+	private class shutdownHook extends Thread{
+		private WsProcessor s = null;
+		public shutdownHook(WsProcessor s) {
+			this.s = s;
+		}
+		@Override
+		public void run() {
+			this.s.saveOperation();
+		}
+		
+	}
 	
 	
 	
