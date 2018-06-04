@@ -1,6 +1,8 @@
 package ws.editor.projectmanager;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 
 import javax.swing.JMenu;
@@ -17,7 +19,6 @@ import ws.editor.FileSymbo;
 import ws.editor.PluginFeature;
 import ws.editor._plugin_define.ContentPort;
 import ws.editor._plugin_define.ProjectManager;
-import ws.editor.contentport.BinaryDiskFileAccess;
 import ws.editor.schedule.WsProcessor;
 
 public class SimpleProjectMake implements ProjectManager{
@@ -83,12 +84,6 @@ public class SimpleProjectMake implements ProjectManager{
 		
 		return rtn;
 	}
-	@Override
-	public ProjectManager newPorject(WsProcessor schedule, ContentPort p_port) {
-		// TODO 新建项目需要设计
-		
-		return null;
-	}
 	
 	
 	/* xml.wspjt的格式如下
@@ -100,7 +95,7 @@ public class SimpleProjectMake implements ProjectManager{
 	 * </project>
 	 * */
 	/**
-	 * 打开项目文件，读取项目配置，返回项目描述
+	 * 打开项目文件，读取项目配置，返回项目描述,如果是空白项目，根据解析会生成一个项目根节点。
 	 * @param b_port 项目文件管理端口
 	 * @return 项目描述，第一个节点是项目整体描述节点*/
 	private FileSymbo parseProject(ContentPort b_port) {
@@ -109,7 +104,7 @@ public class SimpleProjectMake implements ProjectManager{
 		
 		try {
 			reader = XMLInputFactory.newInstance().
-					createXMLStreamReader(new InputStreamReader(b_port.getBinaryPort(), ConfigItems.DefaultFileEncoding_Value));
+					createXMLStreamReader(new InputStreamReader(b_port.getInputBinaryPort(), ConfigItems.DefaultFileEncoding_Value));
 			while(reader.hasNext()){
 				int eventNum = reader.next();
 				if(eventNum == XMLStreamConstants.START_ELEMENT){
@@ -148,13 +143,33 @@ public class SimpleProjectMake implements ProjectManager{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		return pjt_s;
 	}
-
+	@Override
+	public ProjectManager createNewProject(WsProcessor schedule, ContentPort pport) {
+		OutputStreamWriter out;
+		try {
+			out = new OutputStreamWriter(pport.getOutputBinaryPort(),"UTF-8");
+			out.write("<? xml version=\"1.0\" ?>\n" + 
+					  "<project name=\"pjt_name\" fileurl=\"./xxx.xx\" encoding=\"utf-8\">\n" +
+					  "</project>");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return this.openProject(schedule, pport);
+	}
 	@Override
 	public void saveOperation() {
 		// TODO 保存操作需要设计
-		
+		this.saveProjectNode(this.p_tree);
+	}
+	
+	private void saveProjectNode(FileSymbo node) {
+		if(node.getParent() == null) {
+			
+		}
 	}
 
 	@Override

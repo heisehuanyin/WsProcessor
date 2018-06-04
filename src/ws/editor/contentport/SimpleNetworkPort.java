@@ -50,7 +50,7 @@ public class SimpleNetworkPort implements ContentPort {
 	}
 	
 	@Override
-	public InputStream getBinaryPort() {
+	public InputStream getInputBinaryPort() {
 		// TODO Auto-generated method stub
 		return null;
 	}

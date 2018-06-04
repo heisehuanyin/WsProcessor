@@ -1,6 +1,7 @@
 package ws.editor.schedule;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -56,6 +57,7 @@ public class WsProcessor {
 	
 	/**
 	 * 综合配置文件和默认设置对提供的factory_id进行校验，获取由三者中合法的id组成的factory。
+	 * 如果factory_id == null，意味着从配置文件中读取配置，进行校验，否则对factory_id进行校验，校验不通过都返回默认Factory。
 	 * @param factory_id 指明的工厂类id
 	 * @param configItems_Item 指明配置项条目作为默认配置项目
 	 * @param defaultf_id 指名配置项目出现意外后的默认factory_id
@@ -81,7 +83,7 @@ public class WsProcessor {
 	 * @param id 插件的唯一标识
 	 * @return 返回新的插件实例，如果不存在则返回null
 	 * */
-	public PluginFeature getExistsPlugin(int pluginMark, String id) {
+	private PluginFeature getExistsPlugin(int pluginMark, String id) {
 		return this.manager.getRegisteredPluginInstance(pluginMark, id);
 	}
 	
@@ -137,11 +139,11 @@ public class WsProcessor {
 	
 
 	/**
-	 * 获取binaryport用于访问数据,如果文件存在就返回连接，如果不存在，就创建文件，再返回连接
+	 * 获取binaryport用于访问数据,如果文件存在就返回连接，如果不存在，返回null
 	 * 根据配置文件设定，每次启动只能使用统一的一套ContentPort组件
-	 * @param fpath port的id
+	 * @param fpath 文件路径
 	 * @return 返回实例*/
-	public ContentPort getBinaryPort(String fpath) {
+	public ContentPort getExistsFileContentPort(String fpath) {
 		PluginFeature one = this.getExistsPlugin(PluginFeature.IO_ChannelPort, ContentPort.class.getName() + fpath);
 		if(one != null)
 			return (ContentPort) one;
@@ -155,29 +157,62 @@ public class WsProcessor {
 		
 		PluginFeature factory = this.getValidateFactory(null, ConfigStr, DefaultStr);
 		ContentPort b_port = ((ContentPort)factory).openExistsFile(this, fpath);
-		if(b_port == null)
-			b_port = ((ContentPort)factory).createNewFile(this, fpath);
-		this.manager.registerPluginInstance(b_port);
+		if(b_port != null)
+			this.manager.registerPluginInstance(b_port);
 		return b_port;
 	}
-
 	/**
-	 * 替换当前活动项目
-	 * @param pjt_symbo 项目符号*/
-	public void ReplaceProjectManager(ProjectManager pjt_symbo) {
+	 * 获取binaryport用于访问数据，操作必然创建一个新文件，而且是与之前所有文件都不同的新文件
+	 * 根据配置文件设定，每次启动智能使用统一的一套ContentPort组件
+	 * @param fpath 文件路径
+	 * @return 返回实例*/
+	public ContentPort createNewFileContentPort(String fpath) {
+		String ConfigStr = ConfigItems.DefaultLocalPort;
+		String DefaultStr = ContentPort.class.getName()+BinaryDiskFileAccess.class.getName();
+		if(fpath.startsWith("http")) {
+			ConfigStr = ConfigItems.DefaultNetworkPort;
+			DefaultStr = ContentPort.class.getName()+SimpleNetworkPort.class.getName();
+		}
+		
+		PluginFeature factory = this.getValidateFactory(null, ConfigStr, DefaultStr);
+		ContentPort one = ((ContentPort)factory).createNewFile(this, fpath);
+		this.manager.registerPluginInstance(one);
+		return one;
+	}
+
+	
+	
+	
+	
+	/**
+	 * 将项目纳入到管理中
+	 * @param m 目标项目*/
+	private void ManageManager(ProjectManager m) {
+		//将项目纳入管理
 		if(this.projectSymbo != null) {
 			this.projectSymbo.saveOperation();
 			this.projectSymbo.close();
 		}
-		this.projectSymbo = pjt_symbo;
+		this.projectSymbo = m;
 	}
 	
 	/**
-	 * 根据指定条件返回特定的项目模块
+	 * 获取当前项目视图，此时图包含所有活动项目
+	 * @return 活动Manager视图*/
+	public ArrayList<ProjectManager> getProjectManagerView() {
+		ArrayList<ProjectManager> mview = new ArrayList<ProjectManager>();
+		if(this.projectSymbo != null) {
+			mview.add(projectSymbo);
+		}
+		return mview;
+	}
+	
+	/**
+	 * 打开项目模块，并返回此模块，如果项目已经被打开，那么返回null
 	 * @param factory_id 插件种类
-	 * @param p_path 项目路径
+	 * @param b_port 项目文件接口
 	 * @return 打开的项目实例*/
-	public ProjectManager getProjectManager(String factory_id, ContentPort b_port) {
+	public ProjectManager getNewProjectManagerAndOpen(String factory_id, ContentPort b_port) {
 		String p_path = b_port.getPath();
 		PluginFeature one = this.getExistsPlugin(PluginFeature.Service_ProjectManage, 
 				ProjectManager.class.getName()+p_path);
@@ -185,13 +220,12 @@ public class WsProcessor {
 			return (ProjectManager) one;
 		
 		String formatStr = p_path.substring(p_path.lastIndexOf(".")+1);
-		PluginFeature factory = this.getValidateFactory(factory_id,
-				ConfigItems.getKey_ProjectManager_FOR(formatStr), SimpleProjectMake.class.getName());
+		PluginFeature factory = this.getValidateFactory(factory_id,ConfigItems.getKey_ProjectManager_FOR(formatStr),
+				ProjectManager.class.getName()+SimpleProjectMake.class.getName());
 		
 		ProjectManager pmake = ((ProjectManager)factory).openProject(this, b_port);
-		if(pmake == null)
-			pmake = ((ProjectManager)factory).newPorject(this, b_port);
 		this.manager.registerPluginInstance(pmake);
+		this.ManageManager(pmake);
 		
 		return pmake;
 	}
@@ -292,6 +326,8 @@ public class WsProcessor {
 	private void initDefaultSilentPlugin() {
 		this.registerComponentFectory(new LogWriter());
 		this.registerComponentFectory(new ConfigService());
+		this.registerComponentFectory(new BinaryDiskFileAccess());
+		this.registerComponentFectory(new SimpleNetworkPort());
 		this.registerComponentFectory(new SimpleProjectMake());
 	}
 	/**
@@ -301,6 +337,12 @@ public class WsProcessor {
 		
 		this.registerComponentFectory(new WWindow());
 		this.registerComponentFectory(new WMenuBar());
+		
+		ContentPort port =this.getExistsFileContentPort("./Default.wspjt");
+		if(port == null) {
+			port = this.createNewFileContentPort("./Default.wspjt");
+			
+		}
 	}
 	
 	

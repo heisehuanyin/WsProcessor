@@ -3,6 +3,7 @@ package ws.editor.contentport;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -15,7 +16,9 @@ import ws.editor.schedule.WsProcessor;
 public class BinaryDiskFileAccess implements ContentPort {
 	private String file_id = this.getClass().getName();
 	private WsProcessor sch = null;
-	private FileInputStream b_port = null;
+	private FileInputStream b_portin = null;
+	private FileOutputStream b_portout = null;
+	private File realFile = null;
 
 	@Override
 	public int getPluginMark() {
@@ -70,13 +73,7 @@ public class BinaryDiskFileAccess implements ContentPort {
 		
 		BinaryDiskFileAccess port = new BinaryDiskFileAccess();
 		
-		try {
-			port.b_port = new FileInputStream(one);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		port.realFile = one;
 		port.file_id = f_path;
 		port.sch = sch;
 		
@@ -84,8 +81,25 @@ public class BinaryDiskFileAccess implements ContentPort {
 	}
 	
 	@Override
-	public InputStream getBinaryPort() {
-		return this.b_port;
+	public InputStream getInputBinaryPort() {
+		if(this.b_portout != null) {
+			try {
+				this.b_portout.flush();
+				this.b_portout.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if(this.b_portin == null) {
+			try {
+				this.b_portin = new FileInputStream(this.realFile);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return this.b_portin;
 	}
 
 	@Override
@@ -99,6 +113,26 @@ public class BinaryDiskFileAccess implements ContentPort {
 	@Override
 	public String getPath() {
 		return this.file_id;
+	}
+
+	@Override
+	public FileOutputStream getOutputBinaryPort() {
+		if(this.b_portin != null) {
+			try {
+				this.b_portin.close();
+				this.b_portin = null;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		try {
+			if(this.b_portout == null)
+				this.b_portout = new FileOutputStream(this.realFile);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return this.b_portout;
 	}
 
 }
