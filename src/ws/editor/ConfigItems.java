@@ -39,4 +39,9 @@ public class ConfigItems {
 	public static String getKey_ContentProcessList_For(String formatStr) {
 		return "editor.contentprocesslist.for."+formatStr;
 	}
+	
+	
+	public static String getPosition_WindowActiveViewManager(String windowID, String viewID) {
+		return "editor."+windowID+"."+ viewID + ".position";
+	}
 }

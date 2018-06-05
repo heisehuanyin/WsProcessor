@@ -1,6 +1,7 @@
 package ws.editor.window;
 
-import java.awt.Component;
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
@@ -9,7 +10,13 @@ import java.awt.event.WindowListener;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.plaf.SplitPaneUI;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 import ws.editor.ConfigItems;
 import ws.editor.PluginFeature;
@@ -23,6 +30,19 @@ public class WWindow implements FrontWindow{
 	private String w_id = this.getClass().getName();
 	private JFrame window = new JFrame();
 	private WsProcessor schedule = null;
+	
+	private JTabbedPane leftCollect = new JTabbedPane();
+	private JTabbedPane centerCollect = new JTabbedPane();
+	private JTabbedPane rightCollect = new JTabbedPane();
+	private JTabbedPane bottomCollect = new JTabbedPane();
+	
+	private JSplitPane centerAndRightCollect = 
+			new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,this.centerCollect,this.rightCollect);
+	private JSplitPane topAndBottomCollect = 
+			new JSplitPane(JSplitPane.VERTICAL_SPLIT,this.centerAndRightCollect,this.bottomCollect);
+	private JSplitPane leftAndRightCollect = 
+			new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,this.leftCollect,this.topAndBottomCollect);
+	
 	
 	public WWindow() {}
 	
@@ -43,7 +63,27 @@ public class WWindow implements FrontWindow{
 		PMenuBar menubar = this.schedule.instance_GetNewDefaultMenubar("menubar");
 		if(menubar != null)
 			window.setJMenuBar((JMenuBar) menubar);
+		// TODO add toolbar
+		// TODO add statusbar
 		
+		window.add(this.leftAndRightCollect, BorderLayout.CENTER);
+		SplitPaneUI spui = this.leftAndRightCollect.getUI();
+		BasicSplitPaneDivider dr = ((BasicSplitPaneUI)spui).getDivider();
+		dr.setBorder(new LineBorder(Color.gray, 1, false));
+		this.leftAndRightCollect.setDividerSize(4);
+
+
+		SplitPaneUI spui2 = this.topAndBottomCollect.getUI();
+		BasicSplitPaneDivider dr2 = ((BasicSplitPaneUI)spui2).getDivider();
+		dr2.setBorder(new LineBorder(Color.gray, 1, false));
+		this.topAndBottomCollect.setDividerSize(4);
+		this.topAndBottomCollect.setBorder(new EmptyBorder(0,0,0,0));
+		
+		SplitPaneUI spui3 = this.centerAndRightCollect.getUI();
+		BasicSplitPaneDivider dr3 = ((BasicSplitPaneUI)spui3).getDivider();
+		dr3.setBorder(new LineBorder(Color.gray, 1, false));
+		this.centerAndRightCollect.setDividerSize(4);
+		this.centerAndRightCollect.setBorder(new EmptyBorder(0,0,0,0));
 	}
 
 
