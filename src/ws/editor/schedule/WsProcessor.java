@@ -136,9 +136,6 @@ public class WsProcessor {
 		
 		this.registerComponentFectory(new WWindow());
 		this.registerComponentFectory(new WMenuBar());
-		
-		ContentPort port = this.createNewFileContentPort("./Default.wspjt");
-		this.openProjectFromEmptyFile(null, port);
 	}
 	
 	
