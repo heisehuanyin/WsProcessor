@@ -20,4 +20,14 @@ public interface DirSymbo extends FileSymbo {
 	 * @param one 移除的指定文件
 	 * */
 	void removeChild(FileSymbo one);
+	/**
+	 * 文件插入到指定的位置
+	 * @param node 插入文件
+	 * @param index 位置*/
+	void insertChildAtIndex(FileSymbo node, int index);
+	/**
+	 * 获取指定文件在group中的位置
+	 * @param child 指定文件
+	 * @param 位序，如果为 -1 ，表明该文件不是此group的child*/
+	int getChildIndex(FileSymbo child);
 }

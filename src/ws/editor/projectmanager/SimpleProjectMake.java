@@ -220,5 +220,39 @@ public class SimpleProjectMake implements ProjectManager {
 	public FileSymbo getProjectDescription() {
 		return this.p_tree;
 	}
+	
+	@Override
+	public FileSymbo createNewFile(String name, String url, String encoding) {
+		FileSymbo rtn = new SimpleFileSymbo();
+		rtn.initFileSymbo(name, url, encoding);
+		return rtn;
+	}
+	@Override
+	public DirSymbo createNewGroup(String name, String rul, String encoding) {
+		DirSymbo rtn = new SimpleDirSymbo();
+		rtn.initFileSymbo(name, rul, encoding);
+		return rtn;
+	}
+	@Override
+	public boolean insertFileUnder(DirSymbo dirNode, FileSymbo fileNode) {
+		DirSymbo d = (DirSymbo) fileNode.getParent();
+		if(d != null) {
+			d.removeChild(fileNode);
+		}
+		dirNode.addChild(fileNode);
+		return true;
+	}
+	@Override
+	public boolean insertFileBefore(FileSymbo Node, FileSymbo insertFile) {
+		DirSymbo p = Node.getParent();
+		if(p == null)
+			return false;
+		DirSymbo d = insertFile.getParent();
+		if(d != null) {
+			d.removeChild(insertFile);
+		}
+		p.insertChildAtIndex(insertFile, p.getChildIndex(Node));
+		return true;
+	}
 
 }

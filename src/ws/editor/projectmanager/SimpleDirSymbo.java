@@ -35,4 +35,12 @@ public class SimpleDirSymbo extends SimpleFileSymbo implements DirSymbo {
 	public void removeChild(FileSymbo one) {
 		this.children.remove(one);
 	}
+	@Override
+	public void insertChildAtIndex(FileSymbo node, int index) {
+		this.children.add(index, node);
+	}
+	@Override
+	public int getChildIndex(FileSymbo child) {
+		return this.children.indexOf(child);
+	}
 }

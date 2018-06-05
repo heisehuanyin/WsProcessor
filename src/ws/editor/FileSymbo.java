@@ -35,10 +35,10 @@ public interface FileSymbo {
 	/**
 	 * 文件被添加到集合节点之后，可以用它初始化父节点
 	 * @param parent 父节点*/
-	void initParent(FileSymbo parent);
+	void initParent(DirSymbo parent);
 	
 	/**
 	 * 文件被添加到集合节点之后，可以用它获取父节点
 	 * @reture 父节点*/
-	FileSymbo getParent();
+	DirSymbo getParent();
 }

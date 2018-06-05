@@ -1,12 +1,13 @@
 package ws.editor.projectmanager;
 
+import ws.editor.DirSymbo;
 import ws.editor.FileSymbo;
 
 public class SimpleFileSymbo implements FileSymbo{
 	private String fileName = null;
 	private String fileUrl = null;
 	private String encoding = null;
-	private FileSymbo parent = null;
+	private DirSymbo parent = null;
 	
 	public SimpleFileSymbo() {
 	}
@@ -35,11 +36,11 @@ public class SimpleFileSymbo implements FileSymbo{
 		return this.encoding;
 	}
 	@Override
-	public void initParent(FileSymbo p) {
+	public void initParent(DirSymbo p) {
 		this.parent = p;
 	}
 	@Override
-	public FileSymbo getParent() {
+	public DirSymbo getParent() {
 		return this.parent;
 	}
 }
