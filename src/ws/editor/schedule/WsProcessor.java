@@ -14,12 +14,14 @@ import ws.editor._plugin_define.FrontWindow;
 import ws.editor._plugin_define.LogPort;
 import ws.editor._plugin_define.PMenuBar;
 import ws.editor._plugin_define.ProjectManager;
+import ws.editor._plugin_define.ToolsBar;
 import ws.editor.configservice.ConfigService;
 import ws.editor.contentport.BinaryDiskFileAccess;
 import ws.editor.contentport.SimpleNetworkPort;
 import ws.editor.logport.LogWriter;
 import ws.editor.menubar.WMenuBar;
 import ws.editor.projectmanager.SimpleProjectMake;
+import ws.editor.toolsbar.WToolsBar;
 import ws.editor.window.WWindow;
 
 public class WsProcessor {
@@ -113,6 +115,7 @@ public class WsProcessor {
 		
 		this.factory_RegisterNewComponent(new WWindow());
 		this.factory_RegisterNewComponent(new WMenuBar());
+		this.factory_RegisterNewComponent(new WToolsBar());
 	}
 
 	
@@ -326,7 +329,8 @@ public class WsProcessor {
 	 * @param id 预设窗口的id
 	 * @return 新实例*/
 	public FrontWindow instance_GetNewDefaultWindow(String id) {
-		PluginFeature one = this.instance_GetExistsPlugin(PluginFeature.UI_Window, id);
+		PluginFeature one = this.instance_GetExistsPlugin(PluginFeature.UI_Window,
+				FrontWindow.class.getName()+id);
 		if(one != null)
 			id = "other" + id;
 		
@@ -343,7 +347,8 @@ public class WsProcessor {
 	 * @param id 菜单栏的id
 	 * @return 返回实例*/
 	public PMenuBar instance_GetNewDefaultMenubar(String id) {
-		PluginFeature one = this.instance_GetExistsPlugin(PluginFeature.UI_MenuBar, id);
+		PluginFeature one = this.instance_GetExistsPlugin(PluginFeature.UI_MenuBar,
+				PMenuBar.class.getName()+id);
 		if(one != null)
 			id = "other" + id;
 		
@@ -355,7 +360,25 @@ public class WsProcessor {
 		return menubar;
 	}
 	
-	
+
+	/**
+	 * 获取toolsbar用于构建显示界面,种类由配置文件和默认值共同指定，如果id存在，则返回新id实例，记得及时更新id
+	 * @param id 实例id
+	 * @return 返回实例*/
+	public ToolsBar instance_getNewDefaultToolsBar(String string) {
+		PluginFeature one = this.instance_GetExistsPlugin(PluginFeature.Tools_Plugin,
+				ToolsBar.class.getName()+string);
+		if(one != null)
+			string = "other" + string;
+		
+		PluginFeature factory = this.factory_GetValidateComponent(null, ConfigItems.DefaultToolsBar,
+				ToolsBar.class.getName()+WToolsBar.class.getName());
+		
+		ToolsBar toolsbar = ((ToolsBar)factory).getInstance(this, string);
+		this.manager.registerPluginInstance(toolsbar);
+		
+		return toolsbar;
+	}
 	
 	
 	
@@ -427,5 +450,6 @@ public class WsProcessor {
 			proc.operate_OpenGraphicMode();
 		}
 	}
+
 
 }

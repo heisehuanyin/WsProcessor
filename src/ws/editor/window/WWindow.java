@@ -2,16 +2,19 @@ package ws.editor.window;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JToolBar;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.SplitPaneUI;
@@ -22,6 +25,7 @@ import ws.editor.ConfigItems;
 import ws.editor.PluginFeature;
 import ws.editor._plugin_define.FrontWindow;
 import ws.editor._plugin_define.PMenuBar;
+import ws.editor._plugin_define.ToolsBar;
 import ws.editor.schedule.WsProcessor;
 
 /**
@@ -63,8 +67,20 @@ public class WWindow implements FrontWindow{
 		PMenuBar menubar = this.schedule.instance_GetNewDefaultMenubar("menubar");
 		if(menubar != null)
 			window.setJMenuBar((JMenuBar) menubar);
-		// TODO add toolbar
+		
+		ToolsBar toolbar = this.schedule.instance_getNewDefaultToolsBar("toolsbar");
+		if(toolbar !=null) {
+			window.add((JToolBar)toolbar,BorderLayout.NORTH);
+			toolbar.rebuildDispaly(menubar);
+		}
 		// TODO add statusbar
+		
+
+
+		this.leftCollect.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		this.rightCollect.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		this.centerCollect.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		this.bottomCollect.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		
 		window.add(this.leftAndRightCollect, BorderLayout.CENTER);
 		SplitPaneUI spui = this.leftAndRightCollect.getUI();
@@ -86,6 +102,13 @@ public class WWindow implements FrontWindow{
 		this.centerAndRightCollect.setBorder(new EmptyBorder(0,0,0,0));
 	}
 
+	
+	
+	public void placeTabview(String viewTitle, Component comp) {
+		// TODO 配置文件参与设置
+	}
+	
+
 
 	@Override
 	public int getPluginMark() {
@@ -101,8 +124,23 @@ public class WWindow implements FrontWindow{
 
 	@Override
 	public JMenu getCustomMenu() {
-		return new JMenu(this.getClass().getName());
+		JMenu viewM = new JMenu("视图配置");
+		JCheckBoxMenuItem leftVisible = new JCheckBoxMenuItem("左视图可见");
+		JCheckBoxMenuItem rightVisible = new JCheckBoxMenuItem("右视图可见");
+		JCheckBoxMenuItem bottomVisible = new JCheckBoxMenuItem("底部视图可见");
+		JCheckBoxMenuItem toolsbarVisible = new JCheckBoxMenuItem("工具栏可见");
+		JCheckBoxMenuItem statusbarVisible = new JCheckBoxMenuItem("状态栏可见");
+		
+		viewM.add(leftVisible);
+		viewM.add(rightVisible);
+		viewM.add(bottomVisible);
+		viewM.add(toolsbarVisible);
+		viewM.add(statusbarVisible);
+		
+		return viewM;
 	}
+	
+	
 
 
 
@@ -111,7 +149,6 @@ public class WWindow implements FrontWindow{
 		// TODO Auto-generated method stub
 		
 	}
-
 
 	@Override
 	public FrontWindow getInstance(WsProcessor schedule, String id) {

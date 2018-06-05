@@ -21,7 +21,7 @@ public interface PluginFeature {
 	static int Service_ProjectManage = 10;
 	
 	/**
-	 * 获取组件代码，标定组件类别
+	 * 获取组件代码，标定组件类别，详细定义看{@link PluginFeature}
 	 * @return 返回的组件标记代码*/
 	int getPluginMark();
 	/**

@@ -1,6 +1,7 @@
 #config items as list
-#Tue Jun 05 13:28:37 CST 2018
+#Tue Jun 05 18:53:21 CST 2018
 editor.window.description=ws.editor._plugin_define.FrontWindowws.editor.window.WWindow
 editor.window.width=1325
 editor.window.height=801
 editor.menubar.description=ws.editor._plugin_define.PMenuBarws.editor.menubar.WMenuBar
+editor.toolsbar.description=ws.editor._plugin_define.ToolsBarws.editor.toolsbar.WToolsBar
