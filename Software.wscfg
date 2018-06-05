@@ -1,5 +1,5 @@
 #config items as list
-#Tue Jun 05 08:38:22 CST 2018
+#Tue Jun 05 08:49:27 CST 2018
 editor.window.description=ws.editor.window.WWindow
 editor.window.width=907
 editor.binaryport.description=ws.editor._plugin_define.ContentPortws.editor.contentport.BinaryDiskFileAccess

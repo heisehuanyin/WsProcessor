@@ -47,17 +47,13 @@ public class SimpleProjectMake implements ProjectManager {
 		JMenu rtn = new JMenu(this.getClass().getName());
 		JMenu project = new JMenu("项目管理");
 		rtn.add(project);
-		JMenuItem newP = new JMenuItem("新建项目");
-		project.add(newP);
-		JMenuItem switchP = new JMenuItem("切换项目");
-		project.add(switchP);
-		JMenuItem renameP = new JMenuItem("重命名本项目");
+		JMenuItem renameP = new JMenuItem("重命名项目");
 		project.add(renameP);
-		JMenuItem clearP = new JMenuItem("清理本项目");
+		JMenuItem clearP = new JMenuItem("清理项目");
 		project.add(clearP);
-		JMenuItem closeP = new JMenuItem("关闭本项目");
+		JMenuItem closeP = new JMenuItem("关闭项目");
 		project.add(closeP);
-		JMenuItem delP = new JMenuItem("删除本项目");
+		JMenuItem delP = new JMenuItem("删除项目");
 		project.add(delP);
 
 		JMenu file = new JMenu("文件管理");

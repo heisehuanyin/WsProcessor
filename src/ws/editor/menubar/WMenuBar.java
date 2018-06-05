@@ -72,6 +72,7 @@ public class WMenuBar extends JMenuBar implements PMenuBar{
 			source.add(openProject);
 			
 			for(String mitem:avaPMList) {
+				
 				newProject.add(mitem);
 				openProject.add(mitem);
 			}
