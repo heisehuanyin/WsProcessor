@@ -7,6 +7,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
@@ -67,6 +68,9 @@ public class WWindow implements FrontWindow{
 		PMenuBar menubar = this.schedule.instance_GetNewDefaultMenubar("menubar");
 		if(menubar != null)
 			window.setJMenuBar((JMenuBar) menubar);
+		ArrayList<JMenu> onon = new ArrayList<JMenu>();
+		onon.add(this.getCustomMenu());
+		menubar.refreshMenuBar(onon);
 		
 		ToolsBar toolbar = this.schedule.instance_getNewDefaultToolsBar("toolsbar");
 		if(toolbar !=null) {

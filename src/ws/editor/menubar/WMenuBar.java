@@ -41,7 +41,6 @@ public class WMenuBar extends JMenuBar implements PMenuBar{
 		WMenuBar rtn = new WMenuBar();
 		rtn.mbid = id;
 		rtn.sch = schedule;
-		rtn.refreshMenuBar(null);
 		
 		return rtn;
 	}
@@ -49,6 +48,12 @@ public class WMenuBar extends JMenuBar implements PMenuBar{
 	@Override
 	public PMenuBar refreshMenuBar(ArrayList<JMenu> elseMenus) {
 		this.add(this.rebuildMenuP_M());
+		
+		if(elseMenus != null) {
+			for(JMenu i:elseMenus) {
+				this.add(i);
+			}
+		}
 		return this;
 	}
 	
