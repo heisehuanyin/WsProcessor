@@ -30,9 +30,9 @@ public class WWindow implements FrontWindow{
 	public void displayWindow() {
 		this.buildWindow(this.window);
 		
-		int width = Integer.parseInt(this.schedule.getMainConfigUnit().
+		int width = Integer.parseInt(this.schedule.instance_GetMainConfigUnit().
 				getValue(ConfigItems.WindowWidth, "800"));
-		int height = Integer.parseInt(this.schedule.getMainConfigUnit().
+		int height = Integer.parseInt(this.schedule.instance_GetMainConfigUnit().
 				getValue(ConfigItems.WindowHeight, "600"));
 		this.window.setSize(width,height);
 		this.window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -40,7 +40,7 @@ public class WWindow implements FrontWindow{
 	}
 	
 	private void buildWindow(JFrame window) {
-		PMenuBar menubar = this.schedule.getNewDefaultMenubar("menubar");
+		PMenuBar menubar = this.schedule.instance_GetNewDefaultMenubar("menubar");
 		if(menubar != null)
 			window.setJMenuBar((JMenuBar) menubar);
 		
@@ -105,7 +105,7 @@ public class WWindow implements FrontWindow{
 
 		@Override
 		public void windowClosed(WindowEvent e) {
-			src.schedule.saveOperation();
+			src.schedule.operate_SaveOperation();
 		}
 
 		@Override
@@ -134,9 +134,9 @@ public class WWindow implements FrontWindow{
 
 		@Override
 		public void componentResized(ComponentEvent e) {
-			src.schedule.getMainConfigUnit().setKeyValue(ConfigItems.WindowWidth, 
+			src.schedule.instance_GetMainConfigUnit().setKeyValue(ConfigItems.WindowWidth, 
 					""+src.window.getWidth());
-			src.schedule.getMainConfigUnit().setKeyValue(ConfigItems.WindowHeight, 
+			src.schedule.instance_GetMainConfigUnit().setKeyValue(ConfigItems.WindowHeight, 
 					""+src.window.getHeight());
 		}
 

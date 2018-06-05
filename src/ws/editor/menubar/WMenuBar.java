@@ -63,8 +63,8 @@ public class WMenuBar extends JMenuBar implements PMenuBar{
 		}
 		@Override
 		public void menuSelected(MenuEvent e) {
-			ArrayList<ProjectManager> v = this.schedule.getProjectManagerView();
-			ArrayList<String> avaPMList = this.schedule.getAvailableProjectManagerList();
+			ArrayList<ProjectManager> v = this.schedule.operate_GetActiveProjectManagerView();
+			ArrayList<String> avaPMList = this.schedule.operate_GetAvailableProjectManagerList();
 			JMenu source = (JMenu) e.getSource();
 			JMenu newProject = new JMenu("新建项目");
 			source.add(newProject);
