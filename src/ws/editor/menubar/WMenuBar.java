@@ -10,6 +10,7 @@ import javax.swing.JMenuItem;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
+import ws.editor.FileSymbo;
 import ws.editor.PluginFeature;
 import ws.editor._plugin_define.PMenuBar;
 import ws.editor._plugin_define.ProjectManager;
@@ -70,6 +71,8 @@ public class WMenuBar extends JMenuBar implements PMenuBar{
 			source.add(newProject);
 			JMenu openProject = new JMenu("打开项目");
 			source.add(openProject);
+			JMenu clearProject = new JMenu("清理项目");
+			source.add(clearProject);
 			
 			for(String mitem:avaPMList) {
 				
@@ -78,7 +81,10 @@ public class WMenuBar extends JMenuBar implements PMenuBar{
 			}
 			source.addSeparator();
 			for(ProjectManager i:v) {
-				source.add(i.getCustomMenu());
+				FileSymbo pjt = i.getProjectDescription();
+				JMenu itemcfg = i.getCustomMenu();
+				itemcfg.setText(pjt.fileName());
+				source.add(itemcfg);
 			}
 		}
 		@Override

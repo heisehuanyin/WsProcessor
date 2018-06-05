@@ -1,5 +1,6 @@
 package ws.editor._plugin_define;
 
+import ws.editor.FileSymbo;
 import ws.editor.PluginFeature;
 import ws.editor.schedule.WsProcessor;
 
@@ -19,5 +20,10 @@ public interface ProjectManager extends PluginFeature {
 	 * @param pport 内容端口
 	 * @return 返回新实例*/
 	ProjectManager createNewProject(WsProcessor schedule, ContentPort pport);
+
+	/**
+	 * 获取项目描述，返回的是由一个文件描述实例组成的项目树
+	 * @return 返回的描述实例*/
+	FileSymbo getProjectDescription();
 
 }

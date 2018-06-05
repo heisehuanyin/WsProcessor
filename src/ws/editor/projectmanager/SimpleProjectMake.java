@@ -215,5 +215,10 @@ public class SimpleProjectMake implements ProjectManager {
 		// TODO 关闭操作需要设计
 
 	}
+	
+	@Override
+	public FileSymbo getProjectDescription() {
+		return this.p_tree;
+	}
 
 }
