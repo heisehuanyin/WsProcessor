@@ -48,7 +48,6 @@ public class WMenuBar extends JMenuBar implements PMenuBar{
 	@Override
 	public PMenuBar refreshMenuBar(ArrayList<JMenu> elseMenus) {
 		this.add(this.rebuildMenuP_M());
-		this.add(new JMenu("Edit"));
 		return this;
 	}
 	
@@ -65,8 +64,19 @@ public class WMenuBar extends JMenuBar implements PMenuBar{
 		@Override
 		public void menuSelected(MenuEvent e) {
 			ArrayList<ProjectManager> v = this.schedule.getProjectManagerView();
+			ArrayList<String> avaPMList = this.schedule.getAvailableProjectManagerList();
+			JMenu source = (JMenu) e.getSource();
+			JMenu newProject = new JMenu("新建项目");
+			source.add(newProject);
+			JMenu openProject = new JMenu("打开项目");
+			source.add(openProject);
+			
+			for(String mitem:avaPMList) {
+				newProject.add(mitem);
+				openProject.add(mitem);
+			}
+			source.addSeparator();
 			for(ProjectManager i:v) {
-				JMenu source = (JMenu) e.getSource();
 				source.add(i.getCustomMenu());
 			}
 		}

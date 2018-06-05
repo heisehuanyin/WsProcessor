@@ -87,6 +87,77 @@ public class WsProcessor {
 		return this.manager.getRegisteredPluginInstance(pluginMark, id);
 	}
 	
+
+	/**
+	 * 开启图形模式：实例化Processor之后，注册各种组件之后，调用本函数可以打开图形界面*/
+	public void openGraphicMode() {
+		this.initDefaultGraphicPlugin();
+		
+		FrontWindow win = this.getNewDefaultWindow("mainwindow");
+		win.displayWindow();
+	}
+	
+	/**
+	 * 开启静默模式：实例化Processor之后，注册各种组件之后，调用本函数可以打开静默模式*/
+	public void openSilentMode() {
+		// TODO 默认模式的设计
+	}
+	/**
+	 * 初始化静默模式默认的组件,能够保证最低限度的正常使用*/
+	private void initDefaultSilentPlugin() {
+		this.addShutDownHook();
+		this.registerComponentFectory(new LogWriter());
+		this.registerComponentFectory(new ConfigService());
+		this.registerComponentFectory(new BinaryDiskFileAccess());
+		this.registerComponentFectory(new SimpleNetworkPort());
+		this.registerComponentFectory(new SimpleProjectMake());
+	}
+	
+	private void addShutDownHook() {
+		Runtime.getRuntime().addShutdownHook(new shutdownHook(this));
+	}
+	private class shutdownHook extends Thread{
+		private WsProcessor s = null;
+		public shutdownHook(WsProcessor s) {
+			this.s = s;
+		}
+		@Override
+		public void run() {
+			this.s.saveOperation();
+		}
+		
+	}
+	
+	
+	/**
+	 * 初始化静默模式插件和图形模式插件，能够保证最低限度的正常使用*/
+	private void initDefaultGraphicPlugin() {
+		this.initDefaultSilentPlugin();
+		
+		this.registerComponentFectory(new WWindow());
+		this.registerComponentFectory(new WMenuBar());
+		
+		ContentPort port = this.createNewFileContentPort("./Default.wspjt");
+		this.openProjectFromEmptyFile(null, port);
+	}
+	
+	
+	
+	/**
+	 * 执行保存操作
+	 */
+	public void saveOperation() {
+		this.manager.saveOperation();
+	}
+
+	/**
+	 * 获取可用的ProjectManager列表信息，用于新建项目菜单和打开项目菜单，
+	 * 意味着，每个ProjectManager实现就不需要在自定义菜单上添加新建项目和打开项目两个选项了
+	 * @return 返回的是当前软件注册后的所有项目插件的id*/
+	public ArrayList<String> getAvailableProjectManagerList(){
+		return this.manager.getProjectManagerFactoryList();
+	}
+	
 	
 	//插件实例获取接口:基础===================================================================
 	/**
@@ -325,78 +396,6 @@ public class WsProcessor {
 	
 	//======================================================================================
 	
-	
-	
-	
-	/**
-	 * 开启图形模式：实例化Processor之后，注册各种组件之后，调用本函数可以打开图形界面*/
-	public void openGraphicMode() {
-		this.initDefaultGraphicPlugin();
-		
-		FrontWindow win = this.getNewDefaultWindow("mainwindow");
-		win.displayWindow();
-	}
-	
-	/**
-	 * 开启静默模式：实例化Processor之后，注册各种组件之后，调用本函数可以打开静默模式*/
-	public void openSilentMode() {
-		// TODO 默认模式的设计
-	}
-	/**
-	 * 初始化静默模式默认的组件,能够保证最低限度的正常使用*/
-	private void initDefaultSilentPlugin() {
-		this.addShutDownHook();
-		this.registerComponentFectory(new LogWriter());
-		this.registerComponentFectory(new ConfigService());
-		this.registerComponentFectory(new BinaryDiskFileAccess());
-		this.registerComponentFectory(new SimpleNetworkPort());
-		this.registerComponentFectory(new SimpleProjectMake());
-	}
-	/**
-	 * 初始化静默模式插件和图形模式插件，能够保证最低限度的正常使用*/
-	private void initDefaultGraphicPlugin() {
-		this.initDefaultSilentPlugin();
-		
-		this.registerComponentFectory(new WWindow());
-		this.registerComponentFectory(new WMenuBar());
-		
-		ContentPort port = this.createNewFileContentPort("./Default.wspjt");
-		this.openProjectFromEmptyFile(null, port);
-	}
-	
-	private void addShutDownHook() {
-		Runtime.getRuntime().addShutdownHook(new shutdownHook(this));
-	}
-	private class shutdownHook extends Thread{
-		private WsProcessor s = null;
-		public shutdownHook(WsProcessor s) {
-			this.s = s;
-		}
-		@Override
-		public void run() {
-			this.s.saveOperation();
-		}
-		
-	}
-	
-	
-	
-	
-	
-	/**
-	 * 执行保存操作
-	 */
-	public void saveOperation() {
-		this.manager.saveOperation();
-	}
-	/**
-	 * 执行推出操作
-	 * */
-	public void exitOperation() {
-		this.saveOperation();
-		System.exit(0);
-	}
-
 	/**
 	 * 两种启动方式
 	 * -w:图形界面启动，可以撰写文件，功能丰富

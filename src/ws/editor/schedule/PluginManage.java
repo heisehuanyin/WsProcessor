@@ -1,10 +1,12 @@
 package ws.editor.schedule;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import ws.editor.PluginFeature;
+import ws.editor._plugin_define.ProjectManager;
 
 /**
  * 用于管理插件，本身不是插件，不需要两步实例化直接实例化得到的就是可用组件
@@ -80,6 +82,17 @@ public class PluginManage {
 			PluginFeature plugin = array.get(str);
 			plugin.saveOperation();
 		}
+	}
+	
+	public ArrayList<String> getProjectManagerFactoryList(){
+		ArrayList<String> rtnlist = new ArrayList<>();
+		Set<String> idlist = this.factoryContainer.keySet();
+		for(String idone:idlist) {
+			if(idone.startsWith(ProjectManager.class.getName())) {
+				rtnlist.add(idone);
+			}
+		}
+		return rtnlist;
 	}
 
 }
