@@ -69,8 +69,10 @@ public class WMenuBar extends JMenuBar implements PMenuBar{
 		}
 		@Override
 		public void menuSelected(MenuEvent e) {
-			ArrayList<ProjectManager> v = this.schedule.operate_GetActiveProjectManagerView();
-			ArrayList<String> avaPMList = this.schedule.operate_GetAvailableProjectManagerList();
+			ArrayList<ProjectManager> activeProjectView = this.schedule.service_GetPluginManager().
+					service_GetActiveProjectManagerView();
+			ArrayList<String> availableManagerList = this.schedule.service_GetPluginManager()
+					.service_GetAvailableProjectManagerList();
 			JMenu source = (JMenu) e.getSource();
 			JMenu newProject = new JMenu("新建项目");
 			source.add(newProject);
@@ -79,13 +81,13 @@ public class WMenuBar extends JMenuBar implements PMenuBar{
 			JMenu clearProject = new JMenu("清理项目");
 			source.add(clearProject);
 			
-			for(String mitem:avaPMList) {
+			for(String mitem:availableManagerList) {
 				
 				newProject.add(mitem);
 				openProject.add(mitem);
 			}
 			source.addSeparator();
-			for(ProjectManager i:v) {
+			for(ProjectManager i:activeProjectView) {
 				FileSymbo pjt = i.getProjectDescription();
 				JMenu itemcfg = i.getCustomMenu();
 				itemcfg.setText(pjt.fileName());

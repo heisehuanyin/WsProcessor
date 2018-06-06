@@ -59,9 +59,9 @@ public class WWindow implements FrontWindow{
 	public void displayWindow() {
 		this.buildWindow(this.window);
 		
-		int width = Integer.parseInt(this.schedule.instance_GetMainConfigUnit().
+		int width = Integer.parseInt(this.schedule.service_GetMainConfigUnit().
 				getValue(ConfigItems.WindowWidth, "800"));
-		int height = Integer.parseInt(this.schedule.instance_GetMainConfigUnit().
+		int height = Integer.parseInt(this.schedule.service_GetMainConfigUnit().
 				getValue(ConfigItems.WindowHeight, "600"));
 		this.window.setSize(width,height);
 		this.window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -69,7 +69,8 @@ public class WWindow implements FrontWindow{
 	}
 	
 	private void buildWindow(JFrame window) {
-		PMenuBar menubar = this.schedule.instance_GetNewDefaultMenubar("menubar");
+		PMenuBar menubar = this.schedule.service_GetPluginManager()
+				.instance_GetNewDefaultMenubar("menubar");
 		if(menubar != null) {
 			window.setJMenuBar((JMenuBar) menubar);
 			this.menubar = menubar;
@@ -78,7 +79,8 @@ public class WWindow implements FrontWindow{
 		onon.add(this.getCustomMenu());
 		menubar.refreshMenuBar(onon);
 		
-		ToolsBar toolbar = this.schedule.instance_getNewDefaultToolsBar("toolsbar");
+		ToolsBar toolbar = this.schedule.service_GetPluginManager()
+				.instance_getNewDefaultToolsBar("toolsbar");
 		if(toolbar !=null) {
 			window.add((JToolBar)toolbar,BorderLayout.NORTH);
 			toolbar.rebuildDispaly(menubar);
@@ -222,9 +224,9 @@ public class WWindow implements FrontWindow{
 
 		@Override
 		public void componentResized(ComponentEvent e) {
-			src.schedule.instance_GetMainConfigUnit().setKeyValue(ConfigItems.WindowWidth, 
+			src.schedule.service_GetMainConfigUnit().setKeyValue(ConfigItems.WindowWidth, 
 					""+src.window.getWidth());
-			src.schedule.instance_GetMainConfigUnit().setKeyValue(ConfigItems.WindowHeight, 
+			src.schedule.service_GetMainConfigUnit().setKeyValue(ConfigItems.WindowHeight, 
 					""+src.window.getHeight());
 		}
 

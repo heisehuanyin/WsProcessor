@@ -259,11 +259,13 @@ public class SimpleProjectMake implements ProjectManager {
 	public ContentPort openFile(FileSymbo target) {
 		//空文件，从文件URL上进行判断
 		if(target.fileURL().equals(ConfigItems.VoidFilePath_Value)) {
-			ContentPort p = this.sch.instance_GetContentPortFromCreateNewFile(target.fileURL());
+			ContentPort p = this.sch.service_GetPluginManager()
+					.instance_GetContentPortFromCreateNewFile(target.fileURL());
 			target.initFileSymbo(target.fileName(), p.getPath(), target.Encoding());
 			return p;
 		}
-		return this.sch.instance_GetContentPortFromExistsFile(target.fileURL());
+		return this.sch.service_GetPluginManager()
+				.instance_GetContentPortFromExistsFile(target.fileURL());
 	}
 
 }
