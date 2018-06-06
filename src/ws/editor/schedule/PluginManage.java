@@ -86,37 +86,7 @@ public class PluginManage {
 		return factory;
 	}
 
-	/**
-	 * 注册插件实例
-	 * 
-	 * @param obj
-	 *            插件实例
-	 */
-	private void instance_RegisterPluginInstance(PluginFeature obj) {
-
-		Map<String, PluginFeature> con1 = this.instances.get(obj.getPluginMark());
-		if (con1 == null) {// 如果未注册过该类插件，连容器也不会有
-			con1 = new HashMap<String, PluginFeature>();
-			this.instances.put(obj.getPluginMark(), con1);
-		}
-
-		con1.put(obj.getCompid(), obj);
-	}
-
-	/**
-	 * 获取已经注册好的实例
-	 * 
-	 * @param pMark
-	 *            插件类型，见{@link PluginFeature}
-	 * @return 注册好的插件实例
-	 */
-	private PluginFeature instance_GetExistsPluginInstance(int pMark, String id) {
-		Map<String, PluginFeature> con = this.instances.get(pMark);
-		if (con == null)
-			return null;
-
-		return con.get(id);
-	}
+	
 
 	/**
 	 * 获取可用的ProjectManager列表信息，用于新建项目菜单和打开项目菜单，
@@ -180,6 +150,37 @@ public class PluginManage {
 		}
 	}
 
+	/**
+	 * 注册插件实例
+	 * 
+	 * @param obj
+	 *            插件实例
+	 */
+	private void instance_RegisterPluginInstance(PluginFeature obj) {
+
+		Map<String, PluginFeature> con1 = this.instances.get(obj.getPluginMark());
+		if (con1 == null) {// 如果未注册过该类插件，连容器也不会有
+			con1 = new HashMap<String, PluginFeature>();
+			this.instances.put(obj.getPluginMark(), con1);
+		}
+
+		con1.put(obj.getCompid(), obj);
+	}
+
+	/**
+	 * 获取已经注册好的实例
+	 * 
+	 * @param pMark
+	 *            插件类型，见{@link PluginFeature}
+	 * @return 注册好的插件实例
+	 */
+	private PluginFeature instance_GetExistsPluginInstance(int pMark, String id) {
+		Map<String, PluginFeature> con = this.instances.get(pMark);
+		if (con == null)
+			return null;
+
+		return con.get(id);
+	}
 	// 插件实例获取接口:基础===================================================================
 
 	/**
