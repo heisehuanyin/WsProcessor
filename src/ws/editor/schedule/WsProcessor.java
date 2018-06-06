@@ -22,6 +22,7 @@ import ws.editor.logport.LogWriter;
 import ws.editor.menubar.WMenuBar;
 import ws.editor.projectmanager.SimpleProjectMake;
 import ws.editor.toolsbar.WToolsBar;
+import ws.editor.window.SimpleWindow;
 import ws.editor.window.WWindow;
 
 public class WsProcessor {
@@ -231,6 +232,8 @@ public class WsProcessor {
 			System.out.println("静默处理");
 		}else {
 			WsProcessor proc = new WsProcessor();
+			
+			proc.service_RegisterPlugin(new SimpleWindow());
 			
 			proc.operate_OpenGraphicMode();
 		}

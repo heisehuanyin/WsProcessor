@@ -1,2 +1,1 @@
-Error:ws.editor.schedule.WsProcessor:未注册ws.editor._plugin_define.ToolsBarws.editor.toolsbar.WToolsBar实例
-Error:ws.editor.schedule.WsProcessor:未注册ws.editor._plugin_define.ToolsBarws.editor.toolsbar.WToolsBar实例
+Error:ws.editor.schedule.PluginManage:未注册ws.editor._plugin_define.FrontWindowws.editor.window.SimpleWindow实例
