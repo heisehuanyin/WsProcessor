@@ -31,14 +31,14 @@ public class WsProcessor {
 	private ProjectManager projectSymbo = null;
 	
 	public WsProcessor (){
-		this.factory_RegisterNewComponent(new LogWriter());
+		this.service_RegisterNewComponent(new LogWriter());
 	}
 	
 	/**
 	 * 注册各种工厂组件,在管理器中的id格式：接口名+类名
 	 * @param obj 组件的实例，这个实例作为工厂，用于派生新实例的，不能够用于工作
 	 * */
-	public void factory_RegisterNewComponent(PluginFeature obj) {
+	public void service_RegisterNewComponent(PluginFeature obj) {
 		this.manager.factory_RegisterPluginComponent(obj);
 	}
 	
@@ -47,6 +47,16 @@ public class WsProcessor {
 	 * 开启图形模式：实例化Processor之后，注册各种组件之后，调用本函数可以打开图形界面*/
 	public void operate_OpenGraphicMode() {
 		this.operate_InitDefaultGraphicPlugin();
+		
+		if(System.getProperty("os.name").indexOf("Mac") != -1)
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		FrontWindow win = this.manager.instance_GetNewDefaultWindow("mainwindow");
 		win.displayWindow();
@@ -65,20 +75,20 @@ public class WsProcessor {
 	 * 初始化静默模式默认的组件,能够保证最低限度的正常使用*/
 	private void operate_InitDefaultSilentPlugin() {
 		this.addShutDownHook();
-		this.factory_RegisterNewComponent(new LogWriter());
-		this.factory_RegisterNewComponent(new ConfigService());
-		this.factory_RegisterNewComponent(new BinaryDiskFileAccess());
-		this.factory_RegisterNewComponent(new SimpleNetworkPort());
-		this.factory_RegisterNewComponent(new SimpleProjectMake());
+		this.service_RegisterNewComponent(new LogWriter());
+		this.service_RegisterNewComponent(new ConfigService());
+		this.service_RegisterNewComponent(new BinaryDiskFileAccess());
+		this.service_RegisterNewComponent(new SimpleNetworkPort());
+		this.service_RegisterNewComponent(new SimpleProjectMake());
 	}
 	/**
 	 * 初始化静默模式插件和图形模式插件，能够保证最低限度的正常使用*/
 	private void operate_InitDefaultGraphicPlugin() {
 		this.operate_InitDefaultSilentPlugin();
 		
-		this.factory_RegisterNewComponent(new WWindow());
-		this.factory_RegisterNewComponent(new WMenuBar());
-		this.factory_RegisterNewComponent(new WToolsBar());
+		this.service_RegisterNewComponent(new WWindow());
+		this.service_RegisterNewComponent(new WMenuBar());
+		this.service_RegisterNewComponent(new WToolsBar());
 	}
 
 	
@@ -165,15 +175,7 @@ public class WsProcessor {
 		}else {
 			WsProcessor proc = new WsProcessor();
 			
-			if(System.getProperty("os.name").indexOf("Mac") != -1)
-				System.setProperty("apple.laf.useScreenMenuBar", "true");
-			try {
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-					| UnsupportedLookAndFeelException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
 			
 			proc.operate_OpenGraphicMode();
 		}
