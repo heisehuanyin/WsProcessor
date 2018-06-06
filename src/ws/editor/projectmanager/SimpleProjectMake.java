@@ -254,5 +254,16 @@ public class SimpleProjectMake implements ProjectManager {
 		p.insertChildAtIndex(insertFile, p.getChildIndex(Node));
 		return true;
 	}
+	
+	@Override
+	public ContentPort openFile(FileSymbo target) {
+		//空文件，从文件URL上进行判断
+		if(target.fileURL().equals(ConfigItems.VoidFilePath_Value)) {
+			ContentPort p = this.sch.instance_GetContentPortFromCreateNewFile(target.fileURL());
+			target.initFileSymbo(target.fileName(), p.getPath(), target.Encoding());
+			return p;
+		}
+		return this.sch.instance_GetContentPortFromExistsFile(target.fileURL());
+	}
 
 }

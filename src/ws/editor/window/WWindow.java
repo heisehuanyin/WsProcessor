@@ -26,6 +26,7 @@ import ws.editor.ConfigItems;
 import ws.editor.PluginFeature;
 import ws.editor._plugin_define.FrontWindow;
 import ws.editor._plugin_define.PMenuBar;
+import ws.editor._plugin_define.StatusBar;
 import ws.editor._plugin_define.ToolsBar;
 import ws.editor.schedule.WsProcessor;
 
@@ -48,6 +49,9 @@ public class WWindow implements FrontWindow{
 	private JSplitPane leftAndRightCollect = 
 			new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,this.leftCollect,this.topAndBottomCollect);
 	
+	private PMenuBar menubar = null;
+	private ToolsBar toolsbar = null;
+	private StatusBar statusbar = null;
 	
 	public WWindow() {}
 	
@@ -66,8 +70,10 @@ public class WWindow implements FrontWindow{
 	
 	private void buildWindow(JFrame window) {
 		PMenuBar menubar = this.schedule.instance_GetNewDefaultMenubar("menubar");
-		if(menubar != null)
+		if(menubar != null) {
 			window.setJMenuBar((JMenuBar) menubar);
+			this.menubar = menubar;
+		}
 		ArrayList<JMenu> onon = new ArrayList<JMenu>();
 		onon.add(this.getCustomMenu());
 		menubar.refreshMenuBar(onon);
@@ -76,6 +82,7 @@ public class WWindow implements FrontWindow{
 		if(toolbar !=null) {
 			window.add((JToolBar)toolbar,BorderLayout.NORTH);
 			toolbar.rebuildDispaly(menubar);
+			this.toolsbar = toolbar;
 		}
 		// TODO add statusbar
 		

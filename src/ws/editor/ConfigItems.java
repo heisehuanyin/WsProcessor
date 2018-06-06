@@ -5,6 +5,7 @@ import java.io.File;
 public class ConfigItems {
 	public final static String DefaultProjectPath_Value = "."+File.separator+"project.wspjt";
 	public final static String DefaultFileEncoding_Value = "UTF-8";
+	public static final String VoidFilePath_Value = "voidfile_wsdifined";
 
 	
 	

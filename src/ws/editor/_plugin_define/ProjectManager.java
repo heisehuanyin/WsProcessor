@@ -41,7 +41,7 @@ public interface ProjectManager extends PluginFeature {
 	 * @param url 文件的真实路径，每个group是仅仅逻辑上存在，实际上是一个文件，这个文件中可以记录一些group的信息
 	 * @param encoding 设定的文件编码
 	 * @return 返回的实例*/
-	DirSymbo createNewGroup(String name, String rul, String encoding);
+	DirSymbo createNewGroup(String name, String url, String encoding);
 
 	/**
 	 * 在group节点下插入文件节点，将文件插入子节点集合中
@@ -56,5 +56,11 @@ public interface ProjectManager extends PluginFeature {
 	 * @param insertFile 新文件节点，被插入节点
 	 * @return boolean 操作成功或失败*/
 	boolean insertFileBefore(FileSymbo Node, FileSymbo insertFile);
+
+	/**
+	 * 打开文件，获取一个ContentPort实例，如果文件URL正确，打开已存在文件，如果URL为空，打开新建文件
+	 * @param target 目标文件
+	 * @return 返回的ContentPort实例*/
+	ContentPort openFile(FileSymbo target);
 
 }
