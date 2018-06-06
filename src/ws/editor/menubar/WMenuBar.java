@@ -47,8 +47,7 @@ public class WMenuBar extends JMenuBar implements PMenuBar{
 	
 	@Override
 	public PMenuBar refreshMenuBar(ArrayList<JMenu> elseMenus) {
-		this.add(this.rebuildMenuP_M());
-		
+		this.removeAll();
 		if(elseMenus != null) {
 			for(JMenu i:elseMenus) {
 				this.add(i);
@@ -57,55 +56,7 @@ public class WMenuBar extends JMenuBar implements PMenuBar{
 		return this;
 	}
 	
-	private JMenu rebuildMenuP_M(){
-		JMenu rtn = new JMenu("项目集");
-		rtn.addMenuListener(new P_M_src_Listener(this.sch));
-		return rtn;
-	}
-	private class P_M_src_Listener implements MenuListener{
-		private WsProcessor schedule;
-		public P_M_src_Listener(WsProcessor sch) {
-			this.schedule = sch;
-		}
-		@Override
-		public void menuSelected(MenuEvent e) {
-			ArrayList<ProjectManager> activeProjectView = this.schedule.service_GetPluginManager().
-					service_GetActiveProjectManagerView();
-			ArrayList<String> availableManagerList = this.schedule.service_GetPluginManager()
-					.service_GetAvailableProjectManagerList();
-			JMenu source = (JMenu) e.getSource();
-			JMenu newProject = new JMenu("新建项目");
-			source.add(newProject);
-			JMenu openProject = new JMenu("打开项目");
-			source.add(openProject);
-			JMenu clearProject = new JMenu("清理项目");
-			source.add(clearProject);
-			
-			for(String mitem:availableManagerList) {
-				
-				newProject.add(mitem);
-				openProject.add(mitem);
-			}
-			source.addSeparator();
-			for(ProjectManager i:activeProjectView) {
-				FileSymbo pjt = i.getProjectDescription();
-				JMenu itemcfg = i.getCustomMenu();
-				itemcfg.setText(pjt.fileName());
-				source.add(itemcfg);
-			}
-		}
-		@Override
-		public void menuDeselected(MenuEvent e) {
-			JMenu source = (JMenu) e.getSource();
-			source.removeAll();
-		}
-		@Override
-		public void menuCanceled(MenuEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-	}
+	
 
 	@Override
 	public void saveOperation() {

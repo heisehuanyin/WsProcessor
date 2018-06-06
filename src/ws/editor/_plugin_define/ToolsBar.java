@@ -16,6 +16,6 @@ public interface ToolsBar extends PluginFeature{
 	 * 根据配置文件记载，利用menubar中的菜单作为来源，构建toolsbar按钮
 	 * @param menubar 按钮来源
 	 * */
-	void rebuildDispaly(PMenuBar menubar);
+	void buildToolsBarContent(PMenuBar menubar);
 
 }

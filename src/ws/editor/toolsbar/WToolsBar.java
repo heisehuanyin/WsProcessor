@@ -50,7 +50,7 @@ public class WToolsBar extends JToolBar implements ToolsBar{
 	}
 
 	@Override
-	public void rebuildDispaly(PMenuBar menubar) {
+	public void buildToolsBarContent(PMenuBar menubar) {
 		// TODO 载入配置文件，重构工具栏界面
 		
 		this.add(new JButton("Test"));

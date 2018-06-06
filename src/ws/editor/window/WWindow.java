@@ -5,11 +5,14 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -75,19 +78,14 @@ public class WWindow implements FrontWindow{
 			window.setJMenuBar((JMenuBar) menubar);
 			this.menubar = menubar;
 		}
-		ArrayList<JMenu> onon = new ArrayList<JMenu>();
-		onon.add(this.getCustomMenu());
-		menubar.refreshMenuBar(onon);
 		
 		ToolsBar toolbar = this.schedule.service_GetPluginManager()
 				.instance_getNewDefaultToolsBar("toolsbar");
 		if(toolbar !=null) {
 			window.add((JToolBar)toolbar,BorderLayout.NORTH);
-			toolbar.rebuildDispaly(menubar);
 			this.toolsbar = toolbar;
 		}
 		// TODO add statusbar
-		
 
 
 		this.leftCollect.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -95,29 +93,28 @@ public class WWindow implements FrontWindow{
 		this.centerCollect.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		this.bottomCollect.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		
-		window.add(this.leftAndRightCollect, BorderLayout.CENTER);
-		SplitPaneUI spui = this.leftAndRightCollect.getUI();
-		BasicSplitPaneDivider dr = ((BasicSplitPaneUI)spui).getDivider();
-		dr.setBorder(new LineBorder(Color.gray, 1, false));
-		this.leftAndRightCollect.setDividerSize(4);
-
-
-		SplitPaneUI spui2 = this.topAndBottomCollect.getUI();
-		BasicSplitPaneDivider dr2 = ((BasicSplitPaneUI)spui2).getDivider();
-		dr2.setBorder(new LineBorder(Color.gray, 1, false));
-		this.topAndBottomCollect.setDividerSize(4);
-		this.topAndBottomCollect.setBorder(new EmptyBorder(0,0,0,0));
+		window.getContentPane().add(this.leftAndRightCollect);
+		this.UICustomOperate(this.leftAndRightCollect);
+		this.UICustomOperate(this.topAndBottomCollect);
+		this.UICustomOperate(this.centerAndRightCollect);
 		
-		SplitPaneUI spui3 = this.centerAndRightCollect.getUI();
-		BasicSplitPaneDivider dr3 = ((BasicSplitPaneUI)spui3).getDivider();
-		dr3.setBorder(new LineBorder(Color.gray, 1, false));
-		this.centerAndRightCollect.setDividerSize(4);
-		this.centerAndRightCollect.setBorder(new EmptyBorder(0,0,0,0));
+		this.schedule.service_Refresh_MenuBar();
+		toolbar.buildToolsBarContent(menubar);
+	}
+	/**
+	 * 设置JSplitPane的定制细节：1.设置分割栏边框灰色，1px，宽4px；2.设置JSplitPane 无边框
+	 * @param splitp 目标*/
+	private void UICustomOperate(JSplitPane splitp) {
+		SplitPaneUI sp = splitp.getUI();
+		BasicSplitPaneDivider dr = ((BasicSplitPaneUI)sp ).getDivider();
+		dr.setBorder(new LineBorder(Color.gray, 1, false));
+		splitp.setDividerSize(4);
+		splitp.setBorder(new EmptyBorder(0, 0, 0, 0));
 	}
 
 	
-	
-	public void placeTabview(String viewTitle, Component comp) {
+	@Override
+	public void placeView(String viewTitle, Component comp) {
 		// TODO 配置文件参与设置
 	}
 	
@@ -140,19 +137,32 @@ public class WWindow implements FrontWindow{
 		JMenu viewM = new JMenu("视图配置");
 		JCheckBoxMenuItem leftVisible = new JCheckBoxMenuItem("左视图可见");
 		JCheckBoxMenuItem rightVisible = new JCheckBoxMenuItem("右视图可见");
-		JCheckBoxMenuItem bottomVisible = new JCheckBoxMenuItem("底部视图可见");
-		JCheckBoxMenuItem toolsbarVisible = new JCheckBoxMenuItem("工具栏可见");
-		JCheckBoxMenuItem statusbarVisible = new JCheckBoxMenuItem("状态栏可见");
+		JCheckBoxMenuItem bottomVisible = new JCheckBoxMenuItem("底部视图可见",this.bottomCollect.isVisible());
+		bottomVisible.addItemListener(new visibleManage(this.bottomCollect));
+		JCheckBoxMenuItem toolsbarVisible = new JCheckBoxMenuItem("工具栏可见",((JComponent)this.toolsbar).isVisible());
+		toolsbarVisible.addItemListener(new visibleManage((JComponent) this.toolsbar));
 		
 		viewM.add(leftVisible);
 		viewM.add(rightVisible);
 		viewM.add(bottomVisible);
 		viewM.add(toolsbarVisible);
-		viewM.add(statusbarVisible);
 		
 		return viewM;
 	}
-	
+	private class visibleManage implements ItemListener{
+		private JComponent s;
+		public visibleManage(JComponent obj) {
+			s = obj;
+		}
+		@Override
+		public void itemStateChanged(ItemEvent e) {
+			if(s.isVisible())
+				s.setVisible(false);
+			else
+				s.setVisible(true);
+		}
+		
+	}
 	
 
 
@@ -248,5 +258,11 @@ public class WWindow implements FrontWindow{
 			
 		}
 		
+	}
+
+	@Override
+	public void service_RefreshMenuBar(ArrayList<JMenu> exterl) {
+		exterl.add(this.getCustomMenu());
+		this.menubar.refreshMenuBar(exterl);
 	}
 }
