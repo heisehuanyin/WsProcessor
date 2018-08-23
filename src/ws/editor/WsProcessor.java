@@ -55,13 +55,19 @@ public class WsProcessor {
 
 	
 	/**
-	 * 获取默认的log输出接口
+	 * 获取默认的log输出接口,每次启动程序加载的logport都是最后加载的一种插件，因此所有输出的log格式相同。
 	 * @return 默认的log输出接口*/
 	public LogPort service_GetDefaultLogPort() {
-		return this.service_GetPluginManager().
-				instance_GetAvailableLogPort(this.wsProcessor_logPath);
+		return this.service_GetNamedLogPort(this.wsProcessor_logPath);
 	}
-	
+	/**
+	 * 获取指定的log输出端口，通过指定logfile路径，将log信息输出到指定路径
+	 * @param logfile_Path 指定logfile的路径
+	 * @return 指定路径log端口*/
+	public LogPort service_GetNamedLogPort(String logfile_Path) {
+		return this.service_GetPluginManager().
+				instance_GetAvailableLogPort(logfile_Path);
+	}
 	
 	/**
 	 * 获取主配置文件
