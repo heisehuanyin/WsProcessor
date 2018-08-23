@@ -1,0 +1,72 @@
+package ws.editor.plugin.contentport;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import javax.swing.JMenu;
+
+import ws.editor.WsProcessor;
+import ws.editor.common.PluginFeature;
+import ws.editor.plugin.ContentPort;
+
+public class SimpleNetworkPort implements ContentPort {
+	private String id = this.getClass().getName();
+
+	@Override
+	public int getPluginMark() {
+		return PluginFeature.IO_ChannelPort;
+	}
+
+	@Override
+	public String getCompid() {
+		return ContentPort.class.getName()+ this.id;
+	}
+
+	@Override
+	public JMenu getCustomMenu() {
+		return new JMenu(this.getClass().getName());
+	}
+
+	@Override
+	public void saveOperation() {
+		// TODO 设计自动保存操作
+
+	}
+
+	@Override
+	public int getContentPortType() {
+		return ContentPort.NetworkPort;
+	}
+
+	@Override
+	public ContentPort createNewFile(WsProcessor sch, String f_path) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ContentPort openExistsFile(WsProcessor sch, String f_path) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public InputStream getInputBinaryPort() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getPath() {
+		// TODO Auto-generated method stub
+		return this.id;
+	}
+
+	@Override
+	public OutputStream getOutputBinaryPort() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+}
