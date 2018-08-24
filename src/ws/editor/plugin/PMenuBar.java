@@ -3,24 +3,25 @@ package ws.editor.plugin;
 import java.util.ArrayList;
 
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 
 import ws.editor.WsProcessor;
 import ws.editor.common.PluginFeature;
 
-public interface PMenuBar extends PluginFeature{
+public abstract class PMenuBar extends JMenuBar implements PluginFeature{
 
 	/**
-	 * 获取特定的实例
+	 * 获取特定的空白实例
 	 * @param schedule 调度模块
 	 * @param id 唯一标识
 	 * @return 返回新实例*/
-	PMenuBar getInstance(WsProcessor schedule, String id);
+	public abstract PMenuBar getInstance(WsProcessor schedule, String id);
 
 	/**
-	 * 刷新MenuBar实例
-	 * @param elseMenus 刷新过程中将额外菜单假如MenuBar
+	 * 构建MenuBar实例
+	 * @param elseMenus 刷新过程中将额外菜单加入MenuBar
 	 * @return 返回合适的实例
 	 * */
-	PMenuBar refreshMenuBar(ArrayList<JMenu> elseMenus);
+	public abstract PMenuBar refreshMenuBar(ArrayList<JMenu> elseMenus);
 
 }

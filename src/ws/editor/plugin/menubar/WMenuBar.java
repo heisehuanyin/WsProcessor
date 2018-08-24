@@ -1,22 +1,13 @@
 package ws.editor.plugin.menubar;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
-
 import ws.editor.WsProcessor;
-import ws.editor.common.FileSymbo;
 import ws.editor.common.PluginFeature;
 import ws.editor.plugin.PMenuBar;
-import ws.editor.plugin.ProjectManager;
 
-public class WMenuBar extends JMenuBar implements PMenuBar{
+public class WMenuBar extends PMenuBar{
 	private String mbid = this.getClass().getName();
 	private WsProcessor sch = null;
 

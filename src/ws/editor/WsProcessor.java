@@ -21,6 +21,7 @@ import ws.editor.plugin.ConfigUnit;
 import ws.editor.plugin.ContentPort;
 import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.LogPort;
+import ws.editor.plugin.PMenuBar;
 import ws.editor.plugin.ProjectManager;
 import ws.editor.plugin.configunit.ConfigService;
 import ws.editor.plugin.contentport.BinaryDiskFileAccess;
@@ -46,6 +47,13 @@ public class WsProcessor {
 	
 	//=service========================================================================
 	/**
+	 * 获取插件管理器服务，供外部使用
+	 * @return 正在使用的插件管理器*/
+	public PluginManage service_GetPluginManager() {
+		return this.manager;
+	}
+	
+	/**
 	 * 注册各种工厂组件,在管理器中的id格式：接口名+类名
 	 * @param obj 组件的实例，这个实例作为工厂，用于派生新实例的，不能够用于工作
 	 * */
@@ -58,32 +66,16 @@ public class WsProcessor {
 	 * 获取默认的log输出接口,每次启动程序加载的logport都是最后加载的一种插件，因此所有输出的log格式相同。
 	 * @return 默认的log输出接口*/
 	public LogPort service_GetDefaultLogPort() {
-		return this.service_GetNamedLogPort(this.wsProcessor_logPath);
-	}
-	/**
-	 * 获取指定的log输出端口，通过指定logfile路径，将log信息输出到指定路径
-	 * @param logfile_Path 指定logfile的路径
-	 * @return 指定路径log端口*/
-	public LogPort service_GetNamedLogPort(String logfile_Path) {
-		return this.service_GetPluginManager().
-				instance_GetAvailableLogPort(logfile_Path);
+		return this.manager.instance_GetAvailableLogPort(this.wsProcessor_logPath);
 	}
 	
 	/**
-	 * 获取主配置文件
+	 * 获取主配置文件，每次启动加载的configunit都是最后加载的同一种插件，输入输出的格式相同。
 	 * @return 连接向程序的主配置文件的配置端口*/
 	public ConfigUnit service_GetMainConfigUnit() {
-		return this.manager.instance_GetAvailableConfigUnit(wsProcessor_configPath);
+		return this.manager.instance_GetAvailableConfigUnit(this.wsProcessor_configPath);
 	}
 	
-	
-	
-	/**
-	 * 获取插件管理器服务
-	 * @return 正在使用的插件管理器*/
-	public PluginManage service_GetPluginManager() {
-		return this.manager;
-	}
 	
 	/**
 	 * 重构菜单栏服务，通常调用者：1.view视图插件，视图变化菜单栏变化*/
@@ -91,6 +83,15 @@ public class WsProcessor {
 		ArrayList<JMenu> exterl = new ArrayList<>();
 		JMenu wspace = this.rebuildMenu_WSpace();
 		exterl.add(wspace);
+		
+		exterl.addAll(this.fwin.getActivedViewsMenus());
+		
+		exterl.add(this.fwin.getCustomMenu());
+		
+		PMenuBar x = this.service_GetNamedMenuBar("menubar");
+		x = x.refreshMenuBar(exterl);
+		
+		
 		
 		this.fwin.service_RefreshMenuBar(exterl);
 	}

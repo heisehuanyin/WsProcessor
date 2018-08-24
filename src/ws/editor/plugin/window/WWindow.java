@@ -35,7 +35,7 @@ import ws.editor.plugin.ToolsBar;
 
 /**
  * 界面窗口，用于摆放各种控件和面板*/
-public class WWindow implements FrontWindow{
+public class WWindow extends FrontWindow{
 	private String w_id = this.getClass().getName();
 	private JFrame window = new JFrame();
 	private WsProcessor schedule = null;
