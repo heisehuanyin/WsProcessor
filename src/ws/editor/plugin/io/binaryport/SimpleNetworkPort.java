@@ -1,4 +1,4 @@
-package ws.editor.plugin.contentport;
+package ws.editor.plugin.io.binaryport;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -7,19 +7,19 @@ import javax.swing.JMenu;
 
 import ws.editor.WsProcessor;
 import ws.editor.common.PluginFeature;
-import ws.editor.plugin.ContentPort;
+import ws.editor.plugin.BinaryPort;
 
-public class SimpleNetworkPort implements ContentPort {
+public class SimpleNetworkPort implements BinaryPort {
 	private String id = this.getClass().getName();
 
 	@Override
 	public int getPluginMark() {
-		return PluginFeature.IO_ChannelPort;
+		return PluginFeature.IO_BinaryPort;
 	}
 
 	@Override
 	public String getCompid() {
-		return ContentPort.class.getName()+ this.id;
+		return BinaryPort.class.getName()+ this.id;
 	}
 
 	@Override
@@ -35,17 +35,17 @@ public class SimpleNetworkPort implements ContentPort {
 
 	@Override
 	public int getContentPortType() {
-		return ContentPort.NetworkPort;
+		return BinaryPort.NetworkPort;
 	}
 
 	@Override
-	public ContentPort createNewFile(WsProcessor sch, String f_path) {
+	public BinaryPort createNewFile(WsProcessor sch, String f_path) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ContentPort openExistsFile(WsProcessor sch, String f_path) {
+	public BinaryPort openExistsFile(WsProcessor sch, String f_path) {
 		// TODO Auto-generated method stub
 		return null;
 	}

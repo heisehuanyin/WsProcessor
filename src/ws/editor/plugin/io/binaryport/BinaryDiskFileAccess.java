@@ -1,4 +1,4 @@
-package ws.editor.plugin.contentport;
+package ws.editor.plugin.io.binaryport;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,24 +11,14 @@ import javax.swing.JMenu;
 
 import ws.editor.WsProcessor;
 import ws.editor.common.PluginFeature;
-import ws.editor.plugin.ContentPort;
+import ws.editor.plugin.BinaryPort;
 
-public class BinaryDiskFileAccess implements ContentPort {
+public class BinaryDiskFileAccess implements BinaryPort {
 	private String file_id = this.getClass().getName();
 	private WsProcessor sch = null;
 	private FileInputStream b_portin = null;
 	private FileOutputStream b_portout = null;
 	private File realFile = null;
-
-	@Override
-	public int getPluginMark() {
-		return PluginFeature.IO_ChannelPort;
-	}
-
-	@Override
-	public String getCompid() {
-		return ContentPort.class.getName() + this.file_id;
-	}
 
 	@Override
 	public JMenu getCustomMenu() {
@@ -37,7 +27,7 @@ public class BinaryDiskFileAccess implements ContentPort {
 
 	
 	@Override
-	public ContentPort createNewFile(WsProcessor sch, String f_path) {
+	public BinaryPort createNewFile(WsProcessor sch, String f_path) {
 		File f = new File(f_path);
 		
 		File p = f.getParentFile();
@@ -68,7 +58,7 @@ public class BinaryDiskFileAccess implements ContentPort {
 		return this.openExistsFile(sch, f_path);
 	}
 	@Override
-	public ContentPort openExistsFile(WsProcessor sch, String f_path) {
+	public BinaryPort openExistsFile(WsProcessor sch, String f_path) {
 		File one = new File(f_path);
 		if(! one.exists())
 			return null;
@@ -109,7 +99,7 @@ public class BinaryDiskFileAccess implements ContentPort {
 
 	@Override
 	public int getContentPortType() {
-		return ContentPort.LocalFilePort;
+		return BinaryPort.LocalFilePort;
 	}
 
 	@Override

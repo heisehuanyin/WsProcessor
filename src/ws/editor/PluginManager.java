@@ -8,14 +8,14 @@ import java.util.Set;
 import ws.editor.common.ConfigItemsKey;
 import ws.editor.common.PluginFeature;
 import ws.editor.plugin.ConfigPort;
-import ws.editor.plugin.ContentPort;
+import ws.editor.plugin.BinaryPort;
 import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.LogPort;
 import ws.editor.plugin.PMenuBar;
 import ws.editor.plugin.ProjectManager;
 import ws.editor.plugin.ToolsBar;
-import ws.editor.plugin.contentport.BinaryDiskFileAccess;
-import ws.editor.plugin.contentport.SimpleNetworkPort;
+import ws.editor.plugin.io.binaryport.BinaryDiskFileAccess;
+import ws.editor.plugin.io.binaryport.SimpleNetworkPort;
 import ws.editor.plugin.menubar.WMenuBar;
 import ws.editor.plugin.pjt_manager.SimpleProjectMake;
 import ws.editor.plugin.toolsbar.WToolsBar;
@@ -234,21 +234,21 @@ public class PluginManager {
 	 *            文件路径
 	 * @return 返回实例
 	 */
-	public ContentPort instance_GetContentPortFromExistsFile(String fpath) {
-		PluginFeature one = this.instance_GetExistsPluginInstance(PluginFeature.IO_ChannelPort,
-				ContentPort.class.getName() + fpath);
+	public BinaryPort instance_GetContentPortFromExistsFile(String fpath) {
+		PluginFeature one = this.instance_GetExistsPluginInstance(PluginFeature.IO_BinaryPort,
+				BinaryPort.class.getName() + fpath);
 		if (one != null)
-			return (ContentPort) one;
+			return (BinaryPort) one;
 
 		String ConfigStr = ConfigItemsKey.DefaultLocalPort;
-		String DefaultStr = ContentPort.class.getName() + BinaryDiskFileAccess.class.getName();
+		String DefaultStr = BinaryPort.class.getName() + BinaryDiskFileAccess.class.getName();
 		if (fpath.startsWith("http")) {
 			ConfigStr = ConfigItemsKey.DefaultNetworkPort;
-			DefaultStr = ContentPort.class.getName() + SimpleNetworkPort.class.getName();
+			DefaultStr = BinaryPort.class.getName() + SimpleNetworkPort.class.getName();
 		}
 
 		PluginFeature factory = this.factory_GetValidateComponent(null, ConfigStr, DefaultStr);
-		ContentPort b_port = ((ContentPort) factory).openExistsFile(this.schedule, fpath);
+		BinaryPort b_port = ((BinaryPort) factory).openExistsFile(this.schedule, fpath);
 		if (b_port != null)
 			this.instance_RegisterPluginInstance(b_port);
 		return b_port;
@@ -262,16 +262,16 @@ public class PluginManager {
 	 *            文件路径
 	 * @return 返回实例
 	 */
-	public ContentPort instance_GetContentPortFromCreateNewFile(String fpath) {
+	public BinaryPort instance_GetContentPortFromCreateNewFile(String fpath) {
 		String ConfigStr = ConfigItemsKey.DefaultLocalPort;
-		String DefaultStr = ContentPort.class.getName() + BinaryDiskFileAccess.class.getName();
+		String DefaultStr = BinaryPort.class.getName() + BinaryDiskFileAccess.class.getName();
 		if (fpath.startsWith("http")) {
 			ConfigStr = ConfigItemsKey.DefaultNetworkPort;
-			DefaultStr = ContentPort.class.getName() + SimpleNetworkPort.class.getName();
+			DefaultStr = BinaryPort.class.getName() + SimpleNetworkPort.class.getName();
 		}
 
 		PluginFeature factory = this.factory_GetValidateComponent(null, ConfigStr, DefaultStr);
-		ContentPort one = ((ContentPort) factory).createNewFile(this.schedule, fpath);
+		BinaryPort one = ((BinaryPort) factory).createNewFile(this.schedule, fpath);
 		this.instance_RegisterPluginInstance(one);
 		return one;
 	}
@@ -285,7 +285,7 @@ public class PluginManager {
 	 *            项目文件接口
 	 * @return 打开的项目实例
 	 */
-	public ProjectManager instance_OpenProjectFromFormatFile(String factory_id, ContentPort b_port) {
+	public ProjectManager instance_OpenProjectFromFormatFile(String factory_id, BinaryPort b_port) {
 		String p_path = b_port.getPath();
 		PluginFeature one = this.instance_GetExistsPluginInstance(PluginFeature.Service_ProjectManage,
 				ProjectManager.class.getName() + p_path);
@@ -312,7 +312,7 @@ public class PluginManager {
 	 *            项目文件接口
 	 * @return 打开的项目实例
 	 */
-	public ProjectManager instance_OpenProjectFromEmptyFile(String factory_id, ContentPort b_port) {
+	public ProjectManager instance_OpenProjectFromEmptyFile(String factory_id, BinaryPort b_port) {
 		String path = b_port.getPath();
 		PluginFeature one = this.instance_GetExistsPluginInstance(PluginFeature.Service_ProjectManage,
 				ProjectManager.class.getName() + path);

@@ -8,17 +8,21 @@ import ws.editor.WsProcessor;
  * 注册插件的时候使用的实例，被软件作为工厂类使用，获取新的实例
  * */
 public interface PluginFeature {
-	static int UI_MenuBar = 0;
-	static int UI_ToolBar = 1;
-	static int UI_Window = 2;
-	static int UI_StatusBar = 3;
-	static int UI_Tabview = 4;
-	static int IO_ContentProcess = 5;
-	static int IO_ChannelPort = 6;
-	static int Tools_Plugin = 7;
-	static int Service_ConfigUnit = 8;
-	static int Service_LogPort = 9;
-	static int Service_ProjectManage = 10;
+	final static int UI_MenuBar = 0x10;
+	final static int UI_ToolBar = 0x11;
+	final static int UI_Window = 0x12;
+	final static int UI_StatusBar = 0x13;
+	final static int UI_Tabview = 0x14;
+	
+	final static int IO_TextConvert = 0x20;
+	final static int IO_BinaryPort = 0x21;
+	final static int IO_TextPort = 0x22;
+	
+	final static int Tools_Plugin = 0x30;
+	
+	final static int Service_ConfigUnit = 0x40;
+	final static int Service_LogPort = 0x41;
+	final static int Service_ProjectManage = 0x42;
 	
 	/**
 	 * 获取组件代码，标定组件类别，详细定义看{@link PluginFeature}

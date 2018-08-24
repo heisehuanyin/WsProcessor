@@ -11,14 +11,14 @@ public interface ProjectManager extends PluginFeature {
 	 * @param schedule 软件核心模块
 	 * @param b_port 内容端口
 	 * @return 返回的新实例*/
-	ProjectManager openProject(WsProcessor schedule, ContentPort p_port);
+	ProjectManager openProject(WsProcessor schedule, BinaryPort p_port);
 
 	/**
 	 * 新建实例，传入schedule 和内容端口，依照设定，传入端口的内容会被清空，写进默认项目数据
 	 * @param schedule 核心模块
 	 * @param pport 内容端口
 	 * @return 返回新实例*/
-	ProjectManager createNewProject(WsProcessor schedule, ContentPort pport);
+	ProjectManager createNewProject(WsProcessor schedule, BinaryPort pport);
 
 	/**
 	 * 获取项目描述，返回的是由一个文件描述实例组成的项目树
@@ -67,7 +67,7 @@ public interface ProjectManager extends PluginFeature {
 	 * 打开文件，获取一个ContentPort实例，如果文件URL正确，打开已存在文件，如果URL为空，打开新建文件
 	 * @param target 目标文件
 	 * @return 返回的ContentPort实例*/
-	ContentPort openFile(FileSymbo target);
+	BinaryPort openFile(FileSymbo target);
 
 
 }

@@ -20,14 +20,14 @@ import ws.editor.common.ConfigItemsKey;
 import ws.editor.common.DirSymbo;
 import ws.editor.common.FileSymbo;
 import ws.editor.common.PluginFeature;
-import ws.editor.plugin.ContentPort;
+import ws.editor.plugin.BinaryPort;
 import ws.editor.plugin.ProjectManager;
 
 public class SimpleProjectMake implements ProjectManager {
 	private String pjt_path = this.getClass().getName();
 	private WsProcessor sch = null;
 	private FileSymbo p_tree = null;
-	private ContentPort cport = null;
+	private BinaryPort cport = null;
 
 	public SimpleProjectMake() {
 	}
@@ -78,7 +78,7 @@ public class SimpleProjectMake implements ProjectManager {
 	}
 
 	@Override
-	public ProjectManager openProject(WsProcessor schedule, ContentPort p_file) {
+	public ProjectManager openProject(WsProcessor schedule, BinaryPort p_file) {
 		SimpleProjectMake rtn = new SimpleProjectMake();
 
 		rtn.sch = schedule;
@@ -103,7 +103,7 @@ public class SimpleProjectMake implements ProjectManager {
 	 *            项目文件管理端口
 	 * @return 项目描述，第一个节点是项目整体描述节点
 	 */
-	private FileSymbo parseProject(ContentPort b_port) {
+	private FileSymbo parseProject(BinaryPort b_port) {
 		FileSymbo pjt_s = null;
 		XMLStreamReader reader;
 
@@ -155,7 +155,7 @@ public class SimpleProjectMake implements ProjectManager {
 	}
 
 	@Override
-	public ProjectManager createNewProject(WsProcessor schedule, ContentPort pport) {
+	public ProjectManager createNewProject(WsProcessor schedule, BinaryPort pport) {
 		OutputStreamWriter out;
 		try {
 			out = new OutputStreamWriter(pport.getOutputBinaryPort(), "UTF-8");
@@ -263,10 +263,10 @@ public class SimpleProjectMake implements ProjectManager {
 	}
 	
 	@Override
-	public ContentPort openFile(FileSymbo target) {
+	public BinaryPort openFile(FileSymbo target) {
 		//空文件，从文件URL上进行判断
 		if(target.fileURL().equals(ConfigItemsKey.VoidFilePath_Value)) {
-			ContentPort p = this.sch.service_GetPluginManager()
+			BinaryPort p = this.sch.service_GetPluginManager()
 					.instance_GetContentPortFromCreateNewFile(target.fileURL());
 			target.initFileSymbo(target.fileName(), p.getPath(), target.Encoding());
 			return p;
