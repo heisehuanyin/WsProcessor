@@ -64,27 +64,7 @@ public class LogWriter extends LogPort{
 		
 		return rtn;
 	}
-	//====================================================================
-
-	/**
-	 * 保存过程调用flush
-	 * 在框架中被设计成自动调用*/
-	@Override
-	public void saveOperation() {
-		try {
-			this.port.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public JMenu getCustomMenu() {
-		//TODO 详细定制菜单需要完善
-		return new JMenu(this.getClass().getName());
-	}
-
+	
 
 	/**
 	 * 写log信息接口,每次调用接口，将log信息按照规定格式写入log文件
@@ -116,4 +96,26 @@ public class LogWriter extends LogPort{
 			e.printStackTrace();
 		}
 	}
+	
+	//====================================================================
+
+		/**
+		 * 保存过程调用flush
+		 * 在框架中被设计成自动调用*/
+		@Override
+		public void saveOperation() {
+			try {
+				this.port.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public JMenu getCustomMenu() {
+			//TODO 详细定制菜单需要完善
+			return new JMenu(this.getClass().getName());
+		}
+
 }
