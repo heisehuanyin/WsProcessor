@@ -34,7 +34,7 @@ import ws.editor.plugin.window.SimpleWindow;
 import ws.editor.plugin.window.WWindow;
 
 public class WsProcessor {
-	private PluginManage manager = new PluginManage(this);
+	private PluginManager manager = new PluginManager(this);
 	private String wsProcessor_logPath = "."+File.separator+"Software.wslog";
 	private String wsProcessor_configPath = "."+File.separator+"Software.wscfg";
 	private FrontWindow fwin = null;
@@ -49,7 +49,7 @@ public class WsProcessor {
 	/**
 	 * 获取插件管理器服务，供外部使用
 	 * @return 正在使用的插件管理器*/
-	public PluginManage service_GetPluginManager() {
+	public PluginManager service_GetPluginManager() {
 		return this.manager;
 	}
 	

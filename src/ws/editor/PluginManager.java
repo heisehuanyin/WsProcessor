@@ -24,12 +24,12 @@ import ws.editor.plugin.window.WWindow;
 /**
  * 用于管理插件，本身不是插件，不需要两步实例化直接实例化得到的就是可用组件
  */
-public class PluginManage {
+public class PluginManager {
 	private Map<String, PluginFeature> factoryContainer = new HashMap<>();
 	private Map<Integer, Map<String, PluginFeature>> instances = new HashMap<>();
 	private WsProcessor schedule;
 
-	public PluginManage(WsProcessor sch) {
+	public PluginManager(WsProcessor sch) {
 		this.schedule = sch;
 	}
 

@@ -19,7 +19,7 @@ import ws.editor.common.PluginFeature;
 import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.TabView;
 
-public class SimpleWindow implements FrontWindow {
+public class SimpleWindow extends FrontWindow {
 	private String w_id = this.getClass().getName();
 	private WsProcessor schedule = null;
 	private JFrame window = new JFrame();
