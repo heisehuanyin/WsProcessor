@@ -15,7 +15,6 @@ import ws.editor.plugin.PMenuBar;
 import ws.editor.plugin.ProjectManager;
 import ws.editor.plugin.ToolsBar;
 import ws.editor.plugin.io.binaryport.BinaryDiskFileAccess;
-import ws.editor.plugin.io.binaryport.SimpleNetworkPort;
 import ws.editor.plugin.menubar.WMenuBar;
 import ws.editor.plugin.pjt_manager.SimpleProjectMake;
 import ws.editor.plugin.toolsbar.WToolsBar;
@@ -242,10 +241,6 @@ public class PluginManager {
 
 		String ConfigStr = ConfigItemsKey.DefaultLocalPort;
 		String DefaultStr = BinaryPort.class.getName() + BinaryDiskFileAccess.class.getName();
-		if (fpath.startsWith("http")) {
-			ConfigStr = ConfigItemsKey.DefaultNetworkPort;
-			DefaultStr = BinaryPort.class.getName() + SimpleNetworkPort.class.getName();
-		}
 
 		PluginFeature factory = this.factory_GetValidateComponent(null, ConfigStr, DefaultStr);
 		BinaryPort b_port = ((BinaryPort) factory).openExistsFile(this.schedule, fpath);
@@ -265,10 +260,6 @@ public class PluginManager {
 	public BinaryPort instance_GetContentPortFromCreateNewFile(String fpath) {
 		String ConfigStr = ConfigItemsKey.DefaultLocalPort;
 		String DefaultStr = BinaryPort.class.getName() + BinaryDiskFileAccess.class.getName();
-		if (fpath.startsWith("http")) {
-			ConfigStr = ConfigItemsKey.DefaultNetworkPort;
-			DefaultStr = BinaryPort.class.getName() + SimpleNetworkPort.class.getName();
-		}
 
 		PluginFeature factory = this.factory_GetValidateComponent(null, ConfigStr, DefaultStr);
 		BinaryPort one = ((BinaryPort) factory).createNewFile(this.schedule, fpath);

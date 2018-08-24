@@ -25,7 +25,6 @@ import ws.editor.plugin.PMenuBar;
 import ws.editor.plugin.ProjectManager;
 import ws.editor.plugin.configport.ConfigService;
 import ws.editor.plugin.io.binaryport.BinaryDiskFileAccess;
-import ws.editor.plugin.io.binaryport.SimpleNetworkPort;
 import ws.editor.plugin.logport.LogWriter;
 import ws.editor.plugin.menubar.WMenuBar;
 import ws.editor.plugin.pjt_manager.SimpleProjectMake;
@@ -248,7 +247,6 @@ public class WsProcessor {
 		this.service_RegisterPlugin(new LogWriter());
 		this.service_RegisterPlugin(new ConfigService());
 		this.service_RegisterPlugin(new BinaryDiskFileAccess());
-		this.service_RegisterPlugin(new SimpleNetworkPort());
 		this.service_RegisterPlugin(new SimpleProjectMake());
 	}
 
