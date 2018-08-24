@@ -88,8 +88,7 @@ public class WsProcessor {
 		
 		exterl.add(this.fwin.getCustomMenu());
 		
-		PMenuBar x = this.service_GetNamedMenuBar("menubar");
-		x = x.refreshMenuBar(exterl);
+		PMenuBar x = this.manager.instance_GetNewDefaultMenubar("menubar").refreshMenuBar(exterl);
 		
 		
 		

@@ -18,30 +18,16 @@ import ws.editor.plugin.LogPort;
  * 用于输出log到文件中
  * LogPort虽然也被设计成为插件模式，但是软件本身只需要一种log文件格式，
  * 因此，不需要多种实例共存，软件中只保留一个logport插件，factory类id恒为LogPort.class.getName()*/
-public class LogWriter implements LogPort{
+public class LogWriter extends LogPort{
 	private BufferedWriter port = null;
-	private String id_path = LogPort.class.getName();//所有工厂类的默认
 	
 	/**
-	 * 空的，只调用本方法无法构造
-	 * 实例化方法new LogWriter().getInstance(path);*/
+	 * 慎重，本方法只适用构造工厂类，通过本方法构造的实例所有id都为默认id
+	 * 实例化方法new LogWriter().createNewPort(path);*/
 	public LogWriter() {}
-
-	/**
-	 * 写log信息接口,每次调用接口，将log信息按照规定格式写入log文件
-	 * @param obj 写信息的对象
-	 * @param msg 具体信息*/
-	@Override
-	public void writeLog(Object obj, String msg) {
-		msg = "Log:"+obj.getClass().getName() + ":" + msg;
-		
-		try {
-			this.port.write(msg);
-			this.port.newLine();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
+	private LogWriter(String id_path) {
+		super(id_path);
 	}
 
 
@@ -51,7 +37,7 @@ public class LogWriter implements LogPort{
 	 * @return 文件路径合法返回新实例，不合法返回null
 	 */
 	@Override
-	public LogWriter createNewPort(String path) {
+	public LogPort createNewPort(String path) {
 		File log = new File(path);
 		
 		if(! log.getParentFile().exists()) {
@@ -67,8 +53,7 @@ public class LogWriter implements LogPort{
 			}
 		}
 		
-		LogWriter rtn = new LogWriter();
-		rtn.id_path = path;
+		LogWriter rtn = new LogWriter(path);
 		
 		try {
 			rtn.port = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path),"UTF-8"));
@@ -93,10 +78,6 @@ public class LogWriter implements LogPort{
 			e.printStackTrace();
 		}
 	}
-	@Override
-	public int getPluginMark() {
-		return PluginFeature.Service_LogPort;
-	}
 
 	@Override
 	public JMenu getCustomMenu() {
@@ -104,11 +85,25 @@ public class LogWriter implements LogPort{
 		return new JMenu(this.getClass().getName());
 	}
 
+
+	/**
+	 * 写log信息接口,每次调用接口，将log信息按照规定格式写入log文件
+	 * @param obj 写信息的对象
+	 * @param msg 具体信息*/
 	@Override
-	public String getCompid() {
-		return LogPort.class.getName() + this.id_path;
+	public void writeLog(Object obj, String msg) {
+		msg = "Log:"+obj.getClass().getName() + ":" + msg;
+		
+		try {
+			this.port.write(msg);
+			this.port.newLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
+	
 	@Override
 	public void errorLog(Object obj, String msg) {
 		msg = "Error:"+obj.getClass().getName() + ":" + msg;
