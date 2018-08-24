@@ -17,13 +17,13 @@ import javax.swing.event.MenuListener;
 
 import ws.editor.common.FileSymbo;
 import ws.editor.common.PluginFeature;
-import ws.editor.plugin.ConfigUnit;
+import ws.editor.plugin.ConfigPort;
 import ws.editor.plugin.ContentPort;
 import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.LogPort;
 import ws.editor.plugin.PMenuBar;
 import ws.editor.plugin.ProjectManager;
-import ws.editor.plugin.configunit.ConfigService;
+import ws.editor.plugin.configport.ConfigService;
 import ws.editor.plugin.contentport.BinaryDiskFileAccess;
 import ws.editor.plugin.contentport.SimpleNetworkPort;
 import ws.editor.plugin.logport.LogWriter;
@@ -72,7 +72,7 @@ public class WsProcessor {
 	/**
 	 * 获取主配置文件，每次启动加载的configunit都是最后加载的同一种插件，输入输出的格式相同。
 	 * @return 连接向程序的主配置文件的配置端口*/
-	public ConfigUnit service_GetMainConfigUnit() {
+	public ConfigPort service_GetMainConfigUnit() {
 		return this.manager.instance_GetAvailableConfigUnit(this.wsProcessor_configPath);
 	}
 	

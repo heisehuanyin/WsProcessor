@@ -9,7 +9,7 @@ public abstract class LogPort  implements PluginFeature{
 
 	private String id_path;
 	
-	public LogPort(String id_path) {
+	protected LogPort(String id_path) {
 		this.id_path = id_path;
 	}
 

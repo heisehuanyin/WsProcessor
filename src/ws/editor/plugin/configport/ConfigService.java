@@ -1,4 +1,4 @@
-package ws.editor.plugin.configunit;
+package ws.editor.plugin.configport;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,30 +14,33 @@ import javax.swing.JMenu;
 
 import ws.editor.WsProcessor;
 import ws.editor.common.PluginFeature;
-import ws.editor.plugin.ConfigUnit;
+import ws.editor.plugin.ConfigPort;
 /**
  * 用于获取配置文件中的信息
  * ConfigUnit虽然也被设计成为插件模式，但是软件本身只需要一种配置文件格式，
  * 因此，不需要多种实例共存，软件中只保留一个config插件，factory类id恒为ConfigUnit.class.getName()*/
-public class ConfigService implements ConfigUnit{
-	private String cfgPath = ConfigUnit.class.getName();
-	private Properties PropCollect = new Properties();
+public class ConfigService extends ConfigPort{
+	private Properties prop = new Properties();
+	private String cfgPath;
 	
 	public ConfigService() {}
 
-
+	private ConfigService(String cfgPath) {
+		super(cfgPath);
+		this.cfgPath = cfgPath;
+	}
 	
 	
 	@Override
 	public void setKeyValue(String key, String value) {
-		this.PropCollect.setProperty(key, value);
+		this.prop.setProperty(key, value);
 	}
 	
 	@Override
 	public String getValue(String key, String defaultValue) {
-		String v = this.PropCollect.getProperty(key);
+		String v = this.prop.getProperty(key);
 		if(v == null) {
-			this.PropCollect.setProperty(key, defaultValue);
+			this.prop.setProperty(key, defaultValue);
 			return defaultValue;
 		}
 		
@@ -56,26 +59,25 @@ public class ConfigService implements ConfigUnit{
 	@Override
 	public ConfigService createNewPort(String path) {
 
-		File log = new File(path);
+		File cfgfile = new File(path);
 		
-		if(! log.getParentFile().exists()) {
-			log.getParentFile().mkdirs();
+		if(! cfgfile.getParentFile().exists()) {
+			cfgfile.getParentFile().mkdirs();
 		}
 		
-		if(! log.exists()) {
+		if(! cfgfile.exists()) {
 			try {
-				log.createNewFile();
+				cfgfile.createNewFile();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		
-		ConfigService rtn = new ConfigService();
-		rtn.cfgPath = path;
+		ConfigService rtn = new ConfigService(path);
 		
 		try {
-			rtn.PropCollect.load(new InputStreamReader(new FileInputStream(log),"UTF-8"));
+			rtn.prop.load(new InputStreamReader(new FileInputStream(cfgfile),"UTF-8"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -88,20 +90,10 @@ public class ConfigService implements ConfigUnit{
 	@Override
 	public void saveOperation() {
 		try {
-			this.PropCollect.store(new OutputStreamWriter(new FileOutputStream(this.cfgPath),"UTF-8"), "config items as list");
+			this.prop.store(new OutputStreamWriter(new FileOutputStream(this.cfgPath),"UTF-8"), "config items as list");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public String getCompid() {
-		return ConfigUnit.class.getName()+this.cfgPath;
-	}
-	
-	@Override
-	public int getPluginMark() {
-		return PluginFeature.Service_ConfigUnit;
 	}
 
 	@Override

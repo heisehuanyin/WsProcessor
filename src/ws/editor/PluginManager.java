@@ -7,7 +7,7 @@ import java.util.Set;
 
 import ws.editor.common.ConfigItemsKey;
 import ws.editor.common.PluginFeature;
-import ws.editor.plugin.ConfigUnit;
+import ws.editor.plugin.ConfigPort;
 import ws.editor.plugin.ContentPort;
 import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.LogPort;
@@ -190,17 +190,17 @@ public class PluginManager {
 	 *            配置文件存放路径
 	 * @return 实例
 	 */
-	public ConfigUnit instance_GetAvailableConfigUnit(String path) {
+	public ConfigPort instance_GetAvailableConfigUnit(String path) {
 		PluginFeature one = this.instance_GetExistsPluginInstance(PluginFeature.Service_ConfigUnit,
-				ConfigUnit.class.getName() + path);
+				ConfigPort.class.getName() + path);
 		if (one != null)
-			return (ConfigUnit) one;
+			return (ConfigPort) one;
 		PluginFeature factory = this
-				.factory_GetExistsComponent(ConfigUnit.class.getName() + ConfigUnit.class.getName());
+				.factory_GetExistsComponent(ConfigPort.class.getName() + ConfigPort.class.getName());
 		if (factory == null)
 			return null;
 
-		ConfigUnit config = ((ConfigUnit) factory).createNewPort(path);
+		ConfigPort config = ((ConfigPort) factory).createNewPort(path);
 		this.instance_RegisterPluginInstance(config);
 
 		return config;
