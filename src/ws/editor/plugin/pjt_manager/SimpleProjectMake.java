@@ -17,8 +17,8 @@ import javax.xml.stream.XMLStreamWriter;
 
 import ws.editor.WsProcessor;
 import ws.editor.common.ConfigItemsKey;
-import ws.editor.common.DirSymbo;
-import ws.editor.common.FileSymbo;
+import ws.editor.common.GroupSymbo;
+import ws.editor.common.NodeSymbo;
 import ws.editor.common.PluginFeature;
 import ws.editor.plugin.LocalFilePort;
 import ws.editor.plugin.ProjectManager;
@@ -26,7 +26,7 @@ import ws.editor.plugin.ProjectManager;
 public class SimpleProjectMake implements ProjectManager {
 	private String pjt_path = this.getClass().getName();
 	private WsProcessor sch = null;
-	private FileSymbo p_tree = null;
+	private NodeSymbo p_tree = null;
 	private LocalFilePort cport = null;
 
 	public SimpleProjectMake() {
@@ -103,8 +103,8 @@ public class SimpleProjectMake implements ProjectManager {
 	 *            项目文件管理端口
 	 * @return 项目描述，第一个节点是项目整体描述节点
 	 */
-	private FileSymbo parseProject(LocalFilePort b_port) {
-		FileSymbo pjt_s = null;
+	private NodeSymbo parseProject(LocalFilePort b_port) {
+		NodeSymbo pjt_s = null;
 		XMLStreamReader reader;
 
 		try {
@@ -114,15 +114,15 @@ public class SimpleProjectMake implements ProjectManager {
 				int eventNum = reader.next();
 				if (eventNum == XMLStreamConstants.START_ELEMENT) {
 					if (reader.getLocalName().equals("file")) {
-						FileSymbo node = new SimpleFileSymbo();
-						((DirSymbo) pjt_s).addChild(node);
+						NodeSymbo node = new SimpleFileSymbo();
+						((GroupSymbo) pjt_s).addChild(node);
 						pjt_s = node;
 					} else {
 						if (pjt_s == null)
 							pjt_s = new SimpleDirSymbo();
 						else {
-							FileSymbo node = new SimpleDirSymbo();
-							((DirSymbo) pjt_s).addChild(node);
+							NodeSymbo node = new SimpleDirSymbo();
+							((GroupSymbo) pjt_s).addChild(node);
 							pjt_s = node;
 						}
 					}
@@ -184,12 +184,12 @@ public class SimpleProjectMake implements ProjectManager {
 		}
 	}
 
-	private void saveProjectNode(FileSymbo node, XMLStreamWriter writer) {
+	private void saveProjectNode(NodeSymbo node, XMLStreamWriter writer) {
 		try {
 			if (node.getParent() == null) {
 				writer.writeStartElement("project");
 			} else {
-				if(node.kind() == FileSymbo.KindFile)
+				if(node.kind() == NodeSymbo.KindFile)
 					writer.writeStartElement("file");
 				else
 					writer.writeStartElement("group");
@@ -202,8 +202,8 @@ public class SimpleProjectMake implements ProjectManager {
 			e.printStackTrace();
 		}
 		
-		if(node.kind() != FileSymbo.KindFile) {
-			int childCount = ((DirSymbo)node).getChildCount();
+		if(node.kind() != NodeSymbo.KindFile) {
+			int childCount = ((GroupSymbo)node).getChildCount();
 			for(int i=0;i<childCount;++i) {
 				this.saveProjectNode(node, writer);
 			}
@@ -224,25 +224,25 @@ public class SimpleProjectMake implements ProjectManager {
 	}
 	
 	@Override
-	public FileSymbo getProjectDescription() {
+	public NodeSymbo getProjectDescription() {
 		return this.p_tree;
 	}
 	
 	@Override
-	public FileSymbo createNewFile(String name, String url, String encoding) {
-		FileSymbo rtn = new SimpleFileSymbo();
+	public NodeSymbo createNewFile(String name, String url, String encoding) {
+		NodeSymbo rtn = new SimpleFileSymbo();
 		rtn.initFileSymbo(name, url, encoding);
 		return rtn;
 	}
 	@Override
-	public DirSymbo createNewGroup(String name, String rul, String encoding) {
-		DirSymbo rtn = new SimpleDirSymbo();
+	public GroupSymbo createNewGroup(String name, String rul, String encoding) {
+		GroupSymbo rtn = new SimpleDirSymbo();
 		rtn.initFileSymbo(name, rul, encoding);
 		return rtn;
 	}
 	@Override
-	public boolean insertFileUnder(DirSymbo dirNode, FileSymbo fileNode) {
-		DirSymbo d = (DirSymbo) fileNode.getParent();
+	public boolean insertFileUnder(GroupSymbo dirNode, NodeSymbo fileNode) {
+		GroupSymbo d = (GroupSymbo) fileNode.getParent();
 		if(d != null) {
 			d.removeChild(fileNode);
 		}
@@ -250,11 +250,11 @@ public class SimpleProjectMake implements ProjectManager {
 		return true;
 	}
 	@Override
-	public boolean insertFileBefore(FileSymbo Node, FileSymbo insertFile) {
-		DirSymbo p = Node.getParent();
+	public boolean insertFileBefore(NodeSymbo Node, NodeSymbo insertFile) {
+		GroupSymbo p = Node.getParent();
 		if(p == null)
 			return false;
-		DirSymbo d = insertFile.getParent();
+		GroupSymbo d = insertFile.getParent();
 		if(d != null) {
 			d.removeChild(insertFile);
 		}
@@ -263,7 +263,7 @@ public class SimpleProjectMake implements ProjectManager {
 	}
 	
 	@Override
-	public LocalFilePort openFile(FileSymbo target) {
+	public LocalFilePort openFile(NodeSymbo target) {
 		//空文件，从文件URL上进行判断
 		if(target.fileURL().equals(ConfigItemsKey.VoidFilePath_Value)) {
 			LocalFilePort p = this.sch.service_GetPluginManager()

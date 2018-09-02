@@ -15,7 +15,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
-import ws.editor.common.FileSymbo;
+import ws.editor.common.NodeSymbo;
 import ws.editor.common.PluginFeature;
 import ws.editor.plugin.ConfigPort;
 import ws.editor.plugin.LocalFilePort;
@@ -156,7 +156,7 @@ public class WsProcessor {
 			source.addSeparator();
 			//活动项目列表
 			for(ProjectManager i:activeProjectView) {
-				FileSymbo pjt = i.getProjectDescription();
+				NodeSymbo pjt = i.getProjectDescription();
 				JMenu itemcfg = i.getCustomMenu();
 				itemcfg.setText(pjt.fileName());
 				source.add(itemcfg);

@@ -1,13 +1,13 @@
 package ws.editor.plugin.pjt_manager;
 
-import ws.editor.common.DirSymbo;
-import ws.editor.common.FileSymbo;
+import ws.editor.common.GroupSymbo;
+import ws.editor.common.NodeSymbo;
 
-public class SimpleFileSymbo implements FileSymbo{
+public class SimpleFileSymbo implements NodeSymbo{
 	private String fileName = null;
 	private String fileUrl = null;
 	private String encoding = null;
-	private DirSymbo parent = null;
+	private GroupSymbo parent = null;
 	
 	public SimpleFileSymbo() {
 	}
@@ -21,7 +21,7 @@ public class SimpleFileSymbo implements FileSymbo{
 	}
 	@Override
 	public int kind() {
-		return FileSymbo.KindFile;
+		return NodeSymbo.KindFile;
 	}
 	@Override
 	public String fileName() {
@@ -36,11 +36,11 @@ public class SimpleFileSymbo implements FileSymbo{
 		return this.encoding;
 	}
 	@Override
-	public void initParent(DirSymbo p) {
+	public void initParent(GroupSymbo p) {
 		this.parent = p;
 	}
 	@Override
-	public DirSymbo getParent() {
+	public GroupSymbo getParent() {
 		return this.parent;
 	}
 	
