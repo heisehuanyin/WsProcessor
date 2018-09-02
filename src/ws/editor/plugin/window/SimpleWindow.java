@@ -14,7 +14,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JToolBar;
 
 import ws.editor.WsProcessor;
-import ws.editor.common.ConfigItemsKey;
+import ws.editor.common.ItemsKey;
 import ws.editor.common.PluginFeature;
 import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.TabView;
@@ -107,9 +107,9 @@ public class SimpleWindow extends FrontWindow {
 
 		@Override
 		public void componentResized(ComponentEvent e) {
-			src.schedule.service_GetMainConfigUnit().setKeyValue(ConfigItemsKey.WindowWidth, 
+			src.schedule.service_GetMainConfigUnit().setKeyValue(ItemsKey.WindowWidth, 
 					""+src.window.getWidth());
-			src.schedule.service_GetMainConfigUnit().setKeyValue(ConfigItemsKey.WindowHeight, 
+			src.schedule.service_GetMainConfigUnit().setKeyValue(ItemsKey.WindowHeight, 
 					""+src.window.getHeight());
 		}
 
@@ -139,14 +139,14 @@ public class SimpleWindow extends FrontWindow {
 		this.window.add(toolsbar, BorderLayout.NORTH);
 		
 		int width = Integer.parseInt(this.schedule.service_GetMainConfigUnit()
-				.getValue(ConfigItemsKey.WindowWidth,"800"));
+				.getValue(ItemsKey.WindowWidth,"800"));
 		int height = Integer.parseInt(this.schedule.service_GetMainConfigUnit()
-				.getValue(ConfigItemsKey.WindowHeight, "600"));
+				.getValue(ItemsKey.WindowHeight, "600"));
 		
 		this.window.setSize(width, height);
 		this.window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.window.setVisible(true);
-		this.schedule.service_Refresh_MenuBar();
+		this.schedule.service_Refresh_MenuBar(null);
 	}
 
 	@Override

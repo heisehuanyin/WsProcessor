@@ -61,7 +61,7 @@ public class WsProcessor {
 
 	
 	/**
-	 * 获取默认的log输出接口,每次启动程序加载的logport都是最后加载的一种插件，因此所有输出的log格式相同。
+	 * 获取配置好的log输出接口
 	 * @return 默认的log输出接口*/
 	public LogPort service_GetDefaultLogPort() {
 		return this.manager.instance_GetAvailableLogPort(this.wsProcessor_logPath);
@@ -76,8 +76,9 @@ public class WsProcessor {
 	
 	
 	/**
-	 * 重构菜单栏服务，通常调用者：1.view视图插件，视图变化菜单栏变化*/
-	public void service_Refresh_MenuBar() {
+	 * 重构菜单栏服务，通常调用者：1.view视图插件，视图变化菜单栏变化
+	 * @param win TODO*/
+	public void service_Refresh_MenuBar(FrontWindow win) {
 		ArrayList<JMenu> exterl = new ArrayList<>();
 		JMenu wspace = this.rebuildMenu_WSpace();
 		exterl.add(wspace);
@@ -211,7 +212,7 @@ public class WsProcessor {
 						JFileChooser.OPEN_DIALOG);
 				if (one == null)
 					return;
-				PluginFeature factory = this.schedule.service_GetPluginManager().factory_GetExistsComp(id);
+				PluginFeature factory = this.schedule.service_GetPluginManager().factory_GetExistsfactory(id);
 				String fileName;
 				try {
 					fileName = one.getCanonicalPath() + File.separator +"project." + ((ProjectManager) factory).getSuffix();

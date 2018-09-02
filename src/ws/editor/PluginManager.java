@@ -5,27 +5,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import ws.editor.common.ConfigItemsKey;
+import ws.editor.common.ItemsKey;
 import ws.editor.common.PluginFeature;
 import ws.editor.plugin.ConfigPort;
-import ws.editor.plugin.LocalFilePort;
-import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.LogPort;
-import ws.editor.plugin.PMenuBar;
-import ws.editor.plugin.ProjectManager;
-import ws.editor.plugin.ToolsBar;
-import ws.editor.plugin.menubar.WMenuBar;
-import ws.editor.plugin.pjt_manager.SimpleProjectMake;
-import ws.editor.plugin.toolsbar.WToolsBar;
-import ws.editor.plugin.window.WWindow;
 
 /**
  * 用于管理插件，本身不是插件，不需要两步实例化直接实例化得到的就是可用组件
  */
 public class PluginManager {
 	private Map<String, PluginFeature> factoryContainer = new HashMap<>();
-	private Map<Integer, Map<String, PluginFeature>> instances = new HashMap<>();
+	private Map<String, ArrayList<PluginFeature>> instances = new HashMap<>();
 	private WsProcessor schedule;
+	private String configUnitId;
 
 	public PluginManager(WsProcessor sch) {
 		this.schedule = sch;
@@ -34,21 +26,22 @@ public class PluginManager {
 	/**
 	 * 注册工厂类
 	 * 
-	 * @param obj
-	 *            工厂类实例，用于获取新实例
+	 * @param obj 工厂类实例，用于获取新实例，除了占位本身无实际意义
 	 */
 	public void factory_RegisterPlugin(PluginFeature obj) {
+		if(obj.pluginMark() == PluginFeature.Service_ConfigUnit)
+			this.configUnitId = obj.getClass().getName();
+		
 		this.factoryContainer.put(obj.getClass().getName(), obj);
 	}
 
 	/**
 	 * 获取注册工厂类
 	 * 
-	 * @param id_factory
-	 *            唯一标志
+	 * @param id_factory 唯一标志
 	 * @return 工厂类，用于构建新实例
 	 */
-	public PluginFeature factory_GetExistsComp(String id_factory) {
+	private PluginFeature factory_GetExistsfactory(String id_factory) {
 		PluginFeature factory = this.factoryContainer.get(id_factory);
 
 		if (factory == null) {
@@ -67,283 +60,97 @@ public class PluginManager {
 	 * 
 	 * @return 合适的合法的插件工厂
 	 */
-	public PluginFeature factory_GetConfigComp(String configItems_Item, String defaultf_id) {
+	public PluginFeature factory_GetConfigComp(String itemsKeyDefine, String defaultf_id) {
 		String factory_id;
 		// 获取合法的factory_id,未配置的话，启用dafault_id
-		factory_id = this.schedule.service_GetMainConfigUnit().getValue(configItems_Item, defaultf_id);
+		factory_id = this.schedule.service_GetMainConfigUnit().getValue(itemsKeyDefine, defaultf_id);
 
 		// 该factory是否注册,未注册切换为default_id插件
-		PluginFeature factory = this.factory_GetExistsComp(factory_id);
+		PluginFeature factory = this.factory_GetExistsfactory(factory_id);
 		if (factory == null) {
-			factory = this.factory_GetExistsComp(defaultf_id);
+			factory = this.factory_GetExistsfactory(defaultf_id);
 		}
 		return factory;
 	}
 
 	
 	/**
-	 * 用于执行所有插件的保存操作
+	 * 用于一次执行所有插件的保存操作
 	 */
 	public void operate_SaveOperation() {
-		Map<String, PluginFeature> array;
-		array = this.instances.get(PluginFeature.Service_ConfigUnit);
-		this.saveOperateOnebyOne(array);
-		array = this.instances.get(PluginFeature.Service_LogPort);
-		this.saveOperateOnebyOne(array);
-	}
-
-	/**
-	 * 迭次保存操作
-	 */
-	private void saveOperateOnebyOne(Map<String, PluginFeature> array) {
-		if (array == null)
-			return;
-
-		Set<String> aset = array.keySet();
-		for (String str : aset) {
-			PluginFeature plugin = array.get(str);
-			plugin.saveOperation();
+		Set<String> aset = this.instances.keySet();
+		for(String url:aset) {
+			ArrayList<PluginFeature> cList = this.instances.get(url);
+			for(PluginFeature one:cList) {
+				one.saveOperation();
+			}
 		}
 	}
 
 	/**
 	 * 注册插件实例
-	 * 
-	 * @param obj
-	 *            插件实例
+	 * @param url 内容来源地址
+	 * @param obj 插件实例
 	 */
-	private void instance_RegisterPluginInstance(PluginFeature obj) {
+	private void instance_RegisterPluginInstance(String url, PluginFeature obj) {
 
-		Map<String, PluginFeature> con1 = this.instances.get(obj.pluginMark());
+		ArrayList<PluginFeature> con1 = this.instances.get(url);
 		if (con1 == null) {// 如果未注册过该类插件，连容器也不会有
-			con1 = new HashMap<String, PluginFeature>();
-			this.instances.put(obj.pluginMark(), con1);
+			con1 = new ArrayList<PluginFeature>();
+			this.instances.put(url, con1);
 		}
 
-		con1.put(obj.getCompid(), obj);
+		con1.add(0, obj);
 	}
 
 	/**
-	 * 获取已经注册好的实例
+	 * 根据url获取关联的整条通道
 	 * 
-	 * @param pMark
-	 *            插件类型，见{@link PluginFeature}
-	 * @return 注册好的插件实例
+	 * @param url 内容来源标识
+	 * @return 整个通道的插件组合
 	 */
-	private PluginFeature instance_GetExistsPluginInstance(int pMark, String id) {
-		Map<String, PluginFeature> con = this.instances.get(pMark);
-		if (con == null)
-			return null;
-
-		return con.get(id);
+	private ArrayList<PluginFeature> instance_GetExistsChannelList(String url) {
+		return this.instances.get(url);
 	}
+	
 	// 插件实例获取接口:基础===================================================================
 
 	/**
-	 * 获取configunit用于读取和输出配置，如果存在则获取，否则新建一个
-	 * 
-	 * @param path
-	 *            配置文件存放路径
+	 * 获取configunit用于读取和输出配置，如果存在则获取，否则新建一个<br>
+	 * 该机制保证只有一种插件能够用来解析configfile，configunit不接受配置
+	 * @param path 配置文件存放路径
 	 * @return 实例
 	 */
 	public ConfigPort instance_GetAvailableConfigUnit(String path) {
-		PluginFeature one = this.instance_GetExistsPluginInstance(PluginFeature.Service_ConfigUnit,
-				ConfigPort.class.getName() + path);
-		if (one != null)
-			return (ConfigPort) one;
-		PluginFeature factory = this
-				.factory_GetExistsComp(ConfigPort.class.getName() + ConfigPort.class.getName());
-		if (factory == null)
-			return null;
+		ArrayList<PluginFeature> cList = this.instance_GetExistsChannelList(path);
+		if (cList != null)
+			return (ConfigPort) cList.get(0);
+		
+		PluginFeature factory = this.factory_GetExistsfactory(this.configUnitId);
 
 		ConfigPort config = ((ConfigPort) factory).createNewPort(path);
-		this.instance_RegisterPluginInstance(config);
+		this.instance_RegisterPluginInstance(path, config);
 
 		return config;
 	}
 
 	/**
-	 * 获取logport用于输出log,如果已存在指定的log则获取，否则新建一个。 由于此接口在配置接口建立之前使用，因此无法根据配置文件动态获取，
-	 * 根据PluginManager的机制，只能获取最后加载进入的logport插件。 规定每次启动相关位置只能放置一个logport插件。
-	 * 
-	 * @param path
-	 *            log文件路径
+	 * 获取logport用于输出log,如果已存在指定的log则获取，否则新建一个。
+	 * @param path log文件路径
 	 * @return 实例
 	 */
 	public LogPort instance_GetAvailableLogPort(String path) {
-		PluginFeature one = this.instance_GetExistsPluginInstance(PluginFeature.Service_LogPort,
-				LogPort.class.getName() + path);
-		if (one != null)
-			return (LogPort) one;
-		PluginFeature factory = this.factory_GetExistsComp(LogPort.class.getName() + LogPort.class.getName());
+		ArrayList<PluginFeature> cList = this.instance_GetExistsChannelList(path);
+		if (cList != null)
+			return (LogPort) cList.get(0);
+		
+		PluginFeature factory = this.factory_GetConfigComp(ItemsKey.LogPortConfig, LogPort.class.getName());
 
 		LogPort writer = ((LogPort) factory).createNewPort(path);
-		this.instance_RegisterPluginInstance(writer);
+		this.instance_RegisterPluginInstance(path, writer);
+		
 		return writer;
 	}
 
-	/**
-	 * 获取binaryport用于访问数据,如果文件存在就返回连接，如果不存在，返回null
-	 * 根据配置文件设定，每次启动只能使用统一的一套ContentPort组件
-	 * 
-	 * @param fpath
-	 *            文件路径
-	 * @return 返回实例
-	 */
-	public LocalFilePort instance_GetContentPortFromExistsFile(String fpath) {
-		PluginFeature one = this.instance_GetExistsPluginInstance(PluginFeature.IO_BinaryModel,
-				LocalFilePort.class.getName() + fpath);
-		if (one != null)
-			return (LocalFilePort) one;
-
-		String ConfigStr = ConfigItemsKey.DefaultLocalPort;
-		String DefaultStr = LocalFilePort.class.getName() + BinaryFilePort.class.getName();
-
-		PluginFeature factory = this.factory_GetConfigComp(ConfigStr, DefaultStr);
-		LocalFilePort b_port = ((LocalFilePort) factory).openExistsFile(this.schedule, fpath);
-		if (b_port != null)
-			this.instance_RegisterPluginInstance(b_port);
-		return b_port;
-	}
-
-	/**
-	 * 获取binaryport用于访问数据，操作必然创建一个新文件，而且是与之前所有文件都不同的新文件
-	 * 根据配置文件设定，每次启动智能使用统一的一套ContentPort组件
-	 * 
-	 * @param fpath
-	 *            文件路径
-	 * @return 返回实例
-	 */
-	public LocalFilePort instance_GetContentPortFromCreateNewFile(String fpath) {
-		String ConfigStr = ConfigItemsKey.DefaultLocalPort;
-		String DefaultStr = LocalFilePort.class.getName() + BinaryFilePort.class.getName();
-
-		PluginFeature factory = this.factory_GetConfigComp(ConfigStr, DefaultStr);
-		LocalFilePort one = ((LocalFilePort) factory).createNewFile(this.schedule, fpath);
-		this.instance_RegisterPluginInstance(one);
-		return one;
-	}
-
-	/*
-	 * /**
-	 * 打开项目模块，并返回此模块，如果项目已经被打开，那么返回打开的Manager，确保只有一个能够解析的实例
-	 * 
-	 * @param factory_id
-	 *            插件种类
-	 * @param b_port
-	 *            项目文件接口
-	 * @return 打开的项目实例
-	 
-	public ProjectManager instance_OpenProjectFromFormatFile(String factory_id, LocalFilePort b_port) {
-		String p_path = b_port.getPath();
-		PluginFeature one = this.instance_GetExistsPluginInstance(PluginFeature.Service_ProjectManage,
-				ProjectManager.class.getName() + p_path);
-		if (one != null)
-			return (ProjectManager) one;
-
-		String formatStr = p_path.substring(p_path.lastIndexOf(".") + 1);
-		PluginFeature factory = this.factory_GetValidateComponent(factory_id,
-				ConfigItemsKey.getKey_ProjectManager_FOR(formatStr),
-				ProjectManager.class.getName() + SimpleProjectMake.class.getName());
-
-		ProjectManager pmake = ((ProjectManager) factory).openProject(this.schedule, b_port);
-		this.instance_RegisterPluginInstance(pmake);
-
-		return pmake;
-	}
-
-	/**
-	 * 打开空白的项目文件，如果格式文件传入，会被覆盖，如果项目已经打开，那么返回null
-	 * 
-	 * @param factory_id
-	 *            插件种类
-	 * @param b_port
-	 *            项目文件接口
-	 * @return 打开的项目实例
-	 
-	public ProjectManager instance_OpenProjectFromEmptyFile(String factory_id, LocalFilePort b_port) {
-		String path = b_port.getPath();
-		PluginFeature one = this.instance_GetExistsPluginInstance(PluginFeature.Service_ProjectManage,
-				ProjectManager.class.getName() + path);
-		if (one != null)
-			return null;
-
-		String formatStr = path.substring(path.lastIndexOf(".") + 1);
-		PluginFeature factory = this.factory_GetValidateComponent(factory_id,
-				ConfigItemsKey.getKey_ProjectManager_FOR(formatStr),
-				ProjectManager.class.getName() + SimpleProjectMake.class.getName());
-
-		ProjectManager pmake = ((ProjectManager) factory).createNewProject(this.schedule, b_port);
-		this.instance_RegisterPluginInstance(pmake);
-
-		return pmake;
-	}
-	 * */
-
-	// 插件实例获取接口：图形===========================================================================
-	/**
-	 * 获取frontwindow用于配置界面，获取何种插件有配置文件决定，配置文件错误可以返回默认实例
-	 * 如果此id已经存在，那么会返回一个新id组成的实例，因此获取实例后需要更新插件id
-	 * 
-	 * @param id
-	 *            预设窗口的id
-	 * @return 新实例
-	 */
-	public FrontWindow instance_GetNewDefaultWindow(String id) {
-		PluginFeature one = this.instance_GetExistsPluginInstance(PluginFeature.UI_Window,
-				FrontWindow.class.getName() + id);
-		if (one != null)
-			id = "other" + id;
-
-		// 获取合法的factory
-		PluginFeature factory = this.factory_GetConfigComp(ConfigItemsKey.DefaultWindow, FrontWindow.class.getName() + WWindow.class.getName());
-		// 获取一份实例
-		FrontWindow window = ((FrontWindow) factory).getInstance(this.schedule, id);
-		this.instance_RegisterPluginInstance(window);
-
-		return window;
-	}
-
-	/**
-	 * 获取menubar用于构建显示界面,种类由配置文件和默认值共同指定，如果id存在，则返回新id实例，记得及时更新id
-	 * 
-	 * @param id
-	 *            菜单栏的id
-	 * @return 返回实例
-	 */
-	public PMenuBar instance_GetNewDefaultMenubar(String id) {
-		PluginFeature one = this.instance_GetExistsPluginInstance(PluginFeature.UI_MenuBar,
-				PMenuBar.class.getName() + id);
-		if (one != null)
-			id = "other" + id;
-
-		PluginFeature factory = this.factory_GetConfigComp(ConfigItemsKey.DefaultMenuBar, PMenuBar.class.getName() + WMenuBar.class.getName());
-
-		PMenuBar menubar = ((PMenuBar) factory).getInstance(this.schedule, id);
-		this.instance_RegisterPluginInstance(menubar);
-
-		return menubar;
-	}
-
-	/**
-	 * 获取toolsbar用于构建显示界面,种类由配置文件和默认值共同指定，如果id存在，则返回新id实例，记得及时更新id
-	 * 
-	 * @param id
-	 *            实例id
-	 * @return 返回实例
-	 */
-	public ToolsBar instance_getNewDefaultToolsBar(String string) {
-		PluginFeature one = this.instance_GetExistsPluginInstance(PluginFeature.Tools_Plugin,
-				ToolsBar.class.getName() + string);
-		if (one != null)
-			string = "other" + string;
-
-		PluginFeature factory = this.factory_GetConfigComp(ConfigItemsKey.DefaultToolsBar, ToolsBar.class.getName() + WToolsBar.class.getName());
-
-		ToolsBar toolsbar = ((ToolsBar) factory).getInstance(this.schedule, string);
-		this.instance_RegisterPluginInstance(toolsbar);
-
-		return toolsbar;
-	}
-
+	
 }

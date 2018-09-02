@@ -26,7 +26,6 @@ public class ConfigService extends ConfigPort{
 	public ConfigService() {}
 
 	private ConfigService(String cfgPath) {
-		super(cfgPath);
 		this.cfgPath = cfgPath;
 	}
 	

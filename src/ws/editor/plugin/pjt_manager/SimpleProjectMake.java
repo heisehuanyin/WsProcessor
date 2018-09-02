@@ -16,7 +16,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import ws.editor.WsProcessor;
-import ws.editor.common.ConfigItemsKey;
+import ws.editor.common.ItemsKey;
 import ws.editor.common.GroupSymbo;
 import ws.editor.common.NodeSymbo;
 import ws.editor.common.PluginFeature;
@@ -109,7 +109,7 @@ public class SimpleProjectMake implements ProjectManager {
 
 		try {
 			reader = XMLInputFactory.newInstance().createXMLStreamReader(
-					new InputStreamReader(b_port.getInputBinaryPort(), ConfigItemsKey.DefaultFileEncoding_Value));
+					new InputStreamReader(b_port.getInputBinaryPort(), ItemsKey.DefaultFileEncoding_Value));
 			while (reader.hasNext()) {
 				int eventNum = reader.next();
 				if (eventNum == XMLStreamConstants.START_ELEMENT) {
@@ -265,7 +265,7 @@ public class SimpleProjectMake implements ProjectManager {
 	@Override
 	public LocalFilePort openFile(NodeSymbo target) {
 		//空文件，从文件URL上进行判断
-		if(target.fileURL().equals(ConfigItemsKey.VoidFilePath_Value)) {
+		if(target.fileURL().equals(ItemsKey.VoidFilePath_Value)) {
 			LocalFilePort p = this.sch.service_GetPluginManager()
 					.instance_GetContentPortFromCreateNewFile(target.fileURL());
 			target.initFileSymbo(target.fileName(), p.getPath(), target.Encoding());

@@ -6,24 +6,14 @@ import ws.editor.common.PluginFeature;
  * 因此，不需要多种实例共存，软件中只保留一个config插件，factory类id恒为ConfigUnit.class.getName()*/
 public abstract class ConfigPort implements PluginFeature{
 
-	private String cfgPath;
-	
-	public ConfigPort() {
-		this.cfgPath= ConfigPort.class.getName();
-	}
-	
-	protected ConfigPort(String cfgPath) {
-		this.cfgPath = cfgPath;
-	}
-
-	@Override
-	public String getCompid() {
-		return ConfigPort.class.getName()+this.cfgPath;
-	}
-	
 	@Override
 	public int pluginMark() {
 		return PluginFeature.Service_ConfigUnit;
+	}
+	
+	@Override
+	public int upStreamMark() {
+		return PluginFeature.IO_NoUpStream;
 	}
 
 	

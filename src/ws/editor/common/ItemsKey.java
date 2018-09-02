@@ -2,13 +2,13 @@ package ws.editor.common;
 
 import java.io.File;
 
-public class ConfigItemsKey {
+public class ItemsKey {
 	public final static String DefaultProjectPath_Value = "."+File.separator+"project.wspjt";
 	public final static String DefaultFileEncoding_Value = "UTF-8";
 	public static final String VoidFilePath_Value = "voidfile_wsdifined";
 
 	
-	
+	public final static String LogPortConfig = "editor.logport.default";
 	
 	
 	
