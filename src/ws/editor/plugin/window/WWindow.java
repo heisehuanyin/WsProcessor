@@ -121,7 +121,7 @@ public class WWindow extends FrontWindow{
 
 
 	@Override
-	public int getPluginMark() {
+	public int pluginMark() {
 		return PluginFeature.UI_Window;
 	}
 

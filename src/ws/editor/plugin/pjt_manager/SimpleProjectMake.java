@@ -33,7 +33,7 @@ public class SimpleProjectMake implements ProjectManager {
 	}
 
 	@Override
-	public int getPluginMark() {
+	public int pluginMark() {
 		return PluginFeature.Service_ProjectManage;
 	}
 

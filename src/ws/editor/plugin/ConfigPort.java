@@ -22,7 +22,7 @@ public abstract class ConfigPort implements PluginFeature{
 	}
 	
 	@Override
-	public int getPluginMark() {
+	public int pluginMark() {
 		return PluginFeature.Service_ConfigUnit;
 	}
 

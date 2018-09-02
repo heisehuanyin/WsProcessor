@@ -18,7 +18,7 @@ public abstract class LogPort  implements PluginFeature{
 	}
 
 	@Override
-	public int getPluginMark() {
+	public int pluginMark() {
 		return PluginFeature.Service_LogPort;
 	}
 

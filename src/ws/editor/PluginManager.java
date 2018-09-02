@@ -14,7 +14,6 @@ import ws.editor.plugin.LogPort;
 import ws.editor.plugin.PMenuBar;
 import ws.editor.plugin.ProjectManager;
 import ws.editor.plugin.ToolsBar;
-import ws.editor.plugin.io.binaryport.BinaryFilePort;
 import ws.editor.plugin.menubar.WMenuBar;
 import ws.editor.plugin.pjt_manager.SimpleProjectMake;
 import ws.editor.plugin.toolsbar.WToolsBar;
@@ -38,8 +37,8 @@ public class PluginManager {
 	 * @param obj
 	 *            工厂类实例，用于获取新实例
 	 */
-	public void factory_RegisterPluginComponent(PluginFeature obj) {
-		this.factoryContainer.put(obj.getCompid(), obj);
+	public void factory_RegisterPlugin(PluginFeature obj) {
+		this.factoryContainer.put(obj.getClass().getName(), obj);
 	}
 
 	/**
@@ -49,11 +48,11 @@ public class PluginManager {
 	 *            唯一标志
 	 * @return 工厂类，用于构建新实例
 	 */
-	public PluginFeature factory_GetExistsComponent(String id_factory) {
+	public PluginFeature factory_GetExistsComp(String id_factory) {
 		PluginFeature factory = this.factoryContainer.get(id_factory);
 
 		if (factory == null) {
-			this.schedule.service_GetDefaultLogPort().errorLog(this, "未注册" + id_factory + "实例");
+			this.schedule.service_GetDefaultLogPort().errorLog(this, "未注册" + id_factory + "插件");
 			return null;
 		}
 		return factory;
@@ -62,25 +61,22 @@ public class PluginManager {
 	/**
 	 * 综合配置文件和默认设置对提供的factory_id进行校验，获取由三者中合法的id组成的factory。 如果factory_id ==
 	 * null，意味着从配置文件中读取配置，进行校验，否则对factory_id进行校验，校验不通过都返回默认Factory。
-	 * 
-	 * @param factory_id
-	 *            指明的工厂类id
 	 * @param configItems_Item
 	 *            指明配置项条目作为默认配置项目
 	 * @param defaultf_id
 	 *            指名配置项目出现意外后的默认factory_id
+	 * 
 	 * @return 合适的合法的插件工厂
 	 */
-	public PluginFeature factory_GetValidateComponent(String factory_id, String configItems_Item, String defaultf_id) {
-		// 获取合法的factory_id
-		if (factory_id == null) {
-			factory_id = this.schedule.service_GetMainConfigUnit().getValue(configItems_Item, defaultf_id);
-		}
+	public PluginFeature factory_GetConfigComp(String configItems_Item, String defaultf_id) {
+		String factory_id;
+		// 获取合法的factory_id,未配置的话，启用dafault_id
+		factory_id = this.schedule.service_GetMainConfigUnit().getValue(configItems_Item, defaultf_id);
 
-		// 该factory是否注册,未注册切换为基础插件
-		PluginFeature factory = this.factory_GetExistsComponent(factory_id);
+		// 该factory是否注册,未注册切换为default_id插件
+		PluginFeature factory = this.factory_GetExistsComp(factory_id);
 		if (factory == null) {
-			factory = this.factory_GetExistsComponent(defaultf_id);
+			factory = this.factory_GetExistsComp(defaultf_id);
 		}
 		return factory;
 	}
@@ -157,10 +153,10 @@ public class PluginManager {
 	 */
 	private void instance_RegisterPluginInstance(PluginFeature obj) {
 
-		Map<String, PluginFeature> con1 = this.instances.get(obj.getPluginMark());
+		Map<String, PluginFeature> con1 = this.instances.get(obj.pluginMark());
 		if (con1 == null) {// 如果未注册过该类插件，连容器也不会有
 			con1 = new HashMap<String, PluginFeature>();
-			this.instances.put(obj.getPluginMark(), con1);
+			this.instances.put(obj.pluginMark(), con1);
 		}
 
 		con1.put(obj.getCompid(), obj);
@@ -195,7 +191,7 @@ public class PluginManager {
 		if (one != null)
 			return (ConfigPort) one;
 		PluginFeature factory = this
-				.factory_GetExistsComponent(ConfigPort.class.getName() + ConfigPort.class.getName());
+				.factory_GetExistsComp(ConfigPort.class.getName() + ConfigPort.class.getName());
 		if (factory == null)
 			return null;
 
@@ -218,7 +214,7 @@ public class PluginManager {
 				LogPort.class.getName() + path);
 		if (one != null)
 			return (LogPort) one;
-		PluginFeature factory = this.factory_GetExistsComponent(LogPort.class.getName() + LogPort.class.getName());
+		PluginFeature factory = this.factory_GetExistsComp(LogPort.class.getName() + LogPort.class.getName());
 
 		LogPort writer = ((LogPort) factory).createNewPort(path);
 		this.instance_RegisterPluginInstance(writer);
@@ -242,7 +238,7 @@ public class PluginManager {
 		String ConfigStr = ConfigItemsKey.DefaultLocalPort;
 		String DefaultStr = LocalFilePort.class.getName() + BinaryFilePort.class.getName();
 
-		PluginFeature factory = this.factory_GetValidateComponent(null, ConfigStr, DefaultStr);
+		PluginFeature factory = this.factory_GetConfigComp(ConfigStr, DefaultStr);
 		LocalFilePort b_port = ((LocalFilePort) factory).openExistsFile(this.schedule, fpath);
 		if (b_port != null)
 			this.instance_RegisterPluginInstance(b_port);
@@ -261,13 +257,14 @@ public class PluginManager {
 		String ConfigStr = ConfigItemsKey.DefaultLocalPort;
 		String DefaultStr = LocalFilePort.class.getName() + BinaryFilePort.class.getName();
 
-		PluginFeature factory = this.factory_GetValidateComponent(null, ConfigStr, DefaultStr);
+		PluginFeature factory = this.factory_GetConfigComp(ConfigStr, DefaultStr);
 		LocalFilePort one = ((LocalFilePort) factory).createNewFile(this.schedule, fpath);
 		this.instance_RegisterPluginInstance(one);
 		return one;
 	}
 
-	/**
+	/*
+	 * /**
 	 * 打开项目模块，并返回此模块，如果项目已经被打开，那么返回打开的Manager，确保只有一个能够解析的实例
 	 * 
 	 * @param factory_id
@@ -275,7 +272,7 @@ public class PluginManager {
 	 * @param b_port
 	 *            项目文件接口
 	 * @return 打开的项目实例
-	 */
+	 
 	public ProjectManager instance_OpenProjectFromFormatFile(String factory_id, LocalFilePort b_port) {
 		String p_path = b_port.getPath();
 		PluginFeature one = this.instance_GetExistsPluginInstance(PluginFeature.Service_ProjectManage,
@@ -302,7 +299,7 @@ public class PluginManager {
 	 * @param b_port
 	 *            项目文件接口
 	 * @return 打开的项目实例
-	 */
+	 
 	public ProjectManager instance_OpenProjectFromEmptyFile(String factory_id, LocalFilePort b_port) {
 		String path = b_port.getPath();
 		PluginFeature one = this.instance_GetExistsPluginInstance(PluginFeature.Service_ProjectManage,
@@ -320,6 +317,7 @@ public class PluginManager {
 
 		return pmake;
 	}
+	 * */
 
 	// 插件实例获取接口：图形===========================================================================
 	/**
@@ -337,8 +335,7 @@ public class PluginManager {
 			id = "other" + id;
 
 		// 获取合法的factory
-		PluginFeature factory = this.factory_GetValidateComponent(null, ConfigItemsKey.DefaultWindow,
-				FrontWindow.class.getName() + WWindow.class.getName());
+		PluginFeature factory = this.factory_GetConfigComp(ConfigItemsKey.DefaultWindow, FrontWindow.class.getName() + WWindow.class.getName());
 		// 获取一份实例
 		FrontWindow window = ((FrontWindow) factory).getInstance(this.schedule, id);
 		this.instance_RegisterPluginInstance(window);
@@ -359,8 +356,7 @@ public class PluginManager {
 		if (one != null)
 			id = "other" + id;
 
-		PluginFeature factory = this.factory_GetValidateComponent(null, ConfigItemsKey.DefaultMenuBar,
-				PMenuBar.class.getName() + WMenuBar.class.getName());
+		PluginFeature factory = this.factory_GetConfigComp(ConfigItemsKey.DefaultMenuBar, PMenuBar.class.getName() + WMenuBar.class.getName());
 
 		PMenuBar menubar = ((PMenuBar) factory).getInstance(this.schedule, id);
 		this.instance_RegisterPluginInstance(menubar);
@@ -381,8 +377,7 @@ public class PluginManager {
 		if (one != null)
 			string = "other" + string;
 
-		PluginFeature factory = this.factory_GetValidateComponent(null, ConfigItemsKey.DefaultToolsBar,
-				ToolsBar.class.getName() + WToolsBar.class.getName());
+		PluginFeature factory = this.factory_GetConfigComp(ConfigItemsKey.DefaultToolsBar, ToolsBar.class.getName() + WToolsBar.class.getName());
 
 		ToolsBar toolsbar = ((ToolsBar) factory).getInstance(this.schedule, string);
 		this.instance_RegisterPluginInstance(toolsbar);

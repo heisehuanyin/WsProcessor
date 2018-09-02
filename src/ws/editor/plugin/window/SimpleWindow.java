@@ -28,7 +28,7 @@ public class SimpleWindow extends FrontWindow {
 	private TabView mainview = null;
 
 	@Override
-	public int getPluginMark() {
+	public int pluginMark() {
 		return PluginFeature.UI_Window;
 	}
 

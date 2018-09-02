@@ -7,7 +7,7 @@ import ws.editor.plugin.StatusBar;
 public class WStatusBar implements StatusBar{
 
 	@Override
-	public int getPluginMark() {
+	public int pluginMark() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

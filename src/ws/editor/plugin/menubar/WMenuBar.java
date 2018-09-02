@@ -12,7 +12,7 @@ public class WMenuBar extends PMenuBar{
 	private WsProcessor sch = null;
 
 	@Override
-	public int getPluginMark() {
+	public int pluginMark() {
 		return PluginFeature.UI_MenuBar;
 	}
 

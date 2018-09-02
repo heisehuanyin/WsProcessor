@@ -19,7 +19,7 @@ public abstract class LocalFilePort implements PluginFeature{
 	}
 
 	@Override
-	public int getPluginMark() {
+	public int pluginMark() {
 		return PluginFeature.IO_BinaryModel;
 	}
 

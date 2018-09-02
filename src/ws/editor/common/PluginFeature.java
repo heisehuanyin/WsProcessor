@@ -15,7 +15,10 @@ public interface PluginFeature {
 	final static int UI_Tabview = 0x14;
 	
 	/**
-	 * 该模型特殊功能*/
+	 * 插件内部标识码
+	 * 与源文件接触的第一个插件返回的上游代码就是 {@link #IO_NullModel} 
+	 * */
+	final static int IO_NullModel=0x24;
 	final static int IO_BinaryModel = 0x20;
 	final static int IO_TextModel = 0x21;
 	final static int IO_TreeModel = 0x22;
@@ -31,12 +34,11 @@ public interface PluginFeature {
 	/**
 	 * 获取组件代码，标定组件类别，详细定义看{@link PluginFeature}
 	 * @return 返回的组件标记代码*/
-	int getPluginMark();
+	int pluginMark();
 	/**
-	 * 获取组件id,组件id由本插件拓展的端口名称和字符串组成。例如PluginFeature.class.getName()+Str。
-	 * 只传入Str，在获取插件的接口中重组id变为可能。
-	 * @return 返回的组件id*/
-	String getCompid();
+	 * 获取本插件上游插件类型
+	 * @return 返回的上游插件类型*/
+	int upStreamMark();
 	/**
 	 * 获取每个组件都拥有的配置菜单
 	 * @return 返回每个组件自定义的定制菜单，供上级调用*/

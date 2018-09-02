@@ -20,7 +20,7 @@ public class WToolsBar extends JToolBar implements ToolsBar{
 	private WsProcessor sch = null;
 
 	@Override
-	public int getPluginMark() {
+	public int pluginMark() {
 		return PluginFeature.Tools_Plugin;
 	}
 

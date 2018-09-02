@@ -8,7 +8,7 @@ public abstract class TextPort implements PluginFeature {
 	
 
 	@Override
-	public int getPluginMark() {
+	public int pluginMark() {
 		// TODO Auto-generated method stub
 		return PluginFeature.IO_TextPort;
 	}

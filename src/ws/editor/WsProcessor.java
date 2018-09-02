@@ -24,7 +24,6 @@ import ws.editor.plugin.LogPort;
 import ws.editor.plugin.PMenuBar;
 import ws.editor.plugin.ProjectManager;
 import ws.editor.plugin.configport.ConfigService;
-import ws.editor.plugin.io.binaryport.BinaryFilePort;
 import ws.editor.plugin.logport.LogWriter;
 import ws.editor.plugin.menubar.WMenuBar;
 import ws.editor.plugin.pjt_manager.SimpleProjectMake;
@@ -57,7 +56,7 @@ public class WsProcessor {
 	 * @param obj 组件的实例，这个实例作为工厂，用于派生新实例的，不能够用于工作
 	 * */
 	public void service_RegisterPlugin(PluginFeature obj) {
-		this.manager.factory_RegisterPluginComponent(obj);
+		this.manager.factory_RegisterPlugin(obj);
 	}
 
 	
@@ -212,7 +211,7 @@ public class WsProcessor {
 						JFileChooser.OPEN_DIALOG);
 				if (one == null)
 					return;
-				PluginFeature factory = this.schedule.service_GetPluginManager().factory_GetExistsComponent(id);
+				PluginFeature factory = this.schedule.service_GetPluginManager().factory_GetExistsComp(id);
 				String fileName;
 				try {
 					fileName = one.getCanonicalPath() + File.separator +"project." + ((ProjectManager) factory).getSuffix();
