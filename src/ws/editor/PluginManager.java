@@ -8,13 +8,13 @@ import java.util.Set;
 import ws.editor.common.ConfigItemsKey;
 import ws.editor.common.PluginFeature;
 import ws.editor.plugin.ConfigPort;
-import ws.editor.plugin.BinaryPort;
+import ws.editor.plugin.LocalFilePort;
 import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.LogPort;
 import ws.editor.plugin.PMenuBar;
 import ws.editor.plugin.ProjectManager;
 import ws.editor.plugin.ToolsBar;
-import ws.editor.plugin.io.binaryport.BinaryDiskFileAccess;
+import ws.editor.plugin.io.binaryport.BinaryFilePort;
 import ws.editor.plugin.menubar.WMenuBar;
 import ws.editor.plugin.pjt_manager.SimpleProjectMake;
 import ws.editor.plugin.toolsbar.WToolsBar;
@@ -233,17 +233,17 @@ public class PluginManager {
 	 *            文件路径
 	 * @return 返回实例
 	 */
-	public BinaryPort instance_GetContentPortFromExistsFile(String fpath) {
-		PluginFeature one = this.instance_GetExistsPluginInstance(PluginFeature.IO_BinaryPort,
-				BinaryPort.class.getName() + fpath);
+	public LocalFilePort instance_GetContentPortFromExistsFile(String fpath) {
+		PluginFeature one = this.instance_GetExistsPluginInstance(PluginFeature.IO_BinaryModel,
+				LocalFilePort.class.getName() + fpath);
 		if (one != null)
-			return (BinaryPort) one;
+			return (LocalFilePort) one;
 
 		String ConfigStr = ConfigItemsKey.DefaultLocalPort;
-		String DefaultStr = BinaryPort.class.getName() + BinaryDiskFileAccess.class.getName();
+		String DefaultStr = LocalFilePort.class.getName() + BinaryFilePort.class.getName();
 
 		PluginFeature factory = this.factory_GetValidateComponent(null, ConfigStr, DefaultStr);
-		BinaryPort b_port = ((BinaryPort) factory).openExistsFile(this.schedule, fpath);
+		LocalFilePort b_port = ((LocalFilePort) factory).openExistsFile(this.schedule, fpath);
 		if (b_port != null)
 			this.instance_RegisterPluginInstance(b_port);
 		return b_port;
@@ -257,12 +257,12 @@ public class PluginManager {
 	 *            文件路径
 	 * @return 返回实例
 	 */
-	public BinaryPort instance_GetContentPortFromCreateNewFile(String fpath) {
+	public LocalFilePort instance_GetContentPortFromCreateNewFile(String fpath) {
 		String ConfigStr = ConfigItemsKey.DefaultLocalPort;
-		String DefaultStr = BinaryPort.class.getName() + BinaryDiskFileAccess.class.getName();
+		String DefaultStr = LocalFilePort.class.getName() + BinaryFilePort.class.getName();
 
 		PluginFeature factory = this.factory_GetValidateComponent(null, ConfigStr, DefaultStr);
-		BinaryPort one = ((BinaryPort) factory).createNewFile(this.schedule, fpath);
+		LocalFilePort one = ((LocalFilePort) factory).createNewFile(this.schedule, fpath);
 		this.instance_RegisterPluginInstance(one);
 		return one;
 	}
@@ -276,7 +276,7 @@ public class PluginManager {
 	 *            项目文件接口
 	 * @return 打开的项目实例
 	 */
-	public ProjectManager instance_OpenProjectFromFormatFile(String factory_id, BinaryPort b_port) {
+	public ProjectManager instance_OpenProjectFromFormatFile(String factory_id, LocalFilePort b_port) {
 		String p_path = b_port.getPath();
 		PluginFeature one = this.instance_GetExistsPluginInstance(PluginFeature.Service_ProjectManage,
 				ProjectManager.class.getName() + p_path);
@@ -303,7 +303,7 @@ public class PluginManager {
 	 *            项目文件接口
 	 * @return 打开的项目实例
 	 */
-	public ProjectManager instance_OpenProjectFromEmptyFile(String factory_id, BinaryPort b_port) {
+	public ProjectManager instance_OpenProjectFromEmptyFile(String factory_id, LocalFilePort b_port) {
 		String path = b_port.getPath();
 		PluginFeature one = this.instance_GetExistsPluginInstance(PluginFeature.Service_ProjectManage,
 				ProjectManager.class.getName() + path);

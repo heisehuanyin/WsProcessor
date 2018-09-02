@@ -14,11 +14,15 @@ public interface PluginFeature {
 	final static int UI_StatusBar = 0x13;
 	final static int UI_Tabview = 0x14;
 	
-	final static int IO_TextConvert = 0x20;
-	final static int IO_BinaryPort = 0x21;
-	final static int IO_TextPort = 0x22;
+	/**
+	 * 该模型特殊功能*/
+	final static int IO_BinaryModel = 0x20;
+	final static int IO_TextModel = 0x21;
+	final static int IO_TreeModel = 0x22;
+	final static int IO_StyleModel = 0x23;
 	
 	final static int Tools_Plugin = 0x30;
+	final static int Tools_Convert = 0x31;
 	
 	final static int Service_ConfigUnit = 0x40;
 	final static int Service_LogPort = 0x41;

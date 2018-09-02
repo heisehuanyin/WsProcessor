@@ -18,13 +18,13 @@ import javax.swing.event.MenuListener;
 import ws.editor.common.FileSymbo;
 import ws.editor.common.PluginFeature;
 import ws.editor.plugin.ConfigPort;
-import ws.editor.plugin.BinaryPort;
+import ws.editor.plugin.LocalFilePort;
 import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.LogPort;
 import ws.editor.plugin.PMenuBar;
 import ws.editor.plugin.ProjectManager;
 import ws.editor.plugin.configport.ConfigService;
-import ws.editor.plugin.io.binaryport.BinaryDiskFileAccess;
+import ws.editor.plugin.io.binaryport.BinaryFilePort;
 import ws.editor.plugin.logport.LogWriter;
 import ws.editor.plugin.menubar.WMenuBar;
 import ws.editor.plugin.pjt_manager.SimpleProjectMake;
@@ -216,7 +216,7 @@ public class WsProcessor {
 				String fileName;
 				try {
 					fileName = one.getCanonicalPath() + File.separator +"project." + ((ProjectManager) factory).getSuffix();
-					BinaryPort pfile = this.schedule.service_GetPluginManager()
+					LocalFilePort pfile = this.schedule.service_GetPluginManager()
 							.instance_GetContentPortFromCreateNewFile(fileName);
 					this.schedule.service_GetPluginManager().instance_OpenProjectFromEmptyFile(factory.getCompid(), pfile);
 				} catch (IOException e1) {
@@ -246,7 +246,7 @@ public class WsProcessor {
 		this.addShutDownHook();
 		this.service_RegisterPlugin(new LogWriter());
 		this.service_RegisterPlugin(new ConfigService());
-		this.service_RegisterPlugin(new BinaryDiskFileAccess());
+		this.service_RegisterPlugin(new BinaryFilePort());
 		this.service_RegisterPlugin(new SimpleProjectMake());
 	}
 

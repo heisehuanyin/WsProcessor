@@ -6,26 +6,26 @@ import java.io.OutputStream;
 import ws.editor.WsProcessor;
 import ws.editor.common.PluginFeature;
 
-public abstract class BinaryPort implements PluginFeature{
+public abstract class LocalFilePort implements PluginFeature{
 	
 	private String file_id;
 
-	public BinaryPort() {
-		this.file_id = BinaryPort.class.getName();
+	public LocalFilePort() {
+		this.file_id = LocalFilePort.class.getName();
 	}
 	
-	protected BinaryPort(String idstr) {
+	protected LocalFilePort(String idstr) {
 		this.file_id = idstr;
 	}
 
 	@Override
 	public int getPluginMark() {
-		return PluginFeature.IO_BinaryPort;
+		return PluginFeature.IO_BinaryModel;
 	}
 
 	@Override
 	public String getCompid() {
-		return BinaryPort.class.getName() + this.file_id;
+		return LocalFilePort.class.getName() + this.file_id;
 	}
 
 	/**
@@ -33,7 +33,7 @@ public abstract class BinaryPort implements PluginFeature{
 	 * @param sch 软件控制核心实例
 	 * @param f_path 文件路径
 	 * @return 返回插件实例*/
-	public abstract BinaryPort createNewFile(WsProcessor sch, String f_path);
+	public abstract LocalFilePort createNewFile(WsProcessor sch, String f_path);
 	
 	/**
 	 * 查询文件是否存在，存在返回true，不存在返回false
@@ -45,11 +45,13 @@ public abstract class BinaryPort implements PluginFeature{
 	 * @param sch 软件控制核心实例
 	 * @param f_path 文件路径
 	 * @return 返回插件实例*/
-	public abstract BinaryPort openExistsFile(WsProcessor sch, String f_path);
+	public abstract LocalFilePort openExistsFile(WsProcessor sch, String f_path);
+	
 	/**
 	 * 获取一个二进制的输入内容接口
 	 * @return 返回InputStream是一个二进制的接口*/
 	public abstract InputStream getInputBinaryPort();
+	
 	/**
 	 * 获取一个二进制的输出内容接口
 	 * @return 返回OutputStream是一个二进制的接口*/

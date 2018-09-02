@@ -11,9 +11,9 @@ import javax.swing.JMenu;
 
 import ws.editor.WsProcessor;
 import ws.editor.common.PluginFeature;
-import ws.editor.plugin.BinaryPort;
+import ws.editor.plugin.LocalFilePort;
 
-public class BinaryDiskFileAccess implements BinaryPort {
+public class SimpleFilePort extends LocalFilePort {
 	private String file_id = this.getClass().getName();
 	private WsProcessor sch = null;
 	private FileInputStream b_portin = null;
@@ -27,7 +27,7 @@ public class BinaryDiskFileAccess implements BinaryPort {
 
 	
 	@Override
-	public BinaryPort createNewFile(WsProcessor sch, String f_path) {
+	public LocalFilePort createNewFile(WsProcessor sch, String f_path) {
 		File f = new File(f_path);
 		
 		File p = f.getParentFile();
@@ -58,12 +58,12 @@ public class BinaryDiskFileAccess implements BinaryPort {
 		return this.openExistsFile(sch, f_path);
 	}
 	@Override
-	public BinaryPort openExistsFile(WsProcessor sch, String f_path) {
+	public LocalFilePort openExistsFile(WsProcessor sch, String f_path) {
 		File one = new File(f_path);
 		if(! one.exists())
 			return null;
 		
-		BinaryDiskFileAccess port = new BinaryDiskFileAccess();
+		SimpleFilePort port = new SimpleFilePort();
 		
 		port.realFile = one;
 		port.file_id = f_path;
@@ -98,11 +98,6 @@ public class BinaryDiskFileAccess implements BinaryPort {
 	public void saveOperation() {}
 
 	@Override
-	public int getContentPortType() {
-		return BinaryPort.LocalFilePort;
-	}
-
-	@Override
 	public String getPath() {
 		return this.file_id;
 	}
@@ -125,6 +120,13 @@ public class BinaryDiskFileAccess implements BinaryPort {
 			e.printStackTrace();
 		}
 		return this.b_portout;
+	}
+
+
+	@Override
+	public boolean FileIsExists() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
