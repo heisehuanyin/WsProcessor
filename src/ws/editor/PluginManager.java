@@ -59,8 +59,7 @@ public class PluginManager {
 	}
 
 	/**
-	 * 综合配置文件和默认设置对提供的factory_id进行校验，获取由三者中合法的id组成的factory。 如果factory_id ==
-	 * null，意味着从配置文件中读取配置，进行校验，否则对factory_id进行校验，校验不通过都返回默认Factory。
+	 * 对配置文件和默认设置对提供的factory_id进行校验，合法的id组成的factory。校验不通过返回默认Factory。
 	 * @param configItems_Item
 	 *            指明配置项条目作为默认配置项目
 	 * @param defaultf_id
@@ -82,24 +81,6 @@ public class PluginManager {
 	}
 
 	
-
-	/**
-	 * 获取可用的ProjectManager列表信息，用于新建项目菜单和打开项目菜单，
-	 * 意味着，每个ProjectManager实现就不需要在自定义菜单上添加新建项目和打开项目两个选项了
-	 * 
-	 * @return 返回的是当前软件注册后的所有项目插件的id
-	 */
-	public ArrayList<String> service_GetAvailableProjectManagerList() {
-		ArrayList<String> rtnlist = new ArrayList<>();
-		Set<String> idlist = this.factoryContainer.keySet();
-		for (String idone : idlist) {
-			if (idone.startsWith(ProjectManager.class.getName())) {
-				rtnlist.add(idone);
-			}
-		}
-		return rtnlist;
-	}
-
 	/**
 	 * 获取当前项目视图，此时图包含所有活动项目
 	 * 
