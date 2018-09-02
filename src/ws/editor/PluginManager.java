@@ -82,26 +82,6 @@ public class PluginManager {
 
 	
 	/**
-	 * 获取当前项目视图，此时图包含所有活动项目
-	 * 
-	 * @return 活动Manager视图
-	 */
-	public ArrayList<ProjectManager> service_GetActiveProjectManagerView() {
-		ArrayList<ProjectManager> mview = new ArrayList<ProjectManager>();
-		Map<String, PluginFeature> activeProjects = this.instances.get(PluginFeature.Service_ProjectManage);
-		
-		if(activeProjects != null) {
-			Set<String> instanceID = activeProjects.keySet();
-
-			for (String id : instanceID) {
-				mview.add((ProjectManager) activeProjects.get(id));
-			}
-		}
-
-		return mview;
-	}
-
-	/**
 	 * 用于执行所有插件的保存操作
 	 */
 	public void operate_SaveOperation() {
