@@ -132,7 +132,7 @@ public class WsProcessor {
 
 	/**
 	 * 开启静默模式：实例化Processor之后，注册各种组件之后，调用本函数可以打开静默模式*/
-	public void operate_OpenSilentMode() {
+	public void operate_SilentModel() {
 		// TODO 默认模式的设计
 		this.operate_InitDefaultSilentPlugin();
 	}
@@ -208,7 +208,7 @@ public class WsProcessor {
 		if(args.length > 1 && args[0].equals("-s")) {
 			//TODO 程序的静默处理需要设计
 			WsProcessor proc = new WsProcessor();
-			proc.operate_OpenSilentMode();
+			proc.operate_SilentModel();
 			
 			System.out.println("静默处理");
 		}else {

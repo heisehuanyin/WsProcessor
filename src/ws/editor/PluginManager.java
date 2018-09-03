@@ -1,6 +1,9 @@
 package ws.editor;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -30,19 +33,21 @@ public class PluginManager {
 	/**
 	 * 注册工厂类
 	 * 
-	 * @param obj 工厂类实例，用于获取新实例，除了占位本身无实际意义
+	 * @param obj
+	 *            工厂类实例，用于获取新实例，除了占位本身无实际意义
 	 */
 	public void factory_RegisterPlugin(PluginFeature obj) {
-		if(obj.pluginMark() == PluginFeature.Service_ConfigUnit)
+		if (obj.pluginMark() == PluginFeature.Service_ConfigUnit)
 			this.configUnitId = obj.getClass().getName();
-		
+
 		this.factoryContainer.put(obj.getClass().getName(), obj);
 	}
 
 	/**
 	 * 获取注册工厂类
 	 * 
-	 * @param id_factory 唯一标志
+	 * @param id_factory
+	 *            唯一标志
 	 * @return 工厂类，用于构建新实例
 	 */
 	private PluginFeature factory_GetExistsfactory(String id_factory) {
@@ -57,6 +62,7 @@ public class PluginManager {
 
 	/**
 	 * 对配置文件和默认设置对提供的factory_id进行校验，合法的id组成的factory。校验不通过返回默认Factory。
+	 * 
 	 * @param itemsKeyDefine
 	 *            指明配置项条目作为默认配置项目
 	 * @param defaultf_id
@@ -77,15 +83,14 @@ public class PluginManager {
 		return factory;
 	}
 
-	
 	/**
 	 * 用于一次执行所有插件的保存操作
 	 */
 	public void operate_SaveOperation() {
 		Set<String> aset = this.instances.keySet();
-		for(String url:aset) {
+		for (String url : aset) {
 			ArrayList<PluginFeature> cList = this.instances.get(url);
-			for(PluginFeature one:cList) {
+			for (PluginFeature one : cList) {
 				one.saveOperation();
 			}
 		}
@@ -93,8 +98,11 @@ public class PluginManager {
 
 	/**
 	 * 注册插件实例
-	 * @param url 内容来源地址
-	 * @param obj 插件实例
+	 * 
+	 * @param url
+	 *            内容来源地址
+	 * @param obj
+	 *            插件实例
 	 */
 	private void instance_RegisterPluginInstance(String url, PluginFeature obj) {
 
@@ -110,26 +118,29 @@ public class PluginManager {
 	/**
 	 * 根据url获取关联的整条通道
 	 * 
-	 * @param url 内容来源标识
+	 * @param url
+	 *            内容来源标识
 	 * @return 整个通道的插件组合
 	 */
 	private ArrayList<PluginFeature> instance_GetExistsChannelList(String url) {
 		return this.instances.get(url);
 	}
-	
+
 	// 插件实例获取接口:基础===================================================================
 
 	/**
 	 * 获取configunit用于读取和输出配置，如果存在则获取，否则新建一个<br>
 	 * 该机制保证只有一种插件能够用来解析configfile，configunit不接受配置
-	 * @param path 配置文件存放路径
+	 * 
+	 * @param path
+	 *            配置文件存放路径
 	 * @return 实例
 	 */
 	public ConfigPort instance_GetAvailableConfigUnit(String path) {
 		ArrayList<PluginFeature> cList = this.instance_GetExistsChannelList(path);
 		if (cList != null)
 			return (ConfigPort) cList.get(0);
-		
+
 		PluginFeature factory = this.factory_GetExistsfactory(this.configUnitId);
 
 		ConfigPort config = ((ConfigPort) factory).createNewPort(path);
@@ -140,19 +151,21 @@ public class PluginManager {
 
 	/**
 	 * 获取logport用于输出log,如果已存在指定的log则获取，否则新建一个。
-	 * @param path log文件路径
+	 * 
+	 * @param path
+	 *            log文件路径
 	 * @return 实例
 	 */
 	public LogPort instance_GetAvailableLogPort(String path) {
 		ArrayList<PluginFeature> cList = this.instance_GetExistsChannelList(path);
 		if (cList != null)
 			return (AbstractLogPort) cList.get(0);
-		
+
 		PluginFeature factory = this.factory_GetConfigComp(ItemsKey.LogPortConfig, AbstractLogPort.class.getName());
 
 		LogPort writer = ((LogPort) factory).createNewPort(path);
 		this.instance_RegisterPluginInstance(path, writer);
-		
+
 		return writer;
 	}
 
@@ -171,5 +184,39 @@ public class PluginManager {
 		return null;
 	}
 
-	
+	public void operate_printPluginList() {
+		Collection<PluginFeature> x = this.factoryContainer.values();
+		ArrayList<PluginFeature> alist = new ArrayList<PluginFeature>(x);
+		Collections.sort(alist, new SortByMark());
+		System.out.println("PluginFeature.IO_NoUpStream[" + PluginFeature.IO_NoUpStream + "]");
+		for (PluginFeature aplugin : alist) {
+			switch (aplugin.pluginMark()) {
+			case PluginFeature.Service_ConfigUnit:
+				System.out.print("PluginFeature.Service_ConfigUnit[" + aplugin.pluginMark() + "]\\");
+				break;
+			case PluginFeature.Service_LogPort:
+				System.out.print("PluginFeature.Service_LogPort[" + aplugin.pluginMark() + "]\\");
+				break;
+
+			default: {
+				System.out.print("UnRecognizedPlugin[" + aplugin.pluginMark() + "]\\");
+				break;
+			}
+			}
+			System.out.print("Name:" + aplugin.getClass().getName());
+			System.out.println("\\UpStream:" + aplugin.upStreamMark());
+		}
+	}
+
+	private class SortByMark implements Comparator<PluginFeature> {
+		@Override
+		public int compare(PluginFeature o1, PluginFeature o2) {
+			if (o1.pluginMark() > o2.pluginMark())
+				return 1;
+			if (o1.pluginMark() == o2.pluginMark())
+				return 0;
+			return -1;
+		}
+	}
+
 }

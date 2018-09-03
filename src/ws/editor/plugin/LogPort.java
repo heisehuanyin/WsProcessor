@@ -18,7 +18,7 @@ public interface LogPort extends PluginFeature {
 	void writeLog(Object obj, String msg);
 	
 	/**
-	 * 写errorlog到文件，格式化错误信息
+	 * 写errorlog到文件，格式化错误信息，信息上屏
 	 * @param obj 写信息的对象
 	 * @param msg 具体信息*/
 	void errorLog(Object obj, String msg);

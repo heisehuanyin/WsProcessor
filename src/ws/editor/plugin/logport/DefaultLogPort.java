@@ -85,6 +85,7 @@ public class DefaultLogPort extends AbstractLogPort{
 		
 		try {
 			this.port.write(msg);
+			System.out.println(msg);
 			this.port.newLine();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
