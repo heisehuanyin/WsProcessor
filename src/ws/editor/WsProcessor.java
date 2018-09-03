@@ -17,25 +17,25 @@ import javax.swing.event.MenuListener;
 
 import ws.editor.common.NodeSymbo;
 import ws.editor.common.PluginFeature;
-import ws.editor.plugin.ConfigPort;
 import ws.editor.plugin.LocalFilePort;
-import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.LogPort;
 import ws.editor.plugin.PMenuBar;
 import ws.editor.plugin.ProjectManager;
-import ws.editor.plugin.configport.ConfigService;
+import ws.editor.plugin.configport.AbstractConfigPort;
+import ws.editor.plugin.configport.DefaultConfigPort;
 import ws.editor.plugin.logport.LogWriter;
 import ws.editor.plugin.menubar.WMenuBar;
 import ws.editor.plugin.pjt_manager.SimpleProjectMake;
 import ws.editor.plugin.toolsbar.WToolsBar;
 import ws.editor.plugin.window.SimpleWindow;
-import ws.editor.plugin.window.WWindow;
+import ws.editor.plugin.window.AbstractFrontWindow;
+import ws.editor.plugin.window.DefaultFrontWindow;
 
 public class WsProcessor {
 	private PluginManager manager = new PluginManager(this);
 	private String wsProcessor_logPath = "."+File.separator+"Software.wslog";
 	private String wsProcessor_configPath = "."+File.separator+"Software.wscfg";
-	private FrontWindow fwin = null;
+	private AbstractFrontWindow fwin = null;
 	private JFileChooser chooser = new JFileChooser();
 	
 	public WsProcessor (){
@@ -70,7 +70,7 @@ public class WsProcessor {
 	/**
 	 * 获取主配置文件，每次启动加载的configunit都是最后加载的同一种插件，输入输出的格式相同。
 	 * @return 连接向程序的主配置文件的配置端口*/
-	public ConfigPort service_GetMainConfigUnit() {
+	public AbstractConfigPort service_GetMainConfigUnit() {
 		return this.manager.instance_GetAvailableConfigUnit(this.wsProcessor_configPath);
 	}
 	
@@ -78,7 +78,7 @@ public class WsProcessor {
 	/**
 	 * 重构菜单栏服务，通常调用者：1.view视图插件，视图变化菜单栏变化
 	 * @param win TODO*/
-	public void service_Refresh_MenuBar(FrontWindow win) {
+	public void service_Refresh_MenuBar(AbstractFrontWindow win) {
 		ArrayList<JMenu> exterl = new ArrayList<>();
 		JMenu wspace = this.rebuildMenu_WSpace();
 		exterl.add(wspace);
@@ -91,7 +91,7 @@ public class WsProcessor {
 		
 		
 		
-		this.fwin.service_RefreshMenuBar(exterl);
+		this.fwin.service_ResetMenuBar(exterl);
 	}
 	
 	/**
@@ -245,7 +245,7 @@ public class WsProcessor {
 	private void operate_InitDefaultSilentPlugin() {
 		this.addShutDownHook();
 		this.service_RegisterPlugin(new LogWriter());
-		this.service_RegisterPlugin(new ConfigService());
+		this.service_RegisterPlugin(new DefaultConfigPort());
 		this.service_RegisterPlugin(new BinaryFilePort());
 		this.service_RegisterPlugin(new SimpleProjectMake());
 	}
@@ -261,7 +261,7 @@ public class WsProcessor {
 	private void operate_InitDefaultGraphicPlugin() {
 		this.operate_InitDefaultSilentPlugin();
 		
-		this.service_RegisterPlugin(new WWindow());
+		this.service_RegisterPlugin(new DefaultFrontWindow());
 		this.service_RegisterPlugin(new WMenuBar());
 		this.service_RegisterPlugin(new WToolsBar());
 	}
@@ -281,7 +281,7 @@ public class WsProcessor {
 			e.printStackTrace();
 		}
 		
-		FrontWindow win = this.manager.instance_GetNewDefaultWindow("mainwindow");
+		AbstractFrontWindow win = this.manager.instance_GetNewDefaultWindow("mainwindow");
 		this.fwin = win;
 		win.displayWindow();
 	}

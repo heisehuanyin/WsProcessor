@@ -29,7 +29,6 @@ public interface PluginFeature {
 	
 	final static int Service_ConfigUnit = 0x40;
 	final static int Service_LogPort = 0x41;
-	final static int Service_ProjectManage = 0x42;
 	
 	/**
 	 * 获取组件代码，标定组件类别，详细定义看{@link PluginFeature}

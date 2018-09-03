@@ -9,7 +9,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.ArrayList;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
@@ -28,14 +27,13 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 import ws.editor.WsProcessor;
 import ws.editor.common.ItemsKey;
 import ws.editor.common.PluginFeature;
-import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.PMenuBar;
 import ws.editor.plugin.StatusBar;
 import ws.editor.plugin.ToolsBar;
 
 /**
  * 界面窗口，用于摆放各种控件和面板*/
-public class WWindow extends FrontWindow{
+public class DefaultFrontWindow extends AbstractFrontWindow{
 	private String w_id = this.getClass().getName();
 	private JFrame window = new JFrame();
 	private WsProcessor schedule = null;
@@ -52,11 +50,9 @@ public class WWindow extends FrontWindow{
 	private JSplitPane leftAndRightCollect = 
 			new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,this.leftCollect,this.topAndBottomCollect);
 	
-	private PMenuBar menubar = null;
 	private ToolsBar toolsbar = null;
-	private StatusBar statusbar = null;
 	
-	public WWindow() {}
+	public DefaultFrontWindow() {}
 	
 	@Override
 	public void displayWindow() {
@@ -119,19 +115,6 @@ public class WWindow extends FrontWindow{
 	}
 	
 
-
-	@Override
-	public int pluginMark() {
-		return PluginFeature.UI_Window;
-	}
-
-
-	@Override
-	public String getCompid() {
-		return FrontWindow.class.getName()+this.w_id;
-	}
-
-
 	@Override
 	public JMenu getCustomMenu() {
 		JMenu viewM = new JMenu("视图配置");
@@ -174,10 +157,9 @@ public class WWindow extends FrontWindow{
 	}
 
 	@Override
-	public FrontWindow getInstance(WsProcessor schedule, String id) {
+	public AbstractFrontWindow getInstance(WsProcessor schedule, String gId) {
 		
-		WWindow rtn = new WWindow();
-		rtn.w_id = id;
+		DefaultFrontWindow rtn = new DefaultFrontWindow();
 		rtn.schedule = schedule;
 		SrcWindowListener ear = new SrcWindowListener(rtn);
 		rtn.window.addWindowListener(ear);
@@ -187,8 +169,8 @@ public class WWindow extends FrontWindow{
 	}
 	
 	class SrcWindowListener implements WindowListener, ComponentListener{
-		private WWindow src = null;
-		public SrcWindowListener(WWindow srcobj) {
+		private DefaultFrontWindow src = null;
+		public SrcWindowListener(DefaultFrontWindow srcobj) {
 			this.src = srcobj;
 		}
 
@@ -261,8 +243,7 @@ public class WWindow extends FrontWindow{
 	}
 
 	@Override
-	public void service_RefreshMenuBar(ArrayList<JMenu> exterl) {
-		exterl.add(this.getCustomMenu());
-		this.menubar.refreshMenuBar(exterl);
+	public void service_ResetMenuBar(JMenuBar mbar) {
+		this.setJMenuBar(mbar);
 	}
 }

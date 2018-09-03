@@ -53,7 +53,7 @@ public class PluginManager {
 
 	/**
 	 * 对配置文件和默认设置对提供的factory_id进行校验，合法的id组成的factory。校验不通过返回默认Factory。
-	 * @param configItems_Item
+	 * @param itemsKeyDefine
 	 *            指明配置项条目作为默认配置项目
 	 * @param defaultf_id
 	 *            指名配置项目出现意外后的默认factory_id

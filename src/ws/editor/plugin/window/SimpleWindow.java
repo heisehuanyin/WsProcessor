@@ -6,7 +6,6 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -16,10 +15,9 @@ import javax.swing.JToolBar;
 import ws.editor.WsProcessor;
 import ws.editor.common.ItemsKey;
 import ws.editor.common.PluginFeature;
-import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.TabView;
 
-public class SimpleWindow extends FrontWindow {
+public class SimpleWindow extends AbstractFrontWindow {
 	private String w_id = this.getClass().getName();
 	private WsProcessor schedule = null;
 	private JFrame window = new JFrame();
@@ -34,7 +32,7 @@ public class SimpleWindow extends FrontWindow {
 
 	@Override
 	public String getCompid() {
-		return FrontWindow.class.getName()+w_id;
+		return AbstractFrontWindow.class.getName()+w_id;
 	}
 
 	@Override
@@ -50,7 +48,7 @@ public class SimpleWindow extends FrontWindow {
 	}
 
 	@Override
-	public FrontWindow getInstance(WsProcessor schedule, String id) {
+	public AbstractFrontWindow getInstance(WsProcessor schedule, String gId) {
 		SimpleWindow rtn = new SimpleWindow();
 		rtn.w_id = id;
 		rtn.schedule = schedule;
@@ -157,13 +155,13 @@ public class SimpleWindow extends FrontWindow {
 	}
 
 	@Override
-	public void service_RefreshMenuBar(ArrayList<JMenu> exterl) {
+	public void service_ResetMenuBar(JMenuBar mbar) {
 		this.menubar.removeAll();
 		if(this.mainview != null) {
-			exterl.add(this.mainview.getCustomMenu());
+			mbar.add(this.mainview.getCustomMenu());
 		}
-		exterl.add(this.getCustomMenu());
-		for(JMenu one:exterl) {
+		mbar.add(this.getCustomMenu());
+		for(JMenu one:mbar) {
 			this.menubar.add(one);
 		}
 		this.window.validate();

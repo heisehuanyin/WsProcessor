@@ -14,18 +14,17 @@ import javax.swing.JMenu;
 
 import ws.editor.WsProcessor;
 import ws.editor.common.PluginFeature;
-import ws.editor.plugin.ConfigPort;
 /**
  * 用于获取配置文件中的信息
  * ConfigUnit虽然也被设计成为插件模式，但是软件本身只需要一种配置文件格式，
  * 因此，不需要多种实例共存，软件中只保留一个config插件，factory类id恒为ConfigUnit.class.getName()*/
-public class ConfigService extends ConfigPort{
+public class DefaultConfigPort extends AbstractConfigPort{
 	private Properties prop = new Properties();
 	private String cfgPath;
 	
-	public ConfigService() {}
+	public DefaultConfigPort() {}
 
-	private ConfigService(String cfgPath) {
+	private DefaultConfigPort(String cfgPath) {
 		this.cfgPath = cfgPath;
 	}
 	
@@ -56,7 +55,7 @@ public class ConfigService extends ConfigPort{
 	 * @return 返回新的实例
 	 * */
 	@Override
-	public ConfigService createNewPort(String path) {
+	public DefaultConfigPort createNewPort(String path) {
 
 		File cfgfile = new File(path);
 		
@@ -73,7 +72,7 @@ public class ConfigService extends ConfigPort{
 			}
 		}
 		
-		ConfigService rtn = new ConfigService(path);
+		DefaultConfigPort rtn = new DefaultConfigPort(path);
 		
 		try {
 			rtn.prop.load(new InputStreamReader(new FileInputStream(cfgfile),"UTF-8"));
