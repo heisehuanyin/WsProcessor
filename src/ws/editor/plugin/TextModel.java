@@ -12,14 +12,10 @@ public interface TextModel extends PluginFeature {
 	TextModel openTextModel(WsProcessor core, String filePath);
 	
 	/**
-	 * 获取当前行号
-	 * @return 行号*/
-	int getRowsIndex();
+	 * 获取内容行总数
+	 * @return 总数*/
+	int getRowsCount();
 	
-	/**
-	 * 获取下一行
-	 * @return 下一行内容*/
-	String nextLine();
 	
 	/**
 	 * 获取指定一行
