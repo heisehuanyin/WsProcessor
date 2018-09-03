@@ -22,7 +22,7 @@ public class WSP {
 		}
 	}
 	private void printPlugin() {
-		this.wsp.service_GetPluginManager().operate_printPluginList();
+		this.wsp.service_GetPluginManager().service_printPluginList();
 	}
 
 

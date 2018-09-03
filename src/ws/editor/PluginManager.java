@@ -169,6 +169,12 @@ public class PluginManager {
 		return writer;
 	}
 
+	/**
+	 * */
+
+	// UI
+	// Component==================================================================
+
 	public PMenuBar instance_GetNewDefaultMenubar(String string) {
 		// TODO Auto-generated method stub
 		return null;
@@ -184,7 +190,7 @@ public class PluginManager {
 		return null;
 	}
 
-	public void operate_printPluginList() {
+	public void service_printPluginList() {
 		Collection<PluginFeature> x = this.factoryContainer.values();
 		ArrayList<PluginFeature> alist = new ArrayList<PluginFeature>(x);
 		Collections.sort(alist, new SortByMark());
@@ -196,6 +202,12 @@ public class PluginManager {
 				break;
 			case PluginFeature.Service_LogPort:
 				System.out.print("PluginFeature.Service_LogPort[" + aplugin.pluginMark() + "]\\");
+				break;
+			case PluginFeature.IO_BinaryModel:
+				System.out.print("PluginFeature.IO_BinaryModel[" + aplugin.pluginMark() + "]\\");
+				break;
+			case PluginFeature.IO_TextModel:
+				System.out.print("PluginFeature.IO_TextModel[" + aplugin.pluginMark() + "]\\");
 				break;
 
 			default: {
