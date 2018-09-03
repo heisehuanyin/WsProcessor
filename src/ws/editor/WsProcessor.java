@@ -18,12 +18,12 @@ import javax.swing.event.MenuListener;
 import ws.editor.common.NodeSymbo;
 import ws.editor.common.PluginFeature;
 import ws.editor.plugin.LocalFilePort;
-import ws.editor.plugin.LogPort;
 import ws.editor.plugin.PMenuBar;
 import ws.editor.plugin.ProjectManager;
 import ws.editor.plugin.configport.AbstractConfigPort;
 import ws.editor.plugin.configport.DefaultConfigPort;
-import ws.editor.plugin.logport.LogWriter;
+import ws.editor.plugin.logport.AbstractLogPort;
+import ws.editor.plugin.logport.DefaultLogPort;
 import ws.editor.plugin.menubar.WMenuBar;
 import ws.editor.plugin.pjt_manager.SimpleProjectMake;
 import ws.editor.plugin.toolsbar.WToolsBar;
@@ -39,7 +39,7 @@ public class WsProcessor {
 	private JFileChooser chooser = new JFileChooser();
 	
 	public WsProcessor (){
-		this.service_RegisterPlugin(new LogWriter());
+		this.service_RegisterPlugin(new DefaultLogPort());
 	}
 	
 	
@@ -63,7 +63,7 @@ public class WsProcessor {
 	/**
 	 * 获取配置好的log输出接口
 	 * @return 默认的log输出接口*/
-	public LogPort service_GetDefaultLogPort() {
+	public AbstractLogPort service_GetDefaultLogPort() {
 		return this.manager.instance_GetAvailableLogPort(this.wsProcessor_logPath);
 	}
 	
@@ -244,7 +244,7 @@ public class WsProcessor {
 	 * 初始化静默模式默认的组件,能够保证最低限度的正常使用*/
 	private void operate_InitDefaultSilentPlugin() {
 		this.addShutDownHook();
-		this.service_RegisterPlugin(new LogWriter());
+		this.service_RegisterPlugin(new DefaultLogPort());
 		this.service_RegisterPlugin(new DefaultConfigPort());
 		this.service_RegisterPlugin(new BinaryFilePort());
 		this.service_RegisterPlugin(new SimpleProjectMake());

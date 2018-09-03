@@ -13,22 +13,17 @@ import javax.swing.JMenuItem;
 
 import ws.editor.WsProcessor;
 import ws.editor.common.PluginFeature;
-import ws.editor.plugin.LogPort;
 /**
  * 用于输出log到文件中
  * LogPort虽然也被设计成为插件模式，但是软件本身只需要一种log文件格式，
  * 因此，不需要多种实例共存，软件中只保留一个logport插件，factory类id恒为LogPort.class.getName()*/
-public class LogWriter extends LogPort{
+public class DefaultLogPort extends AbstractLogPort{
 	private BufferedWriter port = null;
 	
 	/**
 	 * 慎重，本方法只适用构造工厂类，通过本方法构造的实例所有id都为默认id
 	 * 实例化方法new LogWriter().createNewPort(path);*/
-	public LogWriter() {}
-	
-	private LogWriter(String id_path) {
-		super(id_path);
-	}
+	public DefaultLogPort() {}
 
 
 	/**
@@ -37,7 +32,7 @@ public class LogWriter extends LogPort{
 	 * @return 文件路径合法返回新实例，不合法返回null
 	 */
 	@Override
-	public LogPort createNewPort(String path) {
+	public AbstractLogPort createNewPort(String path) {
 		File log = new File(path);
 		
 		if(! log.getParentFile().exists()) {
@@ -53,7 +48,7 @@ public class LogWriter extends LogPort{
 			}
 		}
 		
-		LogWriter rtn = new LogWriter(path);
+		DefaultLogPort rtn = new DefaultLogPort();
 		
 		try {
 			rtn.port = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path),"UTF-8"));
