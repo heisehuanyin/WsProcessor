@@ -1,8 +1,10 @@
 package ws.editor.plugin.window;
 
 import java.awt.Component;
+import java.util.Collection;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
 import ws.editor.WsProcessor;
@@ -44,6 +46,11 @@ public abstract class AbstractFrontWindow extends JFrame implements FrontWindow{
 	@Override
 	public int upStreamMark() {
 		return PluginFeature.IO_NoUpStream;
+	}
+
+	public Collection<? extends JMenu> getActivedViewsMenus() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

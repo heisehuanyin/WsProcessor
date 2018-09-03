@@ -25,11 +25,6 @@ public class WToolsBar extends JToolBar implements ToolsBar{
 	}
 
 	@Override
-	public String getCompid() {
-		return ToolsBar.class.getName()+t_id;
-	}
-
-	@Override
 	public JMenu getCustomMenu() {
 		return new JMenu(this.getClass().getName());
 	}
@@ -65,6 +60,12 @@ public class WToolsBar extends JToolBar implements ToolsBar{
 			}});
 		this.add(mt);
 		this.add(new JCheckBoxMenuItem("qp"));
+	}
+
+	@Override
+	public int upStreamMark() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

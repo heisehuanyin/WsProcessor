@@ -8,7 +8,11 @@ import java.util.Set;
 import ws.editor.common.ItemsKey;
 import ws.editor.common.PluginFeature;
 import ws.editor.plugin.ConfigPort;
+import ws.editor.plugin.LogPort;
+import ws.editor.plugin.PMenuBar;
+import ws.editor.plugin.ToolsBar;
 import ws.editor.plugin.logport.AbstractLogPort;
+import ws.editor.plugin.window.AbstractFrontWindow;
 
 /**
  * 用于管理插件，本身不是插件，不需要两步实例化直接实例化得到的就是可用组件
@@ -139,17 +143,32 @@ public class PluginManager {
 	 * @param path log文件路径
 	 * @return 实例
 	 */
-	public AbstractLogPort instance_GetAvailableLogPort(String path) {
+	public LogPort instance_GetAvailableLogPort(String path) {
 		ArrayList<PluginFeature> cList = this.instance_GetExistsChannelList(path);
 		if (cList != null)
 			return (AbstractLogPort) cList.get(0);
 		
 		PluginFeature factory = this.factory_GetConfigComp(ItemsKey.LogPortConfig, AbstractLogPort.class.getName());
 
-		AbstractLogPort writer = ((AbstractLogPort) factory).createNewPort(path);
+		LogPort writer = ((LogPort) factory).createNewPort(path);
 		this.instance_RegisterPluginInstance(path, writer);
 		
 		return writer;
+	}
+
+	public PMenuBar instance_GetNewDefaultMenubar(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ToolsBar instance_getNewDefaultToolsBar(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public AbstractFrontWindow instance_GetNewDefaultWindow(String string) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

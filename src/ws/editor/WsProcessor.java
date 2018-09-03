@@ -1,33 +1,21 @@
 package ws.editor;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
-
-import ws.editor.common.NodeSymbo;
 import ws.editor.common.PluginFeature;
-import ws.editor.plugin.LocalFilePort;
+import ws.editor.plugin.ConfigPort;
+import ws.editor.plugin.LogPort;
 import ws.editor.plugin.PMenuBar;
-import ws.editor.plugin.ProjectManager;
-import ws.editor.plugin.configport.AbstractConfigPort;
 import ws.editor.plugin.configport.DefaultConfigPort;
-import ws.editor.plugin.logport.AbstractLogPort;
 import ws.editor.plugin.logport.DefaultLogPort;
 import ws.editor.plugin.menubar.WMenuBar;
-import ws.editor.plugin.pjt_manager.SimpleProjectMake;
 import ws.editor.plugin.toolsbar.WToolsBar;
-import ws.editor.plugin.window.SimpleWindow;
 import ws.editor.plugin.window.AbstractFrontWindow;
 import ws.editor.plugin.window.DefaultFrontWindow;
 
@@ -63,14 +51,14 @@ public class WsProcessor {
 	/**
 	 * 获取配置好的log输出接口
 	 * @return 默认的log输出接口*/
-	public AbstractLogPort service_GetDefaultLogPort() {
+	public LogPort service_GetDefaultLogPort() {
 		return this.manager.instance_GetAvailableLogPort(this.wsProcessor_logPath);
 	}
 	
 	/**
-	 * 获取主配置文件，每次启动加载的configunit都是最后加载的同一种插件，输入输出的格式相同。
+	 * 获取主配置文件，每次启动加载的 {@link ConfigPort } 都是最后加载的同一种插件，输入输出的格式相同。
 	 * @return 连接向程序的主配置文件的配置端口*/
-	public AbstractConfigPort service_GetMainConfigUnit() {
+	public ConfigPort service_GetMainConfigUnit() {
 		return this.manager.instance_GetAvailableConfigUnit(this.wsProcessor_configPath);
 	}
 	
@@ -91,7 +79,7 @@ public class WsProcessor {
 		
 		
 		
-		this.fwin.service_ResetMenuBar(exterl);
+		this.fwin.service_ResetMenuBar(x);
 	}
 	
 	/**
@@ -124,114 +112,8 @@ public class WsProcessor {
 	
 	private JMenu rebuildMenu_WSpace(){
 		JMenu rtn = new JMenu("WSpace");
-		rtn.addMenuListener(new WSpace_Manager_source(this));
 		return rtn;
 	}
-	
-	private class WSpace_Manager_source implements MenuListener{
-		private WsProcessor schedule;
-		public WSpace_Manager_source(WsProcessor sch) {
-			this.schedule = sch;
-		}
-		@Override
-		public void menuSelected(MenuEvent e) {
-			ArrayList<ProjectManager> activeProjectView = this.schedule.service_GetPluginManager().
-					service_GetActiveProjectManagerView();
-			ArrayList<String> availableManagerList = this.schedule.service_GetPluginManager()
-					.service_GetAvailableProjectManagerList();
-			JMenu source = (JMenu) e.getSource();
-			//新建项目、打开项目、清理项目
-			JMenu newProject = this.buildMenu_NewProject(availableManagerList);
-			source.add(newProject);
-			JMenu openProject = this.buildMenu_OpenProject(availableManagerList);
-			source.add(openProject);
-			JMenuItem clearProject = new JMenuItem("清理项目");
-			clearProject.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					System.out.println("啊上看的解放啦款到即发");
-				}});
-			source.add(clearProject);
-			source.addSeparator();
-			//活动项目列表
-			for(ProjectManager i:activeProjectView) {
-				NodeSymbo pjt = i.getProjectDescription();
-				JMenu itemcfg = i.getCustomMenu();
-				itemcfg.setText(pjt.fileName());
-				source.add(itemcfg);
-				//clearProject.add(pjt.fileName());
-			}
-			
-			
-			
-		}
-		@Override
-		public void menuDeselected(MenuEvent e) {
-			JMenu source = (JMenu) e.getSource();
-			source.removeAll();
-		}
-		@Override
-		public void menuCanceled(MenuEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		private JMenu buildMenu_NewProject(ArrayList<String> factoryList) {
-			JMenu ret = new JMenu("新建工程");
-			for(String mitem:factoryList) {
-				String name = mitem.substring(mitem.lastIndexOf('.')+1);
-				JMenuItem menuitem = new JMenuItem(name);
-				menuitem.addActionListener(new NewProjectOperate(this.schedule, mitem));
-				ret.add(menuitem);
-			}
-			return ret;
-		}
-		private JMenu buildMenu_OpenProject(ArrayList<String> factoryList) {
-			JMenu ret = new JMenu("打开工程");
-			for(String mitem:factoryList) {
-				ret.add(mitem);
-			}
-			return ret;
-		}
-		
-		// 新建项目操作响应
-		private class NewProjectOperate implements ActionListener {
-			private WsProcessor schedule = null;
-			private String id = null;
-
-			public NewProjectOperate(WsProcessor sch, String projectManagerID) {
-				schedule = sch;
-				id = projectManagerID;
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				File one = this.schedule.service_FileChooserOperate(JFileChooser.DIRECTORIES_ONLY,
-						JFileChooser.OPEN_DIALOG);
-				if (one == null)
-					return;
-				PluginFeature factory = this.schedule.service_GetPluginManager().factory_GetExistsfactory(id);
-				String fileName;
-				try {
-					fileName = one.getCanonicalPath() + File.separator +"project." + ((ProjectManager) factory).getSuffix();
-					LocalFilePort pfile = this.schedule.service_GetPluginManager()
-							.instance_GetContentPortFromCreateNewFile(fileName);
-					this.schedule.service_GetPluginManager().instance_OpenProjectFromEmptyFile(factory.getCompid(), pfile);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-
-		}
-		//打开项目操作响应
-		private class OpenProjectOperate{}
-		//清理项目操作响应
-		private class ClearProjectOperate{}
-	}
-	
 	
 	
 	
@@ -246,14 +128,13 @@ public class WsProcessor {
 		this.addShutDownHook();
 		this.service_RegisterPlugin(new DefaultLogPort());
 		this.service_RegisterPlugin(new DefaultConfigPort());
-		this.service_RegisterPlugin(new BinaryFilePort());
-		this.service_RegisterPlugin(new SimpleProjectMake());
 	}
 
 	/**
 	 * 开启静默模式：实例化Processor之后，注册各种组件之后，调用本函数可以打开静默模式*/
 	public void operate_OpenSilentMode() {
 		// TODO 默认模式的设计
+		this.operate_InitDefaultSilentPlugin();
 	}
 
 	/**
@@ -326,13 +207,12 @@ public class WsProcessor {
 	public static void main(String[] args) {
 		if(args.length > 1 && args[0].equals("-s")) {
 			//TODO 程序的静默处理需要设计
-			
+			WsProcessor proc = new WsProcessor();
+			proc.operate_OpenSilentMode();
 			
 			System.out.println("静默处理");
 		}else {
 			WsProcessor proc = new WsProcessor();
-			
-			proc.service_RegisterPlugin(new SimpleWindow());
 			
 			proc.operate_OpenGraphicMode();
 		}

@@ -72,7 +72,6 @@ public class DefaultFrontWindow extends AbstractFrontWindow{
 				.instance_GetNewDefaultMenubar("menubar");
 		if(menubar != null) {
 			window.setJMenuBar((JMenuBar) menubar);
-			this.menubar = menubar;
 		}
 		
 		ToolsBar toolbar = this.schedule.service_GetPluginManager()

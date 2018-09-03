@@ -17,11 +17,6 @@ public class WMenuBar extends PMenuBar{
 	}
 
 	@Override
-	public String getCompid() {
-		return PMenuBar.class.getName()+ this.mbid;
-	}
-
-	@Override
 	public JMenu getCustomMenu() {
 		// TODO 创建自定义菜单
 		return new JMenu(this.getClass().getName());
@@ -53,6 +48,12 @@ public class WMenuBar extends PMenuBar{
 	public void saveOperation() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public int upStreamMark() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 	

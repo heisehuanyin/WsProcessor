@@ -13,12 +13,6 @@ public class WStatusBar implements StatusBar{
 	}
 
 	@Override
-	public String getCompid() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public JMenu getCustomMenu() {
 		// TODO Auto-generated method stub
 		return null;
@@ -28,6 +22,12 @@ public class WStatusBar implements StatusBar{
 	public void saveOperation() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public int upStreamMark() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
