@@ -19,7 +19,6 @@ public interface PluginFeature {
 	 * 与源文件接触的第一个插件返回的上游代码就是 {@link #IO_NoUpStream} 
 	 * */
 	final static int IO_NoUpStream=0x24;
-	final static int IO_BinaryModel = 0x20;
 	final static int IO_TextModel = 0x21;
 	final static int IO_TreeModel = 0x22;
 	final static int IO_StyleModel = 0x23;

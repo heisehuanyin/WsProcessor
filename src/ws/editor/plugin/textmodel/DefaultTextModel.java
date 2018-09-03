@@ -3,17 +3,15 @@ package ws.editor.plugin.textmodel;
 import javax.swing.JMenu;
 
 import ws.editor.WsProcessor;
-import ws.editor.plugin.BinaryModel;
 import ws.editor.plugin.TextModel;
 
 public class DefaultTextModel extends AbstractTextModel {
 
 	@Override
-	public TextModel openTextModel(WsProcessor core, BinaryModel plugin) {
+	public TextModel openTextModel(WsProcessor core, String filePath) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 	@Override
 	public int getRowsIndex() {

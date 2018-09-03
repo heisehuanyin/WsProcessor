@@ -7,9 +7,9 @@ public interface TextModel extends PluginFeature {
 	/**
 	 * 获取内容，构建一个数据模型
 	 * @param core TODO
-	 * @param plugin 上游插件类型
+	 * @param filePath 上游插件类型
 	 * @return 数据模型*/
-	TextModel openTextModel(WsProcessor core, PluginFeature plugin);
+	TextModel openTextModel(WsProcessor core, String filePath);
 	
 	/**
 	 * 获取当前行号

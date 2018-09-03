@@ -203,9 +203,6 @@ public class PluginManager {
 			case PluginFeature.Service_LogPort:
 				System.out.print("PluginFeature.Service_LogPort[" + aplugin.pluginMark() + "]\\");
 				break;
-			case PluginFeature.IO_BinaryModel:
-				System.out.print("PluginFeature.IO_BinaryModel[" + aplugin.pluginMark() + "]\\");
-				break;
 			case PluginFeature.IO_TextModel:
 				System.out.print("PluginFeature.IO_TextModel[" + aplugin.pluginMark() + "]\\");
 				break;
