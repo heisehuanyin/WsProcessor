@@ -29,5 +29,10 @@ public interface TextModel extends PluginFeature {
 	 * @param str 指定内容*/
 	void updateLine(int index, String str);
 
+	/**
+	 * 将指定内容插入特定行位
+	 * @param index 指定行序
+	 * @param str 特定内容*/
+	void insertLine(int index, String str);
 	
 }

@@ -92,4 +92,9 @@ public class DefaultTextModel extends AbstractTextModel {
 		}
 	}
 
+	@Override
+	public void insertLine(int index, String str) {
+		this.content.add(index, str);
+	}
+
 }
