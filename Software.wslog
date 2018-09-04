@@ -1,4 +1,5 @@
 Log:ws.editor.PluginManager:[printEcho]PluginFeature.IO_FileSymbo:32	Name:ws.editor.plugin.filesymbo.DefaultFileSymbo	Upstream:36
 Log:ws.editor.PluginManager:[printEcho]PluginFeature.IO_TextModel:33	Name:ws.editor.plugin.textmodel.DefaultTextModel	Upstream:32
+Log:ws.editor.PluginManager:[printEcho]PluginFeature.IO_TreeModel:34	Name:ws.editor.plugin.treemodel.DefaultProjectModel	Upstream:32
 Log:ws.editor.PluginManager:[printEcho]PluginFeature.Service_ConfigPort:64	Name:ws.editor.plugin.configport.DefaultConfigPort	Upstream:36
 Log:ws.editor.PluginManager:[printEcho]PluginFeature.Service_LogPort:65	Name:ws.editor.plugin.logport.DefaultLogPort	Upstream:36

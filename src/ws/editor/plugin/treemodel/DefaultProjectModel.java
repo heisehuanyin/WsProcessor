@@ -50,8 +50,10 @@ public class DefaultProjectModel extends AbstractProjectModel {
 
 		Element root = doc.getDocumentElement();
 		this.mNode = new SimpleGroupNode(this, root);
-		this.mNode.setKeyValue(NodeSymbo.NodeName_Key, root.getAttribute(DefaultProjectModel.XML_ATTR_NODENAME));
-		this.mNode.setKeyValue(SimpleFileNode.FILEPATH, root.getAttribute(DefaultProjectModel.XML_ATTR_NODEFILEPATH));
+		this.mNode.setKeyValue(NodeSymbo.NodeName_Key, 
+				root.getAttribute(DefaultProjectModel.XML_ATTR_NODENAME));
+		this.mNode.setKeyValue(SimpleFileNode.FILEPATH, 
+				root.getAttribute(DefaultProjectModel.XML_ATTR_NODEFILEPATH));
 		this.mNode.setKeyValue(SimpleFileNode.FILEENCODING,
 				root.getAttribute(DefaultProjectModel.XML_ATTR_NODEENCODING));
 

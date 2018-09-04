@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import ws.editor.plugin.ConfigPort;
 import ws.editor.plugin.FileSymbo;
 import ws.editor.plugin.LogPort;
 import ws.editor.plugin.TextModel;
+import ws.editor.plugin.TreeModel;
 import ws.editor.plugin.bak.PMenuBar;
 import ws.editor.plugin.bak.ToolsBar;
 import ws.editor.plugin.filesymbo.DefaultFileSymbo;
@@ -210,6 +212,25 @@ public class PluginManager {
 		
 		return rtn;
 	}
+	
+	public TreeModel instance_GetTreeModelAsDescription(String f_id, String url, PluginFeature upStream) {
+		List<PluginFeature> cList = this.instance_GetExistsChannelList(url);
+		if(cList != null)
+			for(PluginFeature x:cList) {
+				if(x.getClass().getName().equals(f_id)) 
+					return (TreeModel) x;
+			}
+		PluginFeature f = this.factory_GetExistsfactory(f_id);
+		if(f == null) {
+			this.schedule.service_GetDefaultLogPort().errorLog(this, "参数f_id错误，未能找到注册插件----"+f_id );
+			System.exit(0);
+		}
+		
+		TreeModel rtn = ((TreeModel)f).openTreeModel(this.schedule, upStream);
+		this.instance_RegisterPluginInstance(url, rtn);
+		
+		return rtn;
+	}
 
 	// UI
 	// Component==================================================================
@@ -253,6 +274,9 @@ public class PluginManager {
 				break;
 			case PluginFeature.IO_FileSymbo:
 				this.printInfo(aplugin, "PluginFeature.IO_FileSymbo");
+				break;
+			case PluginFeature.IO_TreeModel:
+				this.printInfo(aplugin, "PluginFeature.IO_TreeModel");
 				break;
 
 			default:

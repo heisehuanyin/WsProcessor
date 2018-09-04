@@ -18,6 +18,7 @@ import ws.editor.plugin.logport.DefaultLogPort;
 import ws.editor.plugin.menubar.WMenuBar;
 import ws.editor.plugin.textmodel.DefaultTextModel;
 import ws.editor.plugin.toolsbar.WToolsBar;
+import ws.editor.plugin.treemodel.DefaultProjectModel;
 import ws.editor.plugin.window.AbstractFrontWindow;
 import ws.editor.plugin.window.DefaultFrontWindow;
 
@@ -130,6 +131,7 @@ public class WsProcessor {
 		this.service_RegisterPlugin(new DefaultLogPort());
 		this.service_RegisterPlugin(new DefaultConfigPort());
 		this.service_RegisterPlugin(new DefaultTextModel());
+		this.service_RegisterPlugin(new DefaultProjectModel());
 	}
 
 	/**
