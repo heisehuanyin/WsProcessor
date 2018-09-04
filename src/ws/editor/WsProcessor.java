@@ -82,11 +82,6 @@ public class WsProcessor {
 	}
 	
 	/**
-	 * 返回对当前打开的项目组成的工作区视图模型*/
-	public void service_GetWorkspaceTreeModel() {
-		
-	}
-	/**
 	 * 操作文件选择对话框
 	 * @param target_type 针对的文件目标类型：
 	 * File（JFileChooser.FILE_ONLY）,
@@ -94,7 +89,7 @@ public class WsProcessor {
 	 * File&Directory(JFileChooser.FILE_AND_DIRECTORY)
 	 * @param dialog_type 对话框类型：
 	 * 保存对话框（JFileChooser.SAVE_DIALOG）
-	 * 保存对话框（JFileChooser.OPEN_DIALOG）
+	 * 选择对话框（JFileChooser.OPEN_DIALOG）
 	 * @return 选中的文件*/
 	public File service_FileChooserOperate(int target_type, int dialog_type) {
 		this.chooser.setFileSelectionMode(target_type);
