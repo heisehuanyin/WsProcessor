@@ -9,7 +9,7 @@ import javax.swing.JMenuBar;
 
 import ws.editor.WsProcessor;
 import ws.editor.common.PluginFeature;
-import ws.editor.plugin.FrontWindow;
+import ws.editor.plugin.bak.FrontWindow;
 
 public abstract class AbstractFrontWindow extends JFrame implements FrontWindow{
 

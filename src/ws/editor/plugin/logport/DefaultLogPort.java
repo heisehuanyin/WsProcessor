@@ -114,4 +114,12 @@ public class DefaultLogPort extends AbstractLogPort{
 			return new JMenu(this.getClass().getName());
 		}
 
+
+		@Override
+		public void echoLog(Object obj, String msg) {
+			System.out.println(msg);
+			msg = "[printEcho]" + msg;
+			this.writeLog(obj, msg);
+		}
+
 }

@@ -1,4 +1,4 @@
-package ws.editor.plugin;
+package ws.editor.plugin.bak;
 
 import ws.editor.common.PluginFeature;
 

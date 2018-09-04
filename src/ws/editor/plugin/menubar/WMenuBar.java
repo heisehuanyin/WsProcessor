@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.swing.JMenu;
 import ws.editor.WsProcessor;
 import ws.editor.common.PluginFeature;
-import ws.editor.plugin.PMenuBar;
+import ws.editor.plugin.bak.PMenuBar;
 
 public class WMenuBar extends PMenuBar{
 	private String mbid = this.getClass().getName();

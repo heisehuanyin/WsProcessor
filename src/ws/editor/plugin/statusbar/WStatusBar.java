@@ -2,7 +2,7 @@ package ws.editor.plugin.statusbar;
 
 import javax.swing.JMenu;
 
-import ws.editor.plugin.StatusBar;
+import ws.editor.plugin.bak.StatusBar;
 
 public class WStatusBar implements StatusBar{
 

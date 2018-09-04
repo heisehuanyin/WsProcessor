@@ -12,7 +12,7 @@ public interface LogPort extends PluginFeature {
 	LogPort createNewPort(String path);
 
 	/**
-	 * 写log信息接口,每次调用接口，将log信息按照规定格式写入log文件
+	 * 写log信息接口,每次调用接口，将log信息按照规定格式写入log文件，屏幕无显示
 	 * @param obj 写信息的对象
 	 * @param msg 具体信息*/
 	void writeLog(Object obj, String msg);
@@ -22,4 +22,10 @@ public interface LogPort extends PluginFeature {
 	 * @param obj 写信息的对象
 	 * @param msg 具体信息*/
 	void errorLog(Object obj, String msg);
+	
+	/**
+	 * 输出信息，上屏，写入log文件
+	 * @param obj 写信息的对象
+	 * @param msg 具体信息*/
+	void echoLog(Object obj, String msg);
 }

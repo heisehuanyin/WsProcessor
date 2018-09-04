@@ -27,9 +27,9 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 import ws.editor.WsProcessor;
 import ws.editor.common.ItemsKey;
 import ws.editor.common.PluginFeature;
-import ws.editor.plugin.PMenuBar;
-import ws.editor.plugin.StatusBar;
-import ws.editor.plugin.ToolsBar;
+import ws.editor.plugin.bak.PMenuBar;
+import ws.editor.plugin.bak.StatusBar;
+import ws.editor.plugin.bak.ToolsBar;
 
 /**
  * 界面窗口，用于摆放各种控件和面板*/

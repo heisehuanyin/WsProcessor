@@ -11,7 +11,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import ws.editor.common.PluginFeature;
 import ws.editor.plugin.ConfigPort;
 import ws.editor.plugin.LogPort;
-import ws.editor.plugin.PMenuBar;
+import ws.editor.plugin.bak.PMenuBar;
 import ws.editor.plugin.configport.DefaultConfigPort;
 import ws.editor.plugin.logport.DefaultLogPort;
 import ws.editor.plugin.menubar.WMenuBar;

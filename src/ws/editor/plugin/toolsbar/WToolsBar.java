@@ -12,8 +12,8 @@ import javax.swing.JToolBar;
 
 import ws.editor.WsProcessor;
 import ws.editor.common.PluginFeature;
-import ws.editor.plugin.PMenuBar;
-import ws.editor.plugin.ToolsBar;
+import ws.editor.plugin.bak.PMenuBar;
+import ws.editor.plugin.bak.ToolsBar;
 
 public class WToolsBar extends JToolBar implements ToolsBar{
 	private String t_id = this.getClass().getName();

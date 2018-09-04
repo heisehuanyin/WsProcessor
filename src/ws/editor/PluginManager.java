@@ -12,8 +12,8 @@ import ws.editor.common.ItemsKey;
 import ws.editor.common.PluginFeature;
 import ws.editor.plugin.ConfigPort;
 import ws.editor.plugin.LogPort;
-import ws.editor.plugin.PMenuBar;
-import ws.editor.plugin.ToolsBar;
+import ws.editor.plugin.bak.PMenuBar;
+import ws.editor.plugin.bak.ToolsBar;
 import ws.editor.plugin.logport.AbstractLogPort;
 import ws.editor.plugin.window.AbstractFrontWindow;
 
