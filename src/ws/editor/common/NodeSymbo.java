@@ -1,4 +1,9 @@
 package ws.editor.common;
+
+import javax.swing.JPopupMenu;
+
+import ws.editor.plugin.TreeModel;
+
 /**
  * 本接口用于TreeModel，自定义类型，主要拥有以下功能<br>
  * 1.构建树模型，提供图标和标题<br>
@@ -7,6 +12,11 @@ package ws.editor.common;
 public interface NodeSymbo{
 	public final static int KindGroup = 0;
 	public final static int KindNode = 1;
+	
+	/**
+	 * 获取该节点绑定的{@link TreeModel}
+	 * @return 绑定的{@link TreeModel}*/
+	TreeModel getModel();
 	
 	/**
 	 * 设置键值对,所有的内容都是由键值对存储的
@@ -30,6 +40,8 @@ public interface NodeSymbo{
 	 * 获取实例种类
 	 * @return 种类*/
 	int kind();
+	
+	
 
 	/**
 	 * 文件被添加到集合节点之后，可以用它初始化父节点
@@ -40,4 +52,10 @@ public interface NodeSymbo{
 	 * 文件被添加到集合节点之后，可以用它获取父节点
 	 * @reture 父节点*/
 	GroupSymbo getParent();
+	
+	
+	/**
+	 * 获取内置弹出菜单
+	 * @return 弹出菜单*/
+	JPopupMenu getPopupMenu();
 }

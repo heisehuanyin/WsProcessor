@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import javax.swing.JMenu;
 
 import ws.editor.WsProcessor;
+import ws.editor.common.PluginFeature;
 import ws.editor.plugin.TextModel;
+import ws.editor.plugin.FileSymbo;
 
 public class DefaultTextModel extends AbstractTextModel {
 	private ArrayList<String> content = new ArrayList<>();
@@ -35,12 +37,12 @@ public class DefaultTextModel extends AbstractTextModel {
 	}
 
 	@Override
-	public TextModel openTextModel(WsProcessor core, String filePath) {
+	public TextModel openTextModel(WsProcessor core, PluginFeature upStream) {
 		DefaultTextModel rtn = new DefaultTextModel();
-		rtn.filePath = filePath;
+		rtn.filePath = ((FileSymbo)upStream).getFilePath();
 
 		try {
-			rtn.popAllText(new BufferedReader(new InputStreamReader(new FileInputStream(filePath), "UTF-8")));
+			rtn.popAllText(new BufferedReader(new InputStreamReader(new FileInputStream(this.filePath), "UTF-8")));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -1,9 +1,9 @@
-package ws.editor.plugin.pjt_manager;
+package ws.editor.plugin.treemodel;
 
 import ws.editor.common.PluginFeature;
-import ws.editor.plugin.ProjectModel;
+import ws.editor.plugin.TreeModel;
 
-public abstract class AbstractProjectModel implements ProjectModel {
+public abstract class AbstractProjectModel implements TreeModel {
 
 	@Override
 	public int pluginMark() {
@@ -14,5 +14,7 @@ public abstract class AbstractProjectModel implements ProjectModel {
 	public int upStreamMark() {
 		return PluginFeature.IO_NoUpStream;
 	}
+	
+	
 
 }

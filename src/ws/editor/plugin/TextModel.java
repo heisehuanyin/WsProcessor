@@ -6,10 +6,10 @@ import ws.editor.common.PluginFeature;
 public interface TextModel extends PluginFeature {
 	/**
 	 * 获取内容，构建一个数据模型
-	 * @param core TODO
-	 * @param filePath 上游插件类型
+	 * @param core 核心模块
+	 * @param upStream 上游模型插件
 	 * @return 数据模型*/
-	TextModel openTextModel(WsProcessor core, String filePath);
+	TextModel openTextModel(WsProcessor core, PluginFeature upStream);
 	
 	/**
 	 * 获取内容行总数

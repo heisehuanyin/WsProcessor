@@ -13,6 +13,7 @@ import ws.editor.plugin.ConfigPort;
 import ws.editor.plugin.LogPort;
 import ws.editor.plugin.bak.PMenuBar;
 import ws.editor.plugin.configport.DefaultConfigPort;
+import ws.editor.plugin.filesymbo.DefaultFileSymbo;
 import ws.editor.plugin.logport.DefaultLogPort;
 import ws.editor.plugin.menubar.WMenuBar;
 import ws.editor.plugin.textmodel.DefaultTextModel;
@@ -125,6 +126,7 @@ public class WsProcessor {
 	 * 初始化静默模式默认的组件,能够保证最低限度的正常使用*/
 	private void operate_InitDefaultSilentPlugin() {
 		this.addShutDownHook();
+		this.service_RegisterPlugin(new DefaultFileSymbo());
 		this.service_RegisterPlugin(new DefaultLogPort());
 		this.service_RegisterPlugin(new DefaultConfigPort());
 		this.service_RegisterPlugin(new DefaultTextModel());

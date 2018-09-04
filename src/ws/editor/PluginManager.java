@@ -10,10 +10,12 @@ import java.util.Set;
 
 import ws.editor.common.PluginFeature;
 import ws.editor.plugin.ConfigPort;
+import ws.editor.plugin.FileSymbo;
 import ws.editor.plugin.LogPort;
 import ws.editor.plugin.TextModel;
 import ws.editor.plugin.bak.PMenuBar;
 import ws.editor.plugin.bak.ToolsBar;
+import ws.editor.plugin.filesymbo.DefaultFileSymbo;
 import ws.editor.plugin.window.AbstractFrontWindow;
 
 /**
@@ -166,13 +168,29 @@ public class PluginManager {
 
 		return writer;
 	}
+	public FileSymbo instance_GetFileSymbo(String path) {
+		ArrayList<PluginFeature> cList = this.instance_GetExistsChannelList(path);
+		if (cList != null)
+			for(PluginFeature x:cList) {
+				if(x.getClass().getName().equals(DefaultFileSymbo.class.getName()))
+					return (FileSymbo) x;
+			}
+		
+		PluginFeature f = this.factory_GetExistsfactory(DefaultFileSymbo.class.getName());
+		FileSymbo rtn = ((FileSymbo)f).openFileModel(path);
+		this.instance_RegisterPluginInstance(path, rtn);
+		
+		return rtn;
+	}
 
 	/**
 	 * 根据提供的factory_id，获取插件实例<br>
 	 * 首先搜寻是否存在实例，如果存在返回实例，不存在的话注册新实例
 	 * @param f_id 插件id-插件类名
-	 * @param url 通道标识，插件分组标识*/
-	public TextModel instance_GetTextModelAsDescription(String f_id,String url) {
+	 * @param url 通道标识，插件分组标识
+	 * @param upStream 上游插件
+	 * @return 正确的插件实例*/
+	public TextModel instance_GetTextModelAsDescription(String f_id, String url, PluginFeature upStream) {
 		ArrayList<PluginFeature> cList = this.instance_GetExistsChannelList(url);
 		
 		if(cList != null)
@@ -187,7 +205,7 @@ public class PluginManager {
 			System.exit(0);
 		}
 		
-		TextModel rtn = ((TextModel)f).openTextModel(schedule, url);
+		TextModel rtn = ((TextModel)f).openTextModel(schedule, upStream);
 		this.instance_RegisterPluginInstance(url, rtn);
 		
 		return rtn;
@@ -232,6 +250,9 @@ public class PluginManager {
 				break;
 			case PluginFeature.IO_TextModel:
 				this.printInfo(aplugin, "PluginFeature.IO_TextModel");
+				break;
+			case PluginFeature.IO_FileSymbo:
+				this.printInfo(aplugin, "PluginFeature.IO_FileSymbo");
 				break;
 
 			default:

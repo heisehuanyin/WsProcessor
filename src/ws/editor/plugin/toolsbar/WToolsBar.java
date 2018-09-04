@@ -21,7 +21,7 @@ public class WToolsBar extends JToolBar implements ToolsBar{
 
 	@Override
 	public int pluginMark() {
-		return PluginFeature.Tools_Plugin;
+		return 0;
 	}
 
 	@Override

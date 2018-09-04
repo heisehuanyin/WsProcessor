@@ -12,7 +12,7 @@ public abstract class AbstractTextModel implements TextModel {
 
 	@Override
 	public int upStreamMark() {
-		return PluginFeature.IO_NoUpStream;
+		return PluginFeature.IO_FileSymbo;
 	}
 	
 }
