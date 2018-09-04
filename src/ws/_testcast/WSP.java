@@ -9,7 +9,7 @@ public class WSP {
 
 	private void openCtlModel() {
 		wsp = new WsProcessor();
-		wsp.operate_SilentModel();
+		wsp.operate_OpenSilentModel();
 		
 		
 		Scanner s = new Scanner(System.in);
@@ -18,13 +18,9 @@ public class WSP {
 			if (cmd.equals("exit();"))
 				return;
 			if(cmd.equals("pluginList();"))
-				this.printPlugin();
+				this.wsp.service_GetPluginManager().service_printPluginList();
 		}
 	}
-	private void printPlugin() {
-		this.wsp.service_GetPluginManager().service_printPluginList();
-	}
-
 
 	private void openSourceModel() {
 		// TODO 程序的外源程序处理需要设计

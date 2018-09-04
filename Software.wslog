@@ -1,3 +1,3 @@
-Error:ws.editor.PluginManage:未注册ws.editor._plugin_define.FrontWindowws.editor.window.SimpleWindow实例
-Error:ws.editor.PluginManage:未注册ws.editor._plugin_define.PMenuBarws.editor.menubar.WMenuBar实例
-Error:ws.editor.PluginManage:未注册ws.editor._plugin_define.ToolsBarws.editor.toolsbar.WToolsBar实例
+Log:ws.editor.PluginManager:[printEcho]PluginFeature.IO_TextModel:33	Name:ws.editor.plugin.textmodel.DefaultTextModel	Upstream:36
+Log:ws.editor.PluginManager:[printEcho]PluginFeature.Service_ConfigPort:64	Name:ws.editor.plugin.configport.DefaultConfigPort	Upstream:36
+Log:ws.editor.PluginManager:[printEcho]PluginFeature.Service_LogPort:65	Name:ws.editor.plugin.logport.DefaultLogPort	Upstream:36

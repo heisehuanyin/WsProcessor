@@ -8,7 +8,7 @@ public abstract class AbstractConfigPort implements ConfigPort{
 
 	@Override
 	public int pluginMark() {
-		return PluginFeature.Service_ConfigUnit;
+		return PluginFeature.Service_ConfigPort;
 	}
 	
 	@Override

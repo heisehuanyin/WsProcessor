@@ -15,6 +15,7 @@ import ws.editor.plugin.bak.PMenuBar;
 import ws.editor.plugin.configport.DefaultConfigPort;
 import ws.editor.plugin.logport.DefaultLogPort;
 import ws.editor.plugin.menubar.WMenuBar;
+import ws.editor.plugin.textmodel.DefaultTextModel;
 import ws.editor.plugin.toolsbar.WToolsBar;
 import ws.editor.plugin.window.AbstractFrontWindow;
 import ws.editor.plugin.window.DefaultFrontWindow;
@@ -26,9 +27,7 @@ public class WsProcessor {
 	private AbstractFrontWindow fwin = null;
 	private JFileChooser chooser = new JFileChooser();
 	
-	public WsProcessor (){
-		this.service_RegisterPlugin(new DefaultLogPort());
-	}
+	public WsProcessor (){}
 	
 	
 	//=service========================================================================
@@ -49,17 +48,17 @@ public class WsProcessor {
 
 	
 	/**
-	 * 获取配置好的log输出接口
+	 * 获取默认的log输出接口,每次启动加载的{@link LogPort}都是最后加载的同一种插件，输出格式相同。
 	 * @return 默认的log输出接口*/
 	public LogPort service_GetDefaultLogPort() {
-		return this.manager.instance_GetAvailableLogPort(this.wsProcessor_logPath);
+		return this.manager.instance_GetLogPort(this.wsProcessor_logPath);
 	}
 	
 	/**
 	 * 获取主配置文件，每次启动加载的 {@link ConfigPort } 都是最后加载的同一种插件，输入输出的格式相同。
 	 * @return 连接向程序的主配置文件的配置端口*/
 	public ConfigPort service_GetMainConfigUnit() {
-		return this.manager.instance_GetAvailableConfigUnit(this.wsProcessor_configPath);
+		return this.manager.instance_GetConfigUnit(this.wsProcessor_configPath);
 	}
 	
 	
@@ -122,19 +121,26 @@ public class WsProcessor {
 	
 	
 	//=operate==========================================================================
+	private void operate_LoadAllPlugins() {
+		//TODO 载入特定路径的所有插件
+		
+	}
+	
 	/**
 	 * 初始化静默模式默认的组件,能够保证最低限度的正常使用*/
 	private void operate_InitDefaultSilentPlugin() {
 		this.addShutDownHook();
 		this.service_RegisterPlugin(new DefaultLogPort());
 		this.service_RegisterPlugin(new DefaultConfigPort());
+		this.service_RegisterPlugin(new DefaultTextModel());
 	}
 
 	/**
 	 * 开启静默模式：实例化Processor之后，注册各种组件之后，调用本函数可以打开静默模式*/
-	public void operate_SilentModel() {
+	public void operate_OpenSilentModel() {
 		// TODO 默认模式的设计
 		this.operate_InitDefaultSilentPlugin();
+		this.operate_LoadAllPlugins();
 	}
 
 	/**
@@ -151,6 +157,7 @@ public class WsProcessor {
 	 * 开启图形模式：实例化Processor之后，注册各种组件之后，调用本函数可以打开图形界面*/
 	public void operate_OpenGraphicMode() {
 		this.operate_InitDefaultGraphicPlugin();
+		this.operate_LoadAllPlugins();
 		
 		/*if(System.getProperty("os.name").indexOf("Mac") != -1)
 			System.setProperty("apple.laf.useScreenMenuBar", "true");*/
@@ -208,7 +215,7 @@ public class WsProcessor {
 		if(args.length > 1 && args[0].equals("-s")) {
 			//TODO 程序的静默处理需要设计
 			WsProcessor proc = new WsProcessor();
-			proc.operate_SilentModel();
+			proc.operate_OpenSilentModel();
 			
 			System.out.println("静默处理");
 		}else {

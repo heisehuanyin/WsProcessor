@@ -1,8 +1,9 @@
 #config items as list
-#Thu Aug 23 20:46:53 CST 2018
+#Tue Sep 04 10:36:20 CST 2018
 editor.window.description=ws.editor._plugin_define.FrontWindowws.editor.window.SimpleWindow
 editor.window.width=1382
 editor.binaryport.description=ws.editor._plugin_define.ContentPortws.editor.contentport.BinaryDiskFileAccess
 editor.window.height=877
 editor.menubar.description=ws.editor._plugin_define.PMenuBarws.editor.menubar.WMenuBar
 editor.toolsbar.description=ws.editor._plugin_define.ToolsBarws.editor.toolsbar.WToolsBar
+editor.logport.default=ws.editor.plugin.logport.AbstractLogPort

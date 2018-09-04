@@ -26,7 +26,7 @@ public interface PluginFeature {
 	final static int Tools_Plugin = 0x30;
 	final static int Tools_Convert = 0x31;
 	
-	final static int Service_ConfigUnit = 0x40;
+	final static int Service_ConfigPort = 0x40;
 	final static int Service_LogPort = 0x41;
 	
 	/**

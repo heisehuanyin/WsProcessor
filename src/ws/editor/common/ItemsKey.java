@@ -9,8 +9,6 @@ public class ItemsKey {
 	public static final String VoidFilePath_Value = "voidfile_wsdifined";
 
 	
-	public final static String LogPortConfig = "editor.logport.default";
-	
 	
 	
 	public final static String WindowWidth = "editor.window.width";

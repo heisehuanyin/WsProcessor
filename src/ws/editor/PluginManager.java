@@ -8,13 +8,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import ws.editor.common.ItemsKey;
 import ws.editor.common.PluginFeature;
 import ws.editor.plugin.ConfigPort;
 import ws.editor.plugin.LogPort;
+import ws.editor.plugin.TextModel;
 import ws.editor.plugin.bak.PMenuBar;
 import ws.editor.plugin.bak.ToolsBar;
-import ws.editor.plugin.logport.AbstractLogPort;
 import ws.editor.plugin.window.AbstractFrontWindow;
 
 /**
@@ -24,39 +23,37 @@ public class PluginManager {
 	private Map<String, PluginFeature> factoryContainer = new HashMap<>();
 	private Map<String, ArrayList<PluginFeature>> instances = new HashMap<>();
 	private WsProcessor schedule;
-	private String configUnitId;
+	private String onlyoneCfgportF_id;
+	private String onlyoneLogportF_id;
 
 	public PluginManager(WsProcessor sch) {
 		this.schedule = sch;
 	}
 
 	/**
-	 * 注册工厂类
+	 * 注册插件
 	 * 
 	 * @param obj
 	 *            工厂类实例，用于获取新实例，除了占位本身无实际意义
 	 */
 	public void factory_RegisterPlugin(PluginFeature obj) {
-		if (obj.pluginMark() == PluginFeature.Service_ConfigUnit)
-			this.configUnitId = obj.getClass().getName();
+		if (obj.pluginMark() == PluginFeature.Service_ConfigPort)
+			this.onlyoneCfgportF_id = obj.getClass().getName();
+		if(obj.pluginMark() == PluginFeature.Service_LogPort)
+			this.onlyoneLogportF_id = obj.getClass().getName();
 
 		this.factoryContainer.put(obj.getClass().getName(), obj);
 	}
 
 	/**
-	 * 获取注册工厂类
+	 * 获取注册工厂类,如果指定工厂类未注册，返回null
 	 * 
 	 * @param id_factory
 	 *            唯一标志
-	 * @return 工厂类，用于构建新实例
+	 * @return 工厂类，用于构建新实例，未注册则返回null
 	 */
 	private PluginFeature factory_GetExistsfactory(String id_factory) {
 		PluginFeature factory = this.factoryContainer.get(id_factory);
-
-		if (factory == null) {
-			this.schedule.service_GetDefaultLogPort().errorLog(this, "未注册" + id_factory + "插件");
-			return null;
-		}
 		return factory;
 	}
 
@@ -79,6 +76,7 @@ public class PluginManager {
 		PluginFeature factory = this.factory_GetExistsfactory(factory_id);
 		if (factory == null) {
 			factory = this.factory_GetExistsfactory(defaultf_id);
+			this.schedule.service_GetDefaultLogPort().errorLog(this, "配置文件错误，插件"+factory_id+"不存在");
 		}
 		return factory;
 	}
@@ -97,7 +95,7 @@ public class PluginManager {
 	}
 
 	/**
-	 * 注册插件实例
+	 * 自动注册插件实例
 	 * 
 	 * @param url
 	 *            内容来源地址
@@ -129,19 +127,19 @@ public class PluginManager {
 	// 插件实例获取接口:基础===================================================================
 
 	/**
-	 * 获取configunit用于读取和输出配置，如果存在则获取，否则新建一个<br>
-	 * 该机制保证只有一种插件能够用来解析configfile，configunit不接受配置
+	 * 获取{@link ConfigPort}用于读取和输出配置，如果存在则获取，否则新建一个<br>
+	 * 该机制保证只有一种插件能够用来解析configfile，{@link ConfigPort}不接受配置
 	 * 
 	 * @param path
-	 *            配置文件存放路径
+	 *            配置文件存放路径，插件分组依据
 	 * @return 实例
 	 */
-	public ConfigPort instance_GetAvailableConfigUnit(String path) {
+	public ConfigPort instance_GetConfigUnit(String path) {
 		ArrayList<PluginFeature> cList = this.instance_GetExistsChannelList(path);
 		if (cList != null)
 			return (ConfigPort) cList.get(0);
 
-		PluginFeature factory = this.factory_GetExistsfactory(this.configUnitId);
+		PluginFeature factory = this.factory_GetExistsfactory(this.onlyoneCfgportF_id);
 
 		ConfigPort config = ((ConfigPort) factory).createNewPort(path);
 		this.instance_RegisterPluginInstance(path, config);
@@ -150,18 +148,18 @@ public class PluginManager {
 	}
 
 	/**
-	 * 获取logport用于输出log,如果已存在指定的log则获取，否则新建一个。
-	 * 
+	 * 获取{@link LogPort}用于输出log,如果已存在指定的{@link LogPort}则获取，否则新建一个。<br>
+	 * 该机制保证只有一种插件能够输出log，保证每次启动输出的log文件格式相同，{@link LogPort}不接受配置
 	 * @param path
-	 *            log文件路径
+	 *            log文件路径，插件分组依据
 	 * @return 实例
 	 */
-	public LogPort instance_GetAvailableLogPort(String path) {
+	public LogPort instance_GetLogPort(String path) {
 		ArrayList<PluginFeature> cList = this.instance_GetExistsChannelList(path);
 		if (cList != null)
-			return (AbstractLogPort) cList.get(0);
+			return (LogPort) cList.get(0);
 
-		PluginFeature factory = this.factory_GetConfigComp(ItemsKey.LogPortConfig, AbstractLogPort.class.getName());
+		PluginFeature factory = this.factory_GetExistsfactory(this.onlyoneLogportF_id);
 
 		LogPort writer = ((LogPort) factory).createNewPort(path);
 		this.instance_RegisterPluginInstance(path, writer);
@@ -170,7 +168,30 @@ public class PluginManager {
 	}
 
 	/**
-	 * */
+	 * 根据提供的factory_id，获取插件实例<br>
+	 * 首先搜寻是否存在实例，如果存在返回实例，不存在的话注册新实例
+	 * @param f_id 插件id-插件类名
+	 * @param url 通道标识，插件分组标识*/
+	public TextModel instance_GetTextModelAsDescription(String f_id,String url) {
+		ArrayList<PluginFeature> cList = this.instance_GetExistsChannelList(url);
+		
+		if(cList != null)
+			for(PluginFeature x:cList) {
+				if(x.getClass().getName().equals(f_id))
+					return (TextModel) x;
+			}
+		
+		PluginFeature f = this.factory_GetExistsfactory(f_id);
+		if(f == null) {
+			this.schedule.service_GetDefaultLogPort().errorLog(this, "参数f_id错误，未能找到注册插件----"+f_id );
+			System.exit(0);
+		}
+		
+		TextModel rtn = ((TextModel)f).openTextModel(schedule, url);
+		this.instance_RegisterPluginInstance(url, rtn);
+		
+		return rtn;
+	}
 
 	// UI
 	// Component==================================================================
@@ -189,32 +210,44 @@ public class PluginManager {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
+	
+	// Service
+	// =============================================================================
 
 	public void service_printPluginList() {
 		Collection<PluginFeature> x = this.factoryContainer.values();
 		ArrayList<PluginFeature> alist = new ArrayList<PluginFeature>(x);
 		Collections.sort(alist, new SortByMark());
-		System.out.println("PluginFeature.IO_NoUpStream[" + PluginFeature.IO_NoUpStream + "]");
+		System.out.println("已载入插件如下============");
+		System.out.println("空插件标识：PluginFeature.IO_NoUpStream:" + PluginFeature.IO_NoUpStream );
 		for (PluginFeature aplugin : alist) {
 			switch (aplugin.pluginMark()) {
-			case PluginFeature.Service_ConfigUnit:
-				System.out.print("PluginFeature.Service_ConfigUnit[" + aplugin.pluginMark() + "]\\");
+			case PluginFeature.Service_ConfigPort:
+				this.printInfo(aplugin, "PluginFeature.Service_ConfigPort");
 				break;
 			case PluginFeature.Service_LogPort:
-				System.out.print("PluginFeature.Service_LogPort[" + aplugin.pluginMark() + "]\\");
+				this.printInfo(aplugin, "PluginFeature.Service_LogPort");
 				break;
 			case PluginFeature.IO_TextModel:
-				System.out.print("PluginFeature.IO_TextModel[" + aplugin.pluginMark() + "]\\");
+				this.printInfo(aplugin, "PluginFeature.IO_TextModel");
 				break;
 
-			default: {
-				System.out.print("UnRecognizedPlugin[" + aplugin.pluginMark() + "]\\");
+			default:
+				this.printInfo(aplugin, "UnrecognizedPlugin");
 				break;
+			
 			}
-			}
-			System.out.print("Name:" + aplugin.getClass().getName());
-			System.out.println("\\UpStream:" + aplugin.upStreamMark());
 		}
+	}
+	/**
+	 * 输出插件简要信息上屏，入Log，用于简化代码，增强复用效果*/
+	private void printInfo(PluginFeature plg, String typeName) {
+		String msg = typeName + ":" + plg.pluginMark() + 
+				"\tName:" + plg.getClass().getName() +
+				"\tUpstream:" + plg.upStreamMark();
+		this.schedule.service_GetDefaultLogPort().echoLog(this, msg);
 	}
 
 	private class SortByMark implements Comparator<PluginFeature> {
