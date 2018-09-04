@@ -12,7 +12,7 @@ public interface PluginFeature {
 	final static int UI_ToolBar = 0x11;
 	final static int UI_Window = 0x12;
 	final static int UI_StatusBar = 0x13;
-	final static int UI_Tabview = 0x14;
+	final static int UI_ContentView = 0x14;
 	
 	/**
 	 * 插件内部标识码

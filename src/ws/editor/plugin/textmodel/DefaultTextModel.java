@@ -99,4 +99,11 @@ public class DefaultTextModel extends AbstractTextModel {
 		this.content.add(index, str);
 	}
 
+	@Override
+	public void removeLines(int indexStart) {
+		for(int i=this.content.size();i > indexStart; --i ) {
+			this.content.remove(i-1);
+		}
+	}
+
 }

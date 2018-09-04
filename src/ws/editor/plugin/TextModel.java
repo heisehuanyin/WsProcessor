@@ -35,4 +35,9 @@ public interface TextModel extends PluginFeature {
 	 * @param str 特定内容*/
 	void insertLine(int index, String str);
 	
+	/**
+	 * 删除指定行及其之后的所有内容
+	 * @param indexStart 行序，从本行到最后一行全删*/
+	void removeLines(int indexStart);
+	
 }
