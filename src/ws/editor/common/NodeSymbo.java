@@ -12,6 +12,7 @@ import ws.editor.plugin.TreeModel;
 public interface NodeSymbo{
 	public final static int KindGroup = 0;
 	public final static int KindNode = 1;
+	public final static String NodeName_Key = "NODE_TITLE";
 	
 	/**
 	 * 获取该节点绑定的{@link TreeModel}
@@ -20,8 +21,8 @@ public interface NodeSymbo{
 	
 	/**
 	 * 设置键值对,所有的内容都是由键值对存储的
-	 * 标题提供的提供由一个特殊的键关联 "NODE_TITLE"
-	 * 设置标题的时候也是设置 "NODE_TITLE" 关联值*/
+	 * 标题提供的提供由一个特殊的键关联 {@link #NodeName_Key}
+	 * 设置标题的时候也是设置  {@link #NodeName_Key} 关联值*/
 	void setKeyValue(String key, String value);
 	
 	/**
