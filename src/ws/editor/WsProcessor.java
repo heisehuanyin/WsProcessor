@@ -225,7 +225,6 @@ public class WsProcessor {
 		}
 		@Override
 		public void run() {
-			System.out.println("CallShutdownHook:"+this.hashCode());
 			this.s.service_SaveOperation();
 		}
 		

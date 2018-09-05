@@ -46,7 +46,6 @@ public class SingleViewWindow extends AbstractWindow{
 		
 		
 		
-		
 		this.addComponentListener(new BridgeWindowListener(this.core));
 		
 		this.setSize(Integer.parseInt(wStr), Integer.parseInt(hStr));
