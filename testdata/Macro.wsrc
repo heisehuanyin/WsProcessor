@@ -1,8 +1,7 @@
 #!/path_to_wsp
 
+
 check_plugin_and_import
 
 
 set_external_clist
-
-

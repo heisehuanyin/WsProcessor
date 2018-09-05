@@ -8,7 +8,7 @@ public class WSP {
 	private WsProcessor wsp = null;
 
 	private void openCtlModel() {
-		wsp = new WsProcessor();
+		this.wsp = (this.wsp==null)?new WsProcessor():this.wsp;
 		wsp.control_OpenSilentModel();
 
 		Scanner s = new Scanner(System.in);
@@ -19,21 +19,33 @@ public class WSP {
 			if (cmd.equals("pluginList();"))
 				this.wsp.service_GetPluginManager().service_printPluginList();
 			if (cmd.equals("pluginListG();")) {
-				this.wsp.control_OpenGraphicMode();
+				this.wsp.control_OpenGraphicMode("MainWindow");
 				this.wsp.service_GetPluginManager().service_printPluginList();
 			}
 		}
 	}
 
 	private void openGraphicsModel() {
-		wsp = new WsProcessor();
-		wsp.control_OpenGraphicMode();
+		this.wsp = (this.wsp==null)?new WsProcessor():this.wsp;
+		wsp.control_OpenGraphicMode("MainWindow");
 	}
 
 	private void openSilentModel() {
-		wsp = new WsProcessor();
+		this.wsp = (this.wsp==null)?new WsProcessor():this.wsp;
 		wsp.control_OpenSilentModel();
 	}
+	
+	private void runMacroSource(String string) {
+
+	}
+
+	private void openFile(String args1, String args0) {
+		this.wsp.service_OpenFile(args1, args0.indexOf('w')!=-1?
+				this.wsp.service_GetPluginManager()
+				.instance_GetNewDefaultWindow("MainWindow"):null);
+
+	}
+
 
 	public static void main(String[] args) {
 		System.out.println("==print args============");
@@ -64,9 +76,15 @@ public class WSP {
 
 		WSP c = new WSP();
 
+		if (args[0].indexOf('w') != -1) {
+			c.openGraphicsModel();
+		} else {
+			c.openSilentModel();
+		}
+
 		if (args.length >= 2) {
 			if (args[0].indexOf('s') != -1) {
-				c.openFile(args[1]);
+				c.openFile(args[1],args[0]);
 			}
 
 			if (args[0].indexOf('r') != -1) {
@@ -74,23 +92,6 @@ public class WSP {
 			}
 		}
 		
-		if (args[0].indexOf('w') != -1) {
-			c.openGraphicsModel();
-		} else {
-			c.openSilentModel();
-		}
-
-	}
-
-	private void runMacroSource(String string) {
-		// TODO Auto-generated method stub
-
-	}
-
-	private void openFile(String string) {
-		this.openSilentModel();
-		this.wsp.service_OpenFile(string, null);
-
 	}
 
 }

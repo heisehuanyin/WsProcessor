@@ -55,9 +55,10 @@ public class SingleViewWindow extends AbstractWindow{
 	
 	@Override
 	public void placeView(String viewTitle, ContentView comp) {
-		this.setTitle("SingleViewWindow - " + this.g_id + " " + viewTitle);
-		this.add(comp.getView(), BorderLayout.CENTER);
+		this.setTitle("SingleViewWindow - " + this.g_id + " - " + viewTitle);
+		this.getContentPane().add(comp.getView(), BorderLayout.CENTER);
 		this.view = comp;
+		this.validate();
 	}
 
 	@Override

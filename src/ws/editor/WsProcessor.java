@@ -18,6 +18,7 @@ import ws.editor.plugin.ContentView;
 import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.LogPort;
 import ws.editor.plugin.configport.DefaultConfigPort;
+import ws.editor.plugin.contentview.DefaultTextView;
 import ws.editor.plugin.filesymbo.DefaultFileSymbo;
 import ws.editor.plugin.logport.DefaultLogPort;
 import ws.editor.plugin.menubar.DefaultMenuBar;
@@ -119,12 +120,15 @@ public class WsProcessor {
 		}
 		String cListStr = this.instance_GetMainConfigUnit()
 				.getValue(ItemsKey.get_MODULELIST_AS_SUFFIX(regx), 
-						"ws.editor.plugin.filesymbo.DefaultFileSymbo=>ws.editor.plugin.textmodel.DefaultTextModel");
+						"ws.editor.plugin.filesymbo.DefaultFileSymbo=>"
+						+ "ws.editor.plugin.textmodel.DefaultTextModel=>"
+						+ "ws.editor.plugin.contentview.DefaultTextView");
 		
 		//source=>module1=>module2=>module3=>module4=>the last one module
 		PluginFeature x = this.service_GetPluginManager().service_BuildInstanceList(cListStr, fpath);
 		if(win != null && x.pluginMark() == PluginFeature.UI_ContentView) {
 			win.placeView(fpath, ((ContentView)x));
+			this.service_Refresh_MenuBar(win);
 		}
 	}
 	
@@ -180,12 +184,14 @@ public class WsProcessor {
 		
 		this.service_RegisterPlugin(new SingleViewWindow());
 		this.service_RegisterPlugin(new DefaultMenuBar());
+		this.service_RegisterPlugin(new DefaultTextView());
 		//this.service_RegisterPlugin(new WToolsBar());
 	}
 
 	/**
-	 * 开启图形模式：实例化Processor之后，注册各种组件之后，调用本函数可以打开图形界面*/
-	public void control_OpenGraphicMode() {
+	 * 开启图形模式：实例化Processor之后，注册各种组件之后，调用本函数可以打开图形界面
+	 * @param groupId TODO*/
+	public void control_OpenGraphicMode(String groupId) {
 		this.control_InitDefaultGraphicPlugin();
 		this.control_LoadAllPlugins();
 		
@@ -198,10 +204,8 @@ public class WsProcessor {
 			e.printStackTrace();
 		}
 		
-		this.service_GetPluginManager().instance_GetNewDefaultWindow("MainWindow");
+		this.service_GetPluginManager().instance_GetNewDefaultWindow(groupId==null?"MainWindow":groupId);
 	}
-	
-	
 	
 	
 	
@@ -221,6 +225,7 @@ public class WsProcessor {
 		}
 		@Override
 		public void run() {
+			System.out.println("CallShutdownHook:"+this.hashCode());
 			this.s.service_SaveOperation();
 		}
 		

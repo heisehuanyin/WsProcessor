@@ -107,6 +107,7 @@ public class DefaultTextModel extends AbstractTextModel {
 	@Override
 	public void removeLines(int indexStart) {
 		for(int i=this.content.size();i > indexStart; --i ) {
+			System.out.println("Remove lines:" + (i-1));
 			this.content.remove(i-1);
 		}
 	}

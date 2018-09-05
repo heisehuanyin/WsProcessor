@@ -12,13 +12,13 @@ import java.util.Set;
 import ws.editor.common.ItemsKey;
 import ws.editor.common.PluginFeature;
 import ws.editor.plugin.ConfigPort;
+import ws.editor.plugin.ContentView;
 import ws.editor.plugin.FileSymbo;
 import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.LogPort;
 import ws.editor.plugin.MenuBar;
 import ws.editor.plugin.TextModel;
 import ws.editor.plugin.TreeModel;
-import ws.editor.plugin.bak.ToolsBar;
 import ws.editor.plugin.filesymbo.DefaultFileSymbo;
 import ws.editor.plugin.menubar.DefaultMenuBar;
 import ws.editor.plugin.window.SingleViewWindow;
@@ -279,9 +279,23 @@ public class PluginManager {
 		return rtn;
 	}
 
-	public ToolsBar instance_getNewDefaultToolsBar(String string) {
-		// TODO Auto-generated method stub
-		return null;
+	public ContentView instance_GetContentView(String f_id, String url, PluginFeature upStream) {
+		List<PluginFeature> cList = this.instance_GetExistsChannelList(url);
+		if(cList != null)
+			for(PluginFeature x:cList)
+				if(x.getClass().getName().equals(f_id))
+					return (ContentView) x;
+		
+		PluginFeature f = this.factory_GetExistsfactory(f_id);
+		if (f == null) {
+			this.schedule.instance_GetDefaultLogPort().errorLog(this, "参数f_id错误，未能找到注册插件----" + f_id);
+			System.exit(0);
+		}
+		
+		ContentView rtn = ((ContentView)f).openContentView(this.schedule, upStream);
+		this.instance_RegisterPluginInstance(url, rtn);
+		
+		return rtn;
 	}
 
 	/**
@@ -336,6 +350,12 @@ public class PluginManager {
 			case PluginFeature.UI_Window:
 				this.printInfo(aplugin, "PluginFeature.UI_Window");
 				break;
+			case PluginFeature.UI_MenuBar:
+				this.printInfo(aplugin, "PluginFeature.UI_MenuBar");
+				break;
+			case PluginFeature.UI_ContentView:
+				this.printInfo(aplugin, "PluginFeature.UI_ContentView");
+				break;
 
 			default:
 				this.printInfo(aplugin, "UnrecognizedPlugin");
@@ -383,6 +403,9 @@ public class PluginManager {
 				break;
 			case PluginFeature.IO_TreeModel:
 				instance = this.instance_GetTreeModelAsDescription(f, url, instance);
+				break;
+			case PluginFeature.UI_ContentView:
+				instance = this.instance_GetContentView(f, url, instance);
 				break;
 			default:
 				this.schedule.instance_GetDefaultLogPort().echoLog(this, "未知插件，无法实例化");
