@@ -42,7 +42,7 @@ public class DefaultTextModel extends AbstractTextModel {
 		rtn.filePath = ((FileSymbo)upStream).getFilePath();
 
 		try {
-			rtn.popAllText(new BufferedReader(new InputStreamReader(new FileInputStream(this.filePath), "UTF-8")));
+			rtn.popAllText(new BufferedReader(new InputStreamReader(new FileInputStream(rtn.filePath), "UTF-8")));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -88,7 +88,12 @@ public class DefaultTextModel extends AbstractTextModel {
 					e.printStackTrace();
 				}
 			}
+			writer.flush();
+			writer.close();
 		} catch (UnsupportedEncodingException | FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

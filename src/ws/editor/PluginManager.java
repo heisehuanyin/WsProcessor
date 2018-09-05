@@ -15,11 +15,12 @@ import ws.editor.plugin.ConfigPort;
 import ws.editor.plugin.FileSymbo;
 import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.LogPort;
+import ws.editor.plugin.MenuBar;
 import ws.editor.plugin.TextModel;
 import ws.editor.plugin.TreeModel;
-import ws.editor.plugin.bak.PMenuBar;
 import ws.editor.plugin.bak.ToolsBar;
 import ws.editor.plugin.filesymbo.DefaultFileSymbo;
+import ws.editor.plugin.menubar.DefaultMenuBar;
 import ws.editor.plugin.window.SingleViewWindow;
 
 /**
@@ -45,7 +46,7 @@ public class PluginManager {
 	public void factory_RegisterPlugin(PluginFeature obj) {
 		if (obj.pluginMark() == PluginFeature.Service_ConfigPort)
 			this.onlyoneCfgportF_id = obj.getClass().getName();
-		if(obj.pluginMark() == PluginFeature.Service_LogPort)
+		if (obj.pluginMark() == PluginFeature.Service_LogPort)
 			this.onlyoneLogportF_id = obj.getClass().getName();
 
 		this.factoryContainer.put(obj.getClass().getName(), obj);
@@ -82,7 +83,7 @@ public class PluginManager {
 		PluginFeature factory = this.factory_GetExistsfactory(factory_id);
 		if (factory == null) {
 			factory = this.factory_GetExistsfactory(defaultf_id);
-			this.schedule.instance_GetDefaultLogPort().errorLog(this, "配置文件错误，插件"+factory_id+"不存在");
+			this.schedule.instance_GetDefaultLogPort().errorLog(this, "配置文件错误，插件" + factory_id + "不存在");
 		}
 		return factory;
 	}
@@ -156,6 +157,7 @@ public class PluginManager {
 	/**
 	 * 获取{@link LogPort}用于输出log,如果已存在指定的{@link LogPort}则获取，否则新建一个。<br>
 	 * 该机制保证只有一种插件能够输出log，保证每次启动输出的log文件格式相同，{@link LogPort}不接受配置
+	 * 
 	 * @param path
 	 *            log文件路径，插件分组依据
 	 * @return 实例
@@ -172,76 +174,109 @@ public class PluginManager {
 
 		return writer;
 	}
+
+	/**
+	 * 获取{@link FileSymbo}，只有一种{@link FileSymbo}
+	 * 
+	 * @param path
+	 *            文件路径
+	 * @return 返回实例
+	 */
 	public FileSymbo instance_GetFileSymbo(String path) {
 		ArrayList<PluginFeature> cList = this.instance_GetExistsChannelList(path);
 		if (cList != null)
-			for(PluginFeature x:cList) {
-				if(x.getClass().getName().equals(DefaultFileSymbo.class.getName()))
+			for (PluginFeature x : cList) {
+				if (x.getClass().getName().equals(DefaultFileSymbo.class.getName()))
 					return (FileSymbo) x;
 			}
-		
+
 		PluginFeature f = this.factory_GetExistsfactory(DefaultFileSymbo.class.getName());
-		FileSymbo rtn = ((FileSymbo)f).openFileModel(path);
+		FileSymbo rtn = ((FileSymbo) f).openFileModel(path);
 		this.instance_RegisterPluginInstance(path, rtn);
-		
+
 		return rtn;
 	}
 
 	/**
 	 * 根据提供的factory_id，获取插件实例<br>
 	 * 首先搜寻是否存在实例，如果存在返回实例，不存在的话注册新实例
-	 * @param f_id 插件id-插件类名
-	 * @param url 通道标识，插件分组标识
-	 * @param upStream 上游插件
-	 * @return 正确的插件实例*/
+	 * 
+	 * @param f_id
+	 *            插件id-插件类名
+	 * @param url
+	 *            通道标识，插件分组标识
+	 * @param upStream
+	 *            上游插件
+	 * @return 正确的插件实例
+	 */
 	public TextModel instance_GetTextModelAsDescription(String f_id, String url, PluginFeature upStream) {
 		ArrayList<PluginFeature> cList = this.instance_GetExistsChannelList(url);
-		
-		if(cList != null)
-			for(PluginFeature x:cList) {
-				if(x.getClass().getName().equals(f_id))
+
+		if (cList != null)
+			for (PluginFeature x : cList) {
+				if (x.getClass().getName().equals(f_id))
 					return (TextModel) x;
 			}
-		
+
 		PluginFeature f = this.factory_GetExistsfactory(f_id);
-		if(f == null) {
-			this.schedule.instance_GetDefaultLogPort().errorLog(this, 
-					"参数f_id错误，未能找到注册插件----"+f_id );
+		if (f == null) {
+			this.schedule.instance_GetDefaultLogPort().errorLog(this, "参数f_id错误，未能找到注册插件----" + f_id);
 			System.exit(0);
 		}
-		
-		TextModel rtn = ((TextModel)f).openTextModel(schedule, upStream);
+
+		TextModel rtn = ((TextModel) f).openTextModel(schedule, upStream);
 		this.instance_RegisterPluginInstance(url, rtn);
-		
+
 		return rtn;
 	}
-	
+
+	/**
+	 * 根据提供的factory_id，获取插件实例<br>
+	 * 首先搜寻是否存在实例，如果存在返回实例，不存在的话注册新实例
+	 * 
+	 * @param f_id
+	 *            插件id-插件类名
+	 * @param url
+	 *            通道标识，插件分组标识
+	 * @param upStream
+	 *            上游插件
+	 * @return 正确的插件实例
+	 */
 	public TreeModel instance_GetTreeModelAsDescription(String f_id, String url, PluginFeature upStream) {
 		List<PluginFeature> cList = this.instance_GetExistsChannelList(url);
-		if(cList != null)
-			for(PluginFeature x:cList) {
-				if(x.getClass().getName().equals(f_id)) 
+		if (cList != null)
+			for (PluginFeature x : cList) {
+				if (x.getClass().getName().equals(f_id))
 					return (TreeModel) x;
 			}
 		PluginFeature f = this.factory_GetExistsfactory(f_id);
-		if(f == null) {
-			this.schedule.instance_GetDefaultLogPort().errorLog(this,
-					"参数f_id错误，未能找到注册插件----"+f_id );
+		if (f == null) {
+			this.schedule.instance_GetDefaultLogPort().errorLog(this, "参数f_id错误，未能找到注册插件----" + f_id);
 			System.exit(0);
 		}
-		
-		TreeModel rtn = ((TreeModel)f).openTreeModel(this.schedule, upStream);
+
+		TreeModel rtn = ((TreeModel) f).openTreeModel(this.schedule, upStream);
 		this.instance_RegisterPluginInstance(url, rtn);
-		
+
 		return rtn;
 	}
 
 	// UI
 	// Component==================================================================
+	/**
+	 * MenuBar只用来刷新和替换原有MenuBar，因此不需要找到之前的实例，直接替代
+	 * 
+	 * @param string
+	 *            组件的GroupID
+	 * @return 实例
+	 */
+	public MenuBar instance_GetNewDefaultMenubar(String string) {
+		PluginFeature f = this.factory_GetConfigComp(ItemsKey.DefaultMenuBar, DefaultMenuBar.class.getName());
 
-	public PMenuBar instance_GetNewDefaultMenubar(String string) {
-		// TODO Auto-generated method stub
-		return null;
+		MenuBar rtn = ((MenuBar) f).getNewInstance(this.schedule);
+		this.instance_RegisterPluginInstance(string, rtn);
+
+		return rtn;
 	}
 
 	public ToolsBar instance_getNewDefaultToolsBar(String string) {
@@ -249,24 +284,29 @@ public class PluginManager {
 		return null;
 	}
 
+	/**
+	 * 获取FrontWindow
+	 * 
+	 * @param string
+	 *            组件的GroupID
+	 * @return 实例
+	 */
 	public FrontWindow instance_GetNewDefaultWindow(String string) {
-		PluginFeature f = this.factory_GetConfigComp(ItemsKey.DefaultWindow,
-				SingleViewWindow.class.getName());
-		
+		PluginFeature f = this.factory_GetConfigComp(ItemsKey.DefaultWindow, SingleViewWindow.class.getName());
+
 		List<PluginFeature> cList = this.instance_GetExistsChannelList(string);
-		if(cList != null)
-			for(PluginFeature x:cList) {
-				if(x.getClass().getName().equals(f.getClass().getName()))
+		if (cList != null)
+			for (PluginFeature x : cList) {
+				if (x.getClass().getName().equals(f.getClass().getName()))
 					return (FrontWindow) x;
 			}
-		
-		FrontWindow rtn = ((FrontWindow)f).openWindow(schedule, string);
+
+		FrontWindow rtn = ((FrontWindow) f).openWindow(schedule, string);
 		this.instance_RegisterPluginInstance(string, rtn);
-		
+
 		return rtn;
 	}
 
-	
 	// Service
 	// =============================================================================
 
@@ -275,7 +315,7 @@ public class PluginManager {
 		ArrayList<PluginFeature> alist = new ArrayList<PluginFeature>(x);
 		Collections.sort(alist, new SortByMark());
 		System.out.println("已载入插件如下============");
-		System.out.println("空插件标识：PluginFeature.IO_NoUpStream:" + PluginFeature.IO_NoUpStream );
+		System.out.println("空插件标识：PluginFeature.IO_NoUpStream:" + PluginFeature.IO_NoUpStream);
 		for (PluginFeature aplugin : alist) {
 			switch (aplugin.pluginMark()) {
 			case PluginFeature.Service_ConfigPort:
@@ -293,20 +333,24 @@ public class PluginManager {
 			case PluginFeature.IO_TreeModel:
 				this.printInfo(aplugin, "PluginFeature.IO_TreeModel");
 				break;
+			case PluginFeature.UI_Window:
+				this.printInfo(aplugin, "PluginFeature.UI_Window");
+				break;
 
 			default:
 				this.printInfo(aplugin, "UnrecognizedPlugin");
 				break;
-			
+
 			}
 		}
 	}
+
 	/**
-	 * 输出插件简要信息上屏，入Log，用于简化代码，增强复用效果*/
+	 * 输出插件简要信息上屏，入Log，用于简化代码，增强复用效果
+	 */
 	private void printInfo(PluginFeature plg, String typeName) {
-		String msg = typeName + ":" + plg.pluginMark() + 
-				"\tName:" + plg.getClass().getName() +
-				"\tUpstream:" + plg.upStreamMark();
+		String msg = typeName + ":" + plg.pluginMark() + "\tName:" + plg.getClass().getName() + "\tUpstream:"
+				+ plg.upStreamMark();
 		this.schedule.instance_GetDefaultLogPort().echoLog(this, msg);
 	}
 
@@ -319,6 +363,35 @@ public class PluginManager {
 				return 0;
 			return -1;
 		}
+	}
+
+	// source=>module1=>module2=>module3=>module4=>the last one module
+	public PluginFeature service_BuildInstanceList(String cListStr, String url) {
+		String[] modules = cListStr.split("=>");
+		PluginFeature instance = null;
+
+		for (String f : modules) {
+			PluginFeature x = this.factory_GetExistsfactory(f);
+			if (x == null)
+				break;
+			switch (x.pluginMark()) {
+			case PluginFeature.IO_FileSymbo:
+				instance = this.instance_GetFileSymbo(url);
+				break;
+			case PluginFeature.IO_TextModel:
+				instance = this.instance_GetTextModelAsDescription(f, url, instance);
+				break;
+			case PluginFeature.IO_TreeModel:
+				instance = this.instance_GetTreeModelAsDescription(f, url, instance);
+				break;
+			default:
+				this.schedule.instance_GetDefaultLogPort().echoLog(this, "未知插件，无法实例化");
+				break;
+			}
+
+		}
+
+		return instance;
 	}
 
 }

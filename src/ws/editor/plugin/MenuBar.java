@@ -1,4 +1,4 @@
-package ws.editor.plugin.bak;
+package ws.editor.plugin;
 
 import java.util.ArrayList;
 
@@ -8,20 +8,18 @@ import javax.swing.JMenuBar;
 import ws.editor.WsProcessor;
 import ws.editor.common.PluginFeature;
 
-public abstract class PMenuBar extends JMenuBar implements PluginFeature{
+public interface MenuBar extends PluginFeature {
 
 	/**
-	 * 获取特定的空白实例
+	 * 获取新的空白实例
 	 * @param schedule 调度模块
-	 * @param id 唯一标识
 	 * @return 返回新实例*/
-	public abstract PMenuBar getInstance(WsProcessor schedule, String id);
+	public abstract MenuBar getNewInstance(WsProcessor schedule);
 
 	/**
 	 * 构建MenuBar实例
 	 * @param elseMenus 刷新过程中将额外菜单加入MenuBar
 	 * @return 返回合适的实例
 	 * */
-	public abstract PMenuBar rebuildMenuBar(ArrayList<JMenu> elseMenus);
-
+	public abstract JMenuBar rebuildMenuBar(ArrayList<JMenu> elseMenus);
 }

@@ -3,18 +3,25 @@ package ws.editor.plugin.menubar;
 import java.util.ArrayList;
 
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+
 import ws.editor.WsProcessor;
 import ws.editor.common.PluginFeature;
-import ws.editor.plugin.bak.PMenuBar;
+import ws.editor.plugin.MenuBar;
 
-public class WMenuBar extends PMenuBar{
-	private String mbid = this.getClass().getName();
+public class DefaultMenuBar extends JMenuBar implements MenuBar{
 	private WsProcessor sch = null;
 
 	@Override
 	public int pluginMark() {
 		return PluginFeature.UI_MenuBar;
 	}
+	@Override
+	public int upStreamMark() {
+		return PluginFeature.IO_NoUpStream;
+	}
+	
+	
 
 	@Override
 	public JMenu getCustomMenu() {
@@ -23,16 +30,15 @@ public class WMenuBar extends PMenuBar{
 	}
 	
 	@Override
-	public PMenuBar getInstance(WsProcessor schedule, String id) {
-		WMenuBar rtn = new WMenuBar();
-		rtn.mbid = id;
+	public MenuBar getNewInstance(WsProcessor schedule) {
+		DefaultMenuBar rtn = new DefaultMenuBar();
 		rtn.sch = schedule;
 		
 		return rtn;
 	}
 	
 	@Override
-	public PMenuBar rebuildMenuBar(ArrayList<JMenu> elseMenus) {
+	public JMenuBar rebuildMenuBar(ArrayList<JMenu> elseMenus) {
 		this.removeAll();
 		if(elseMenus != null) {
 			for(JMenu i:elseMenus) {
@@ -46,16 +52,8 @@ public class WMenuBar extends PMenuBar{
 
 	@Override
 	public void saveOperation() {
-		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	public int upStreamMark() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	
 
 }

@@ -28,7 +28,7 @@ public interface FrontWindow extends PluginFeature{
 	 * 将激活视图放置在本窗体上
 	 * @param viewTitle 视图的标题，但不一定是标签页的标签
 	 * @param comp 主视图*/
-	void placeView(String viewTitle, Component comp);
+	void placeView(String viewTitle, ContentView comp);
 
 	/**
 	 * 刷新MenuBar，将额外菜单添加到菜单栏

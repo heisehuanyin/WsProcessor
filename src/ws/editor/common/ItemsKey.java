@@ -22,5 +22,7 @@ public class ItemsKey {
 	public final static String DefaultLocalPort = "editor.binaryport.description";
 	public final static String DefaultNetworkPort = "editor.networkport.description";
 	
-	
+	public static String get_MODULELIST_AS_SUFFIX(String suffix) {
+		return "editor.modulelist.suffix" + suffix;
+	}
 }

@@ -2,21 +2,25 @@ package ws.editor;
 
 import java.awt.Component;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import ws.editor.common.ItemsKey;
 import ws.editor.common.PluginFeature;
 import ws.editor.plugin.ConfigPort;
+import ws.editor.plugin.ContentView;
 import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.LogPort;
-import ws.editor.plugin.bak.PMenuBar;
 import ws.editor.plugin.configport.DefaultConfigPort;
 import ws.editor.plugin.filesymbo.DefaultFileSymbo;
 import ws.editor.plugin.logport.DefaultLogPort;
-import ws.editor.plugin.menubar.WMenuBar;
+import ws.editor.plugin.menubar.DefaultMenuBar;
 import ws.editor.plugin.textmodel.DefaultTextModel;
 import ws.editor.plugin.toolsbar.WToolsBar;
 import ws.editor.plugin.treemodel.DefaultProjectModel;
@@ -26,7 +30,6 @@ public class WsProcessor {
 	private PluginManager manager = new PluginManager(this);
 	private String wsProcessor_logPath = "."+File.separator+"Software.wslog";
 	private String wsProcessor_configPath = "."+File.separator+"Software.wscfg";
-	private FrontWindow fwin = null;
 	private JFileChooser chooser = new JFileChooser();
 	
 	public WsProcessor (){}
@@ -55,13 +58,13 @@ public class WsProcessor {
 	public void service_Refresh_MenuBar(FrontWindow win) {
 		ArrayList<JMenu> exterl = new ArrayList<>();
 		
-		exterl.addAll(this.fwin.getActivedViewsMenus());
-		exterl.add(this.fwin.getCustomMenu());
+		exterl.addAll(win.getActivedViewsMenus());
+		exterl.add(win.getCustomMenu());
 		
-		PMenuBar x = this.manager.instance_GetNewDefaultMenubar(win.getGroupId())
+		JMenuBar x = this.manager.instance_GetNewDefaultMenubar(win.getGroupId())
 				.rebuildMenuBar(exterl);
 		
-		this.fwin.service_ResetMenuBar(x);
+		win.service_ResetMenuBar(x);
 	}
 	
 	/**
@@ -86,6 +89,44 @@ public class WsProcessor {
 			return null;
 		return chooser.getSelectedFile();
 	}
+	/**
+	 * 执行保存操作
+	 */
+	public void service_SaveOperation() {
+		this.manager.operate_SaveOperation();
+	}
+
+	/**
+	 * 打开指定文件，此操作将会调用工具组成链条通道，依次打开并获取内容
+	 * @param fpath 文件路径
+	 * */
+	public void service_OpenFile(String fpath, FrontWindow win) {
+		File one = new File(fpath);
+		if(!one.exists()) {
+			this.instance_GetDefaultLogPort().errorLog(this, "文件不存在："+fpath);
+			return;
+		}
+		if(!one.isFile()) {
+			this.instance_GetDefaultLogPort().errorLog(this, "指向目标不是文件："+fpath);
+		}
+		
+		String regx = ".txt";
+		try {
+			regx = one.getCanonicalPath().substring(one.getCanonicalPath().lastIndexOf('.'));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String cListStr = this.instance_GetMainConfigUnit()
+				.getValue(ItemsKey.get_MODULELIST_AS_SUFFIX(regx), 
+						"ws.editor.plugin.filesymbo.DefaultFileSymbo=>ws.editor.plugin.textmodel.DefaultTextModel");
+		
+		//source=>module1=>module2=>module3=>module4=>the last one module
+		PluginFeature x = this.service_GetPluginManager().service_BuildInstanceList(cListStr, fpath);
+		if(win != null && x.pluginMark() == PluginFeature.UI_ContentView) {
+			win.placeView(fpath, ((ContentView)x));
+		}
+	}
 	
 	
 	//instance ========================================================
@@ -108,14 +149,14 @@ public class WsProcessor {
 	
 	
 	//=operate==========================================================================
-	private void operate_LoadAllPlugins() {
+	private void control_LoadAllPlugins() {
 		//TODO 载入特定路径的所有插件
 		
 	}
 	
 	/**
 	 * 初始化静默模式默认的组件,能够保证最低限度的正常使用*/
-	private void operate_InitDefaultSilentPlugin() {
+	private void control_InitDefaultSilentPlugin() {
 		this.addShutDownHook();
 		this.service_RegisterPlugin(new DefaultFileSymbo());
 		this.service_RegisterPlugin(new DefaultLogPort());
@@ -126,49 +167,40 @@ public class WsProcessor {
 
 	/**
 	 * 开启静默模式：实例化Processor之后，注册各种组件之后，调用本函数可以打开静默模式*/
-	public void operate_OpenSilentModel() {
+	public void control_OpenSilentModel() {
 		// TODO 默认模式的设计
-		this.operate_InitDefaultSilentPlugin();
-		this.operate_LoadAllPlugins();
+		this.control_InitDefaultSilentPlugin();
+		this.control_LoadAllPlugins();
 	}
 
 	/**
 	 * 初始化静默模式插件和图形模式插件，能够保证最低限度的正常使用*/
-	private void operate_InitDefaultGraphicPlugin() {
-		this.operate_InitDefaultSilentPlugin();
+	private void control_InitDefaultGraphicPlugin() {
+		this.control_InitDefaultSilentPlugin();
 		
 		this.service_RegisterPlugin(new SingleViewWindow());
-		this.service_RegisterPlugin(new WMenuBar());
-		this.service_RegisterPlugin(new WToolsBar());
+		this.service_RegisterPlugin(new DefaultMenuBar());
+		//this.service_RegisterPlugin(new WToolsBar());
 	}
 
 	/**
 	 * 开启图形模式：实例化Processor之后，注册各种组件之后，调用本函数可以打开图形界面*/
-	public void operate_OpenGraphicMode() {
-		this.operate_InitDefaultGraphicPlugin();
-		this.operate_LoadAllPlugins();
+	public void control_OpenGraphicMode() {
+		this.control_InitDefaultGraphicPlugin();
+		this.control_LoadAllPlugins();
 		
-		/*if(System.getProperty("os.name").indexOf("Mac") != -1)
-			System.setProperty("apple.laf.useScreenMenuBar", "true");*/
+		if(System.getProperty("os.name").indexOf("Mac") != -1)
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		FrontWindow win = this.manager.instance_GetNewDefaultWindow("mainwindow");
-		this.fwin = win;
+		this.service_GetPluginManager().instance_GetNewDefaultWindow("MainWindow");
 	}
 	
-	/**
-	 * 执行保存操作
-	 */
-	public void operate_SaveOperation() {
-		this.manager.operate_SaveOperation();
-	}
-
 	
 	
 	
@@ -189,7 +221,7 @@ public class WsProcessor {
 		}
 		@Override
 		public void run() {
-			this.s.operate_SaveOperation();
+			this.s.service_SaveOperation();
 		}
 		
 	}

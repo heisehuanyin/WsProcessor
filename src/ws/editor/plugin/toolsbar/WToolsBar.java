@@ -12,7 +12,7 @@ import javax.swing.JToolBar;
 
 import ws.editor.WsProcessor;
 import ws.editor.common.PluginFeature;
-import ws.editor.plugin.bak.PMenuBar;
+import ws.editor.plugin.MenuBar;
 import ws.editor.plugin.bak.ToolsBar;
 
 public class WToolsBar extends JToolBar implements ToolsBar{
@@ -45,7 +45,7 @@ public class WToolsBar extends JToolBar implements ToolsBar{
 	}
 
 	@Override
-	public void buildToolsBarContent(PMenuBar menubar) {
+	public void buildToolsBarContent(MenuBar menubar) {
 		// TODO 载入配置文件，重构工具栏界面
 		
 		this.add(new JButton("Test"));
