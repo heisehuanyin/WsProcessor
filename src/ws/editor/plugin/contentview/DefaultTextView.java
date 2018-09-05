@@ -42,7 +42,7 @@ public class DefaultTextView extends AbstractTextView {
 
 	@Override
 	public JMenu getCustomMenu() {
-		return new JMenu(this.getClass().getName());
+		return new JMenu("TextView");
 	}
 
 	@Override

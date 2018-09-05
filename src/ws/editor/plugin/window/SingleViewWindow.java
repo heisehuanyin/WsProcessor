@@ -53,21 +53,20 @@ public class SingleViewWindow extends AbstractWindow{
 	}
 	
 	@Override
-	public void placeView(String viewTitle, ContentView comp) {
+	protected void placeView2(String viewTitle, ContentView comp) {
 		this.setTitle("SingleViewWindow - " + this.g_id + " - " + viewTitle);
 		this.getContentPane().add(comp.getView(), BorderLayout.CENTER);
 		this.view = comp;
-		this.validate();
 	}
 
 	@Override
-	public void service_ResetMenuBar(JMenuBar mbar) {
+	protected void service_ResetMenuBar2(JMenuBar mbar) {
 		this.setJMenuBar(mbar);
 	}
 
 	@Override
 	public JMenu getCustomMenu() {
-		return new JMenu(this.getClass().getName());
+		return new JMenu("SingleViewWindow");
 	}
 
 	@Override
