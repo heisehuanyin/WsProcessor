@@ -12,13 +12,13 @@ import java.util.Set;
 import ws.editor.common.PluginFeature;
 import ws.editor.plugin.ConfigPort;
 import ws.editor.plugin.FileSymbo;
+import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.LogPort;
 import ws.editor.plugin.TextModel;
 import ws.editor.plugin.TreeModel;
 import ws.editor.plugin.bak.PMenuBar;
 import ws.editor.plugin.bak.ToolsBar;
 import ws.editor.plugin.filesymbo.DefaultFileSymbo;
-import ws.editor.plugin.window.AbstractFrontWindow;
 
 /**
  * 用于管理插件，本身不是插件，不需要两步实例化直接实例化得到的就是可用组件
@@ -245,12 +245,11 @@ public class PluginManager {
 		return null;
 	}
 
-	public AbstractFrontWindow instance_GetNewDefaultWindow(String string) {
+	public FrontWindow instance_GetNewDefaultWindow(String string) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
+
 	
 	// Service
 	// =============================================================================

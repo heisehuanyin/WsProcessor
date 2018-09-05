@@ -19,18 +19,20 @@ public class WSP {
 				return;
 			if(cmd.equals("pluginList();"))
 				this.wsp.service_GetPluginManager().service_printPluginList();
+			if(cmd.equals("pluginListG();")) {
+				this.wsp.operate_OpenGraphicMode();
+				this.wsp.service_GetPluginManager().service_printPluginList();
+			}
 		}
-	}
-
-	private void openSourceModel() {
-		// TODO 程序的外源程序处理需要设计
-
 	}
 
 	private void openGraphicsModel() {
 		wsp = new WsProcessor();
-
 		wsp.operate_OpenGraphicMode();
+	}
+	private void openSilentModel() {
+		wsp = new WsProcessor();
+		wsp.operate_OpenSilentModel();
 	}
 
 
@@ -46,25 +48,49 @@ public class WSP {
 
 		if (args.length == 0) {
 			new WSP().openCtlModel();
-		} else if (args.length == 1 && args[0].equals("-help")) {
-			System.out.println("WSP 是WsProcessor的前端工具");
-			System.out.println("WSP命令格式：  WSP [operation] [src_path]");
-			System.out.println("OPERATION LIST:");
-			System.out.println("无参数：终端模式，进入程序后一条条命令键入执行；");
-			System.out.println("-s：外源文件模式，传入参数，程序静默执行，抛出错误；");
-			System.out.println("-w：图形界面模式：打开图形界面编辑文件；");
-
-		} else if (args.length > 1) {
-			if (args[0].equals("-s")) {
-				new WSP().openSourceModel();
-				System.out.println("......静默处理结束");
-			} else if (args[0].equals("-w")) {
-				new WSP().openGraphicsModel();
-			}
-		} else {
-			System.out.println("参数错误");
+		} 
+		
+		if (args.length == 1 && args[0].equals("-help")) {
+				System.out.println("WSP 是WsProcessor的前端工具");
+				System.out.println("WSP命令格式：  WSP [operation] [src_path]");
+				System.out.println("OPERATION LIST:");
+				System.out.println("无参数：终端模式，进入程序后一条条命令键入执行；");
+				System.out.println("-s：外源文件模式，传入参数，打开文件");
+				System.out.println("-w：图形界面模式：打开图形界面编辑文件；");
+				System.out.println("-r: 立即执行模式，将传入的文件作为脚本执行");
+		} 
+		
+		if(args.length < 1 || (args[1].indexOf('-') == -1))
+			return;
+		
+		WSP c = new WSP();
+		if(args[0].indexOf('w') != -1) {
+			c.openGraphicsModel();
+		}else {
+			c.openSilentModel();
+		}
+		
+		if(args.length < 2)
+			return;
+		
+		if(args[0].indexOf('s') != -1) {
+			c.openFile(args[1]);
+		}
+		
+		if(args[0].indexOf('r') != -1) {
+			c.runMacroSource(args[1]);
 		}
 
+	}
+
+	private void runMacroSource(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void openFile(String string) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

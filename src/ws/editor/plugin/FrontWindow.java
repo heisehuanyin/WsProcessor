@@ -1,7 +1,10 @@
-package ws.editor.plugin.bak;
+package ws.editor.plugin;
 
 import java.awt.Component;
+import java.util.ArrayList;
+import java.util.Collection;
 
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
 import ws.editor.WsProcessor;
@@ -10,15 +13,11 @@ import ws.editor.common.PluginFeature;
 public interface FrontWindow extends PluginFeature{
 
 	/**
-	 * 获取一个窗口实例
+	 * 开启一个窗口实例
 	 * @param schedule 主调度器，用于连接各种组件
 	 * @param gId groupId，由窗口自动生成的插件全部集中与一条 "分组/通道" 中
 	 * @return 返回的实例*/
-	FrontWindow getInstance(WsProcessor schedule, String gId);
-
-	/**
-	 * 显示这个窗口实例*/
-	void displayWindow();
+	FrontWindow openWindow(WsProcessor schedule, String gId);
 
 	/**
 	 * 将激活视图放置在本窗体上
@@ -30,4 +29,9 @@ public interface FrontWindow extends PluginFeature{
 	 * 刷新MenuBar，将额外菜单添加到菜单栏
 	 * @param mbar 额外的菜单集合*/
 	void service_ResetMenuBar(JMenuBar mbar);
+
+	/**
+	 * 获取当前活动视图的菜单
+	 * @return 集合，每个视图的菜单都占据一个菜单项*/
+	ArrayList<? extends JMenu> getActivedViewsMenus();
 }

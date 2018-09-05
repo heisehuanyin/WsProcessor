@@ -10,6 +10,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import ws.editor.common.PluginFeature;
 import ws.editor.plugin.ConfigPort;
+import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.LogPort;
 import ws.editor.plugin.bak.PMenuBar;
 import ws.editor.plugin.configport.DefaultConfigPort;
@@ -19,14 +20,13 @@ import ws.editor.plugin.menubar.WMenuBar;
 import ws.editor.plugin.textmodel.DefaultTextModel;
 import ws.editor.plugin.toolsbar.WToolsBar;
 import ws.editor.plugin.treemodel.DefaultProjectModel;
-import ws.editor.plugin.window.AbstractFrontWindow;
-import ws.editor.plugin.window.DefaultFrontWindow;
+import ws.editor.plugin.window.SingleViewWindow;
 
 public class WsProcessor {
 	private PluginManager manager = new PluginManager(this);
 	private String wsProcessor_logPath = "."+File.separator+"Software.wslog";
 	private String wsProcessor_configPath = "."+File.separator+"Software.wscfg";
-	private AbstractFrontWindow fwin = null;
+	private FrontWindow fwin = null;
 	private JFileChooser chooser = new JFileChooser();
 	
 	public WsProcessor (){}
@@ -67,7 +67,7 @@ public class WsProcessor {
 	/**
 	 * 重构菜单栏服务，通常调用者：1.view视图插件，视图变化菜单栏变化
 	 * @param win TODO*/
-	public void service_Refresh_MenuBar(AbstractFrontWindow win) {
+	public void service_Refresh_MenuBar(FrontWindow win) {
 		ArrayList<JMenu> exterl = new ArrayList<>();
 		JMenu wspace = this.rebuildMenu_WSpace();
 		exterl.add(wspace);
@@ -147,7 +147,7 @@ public class WsProcessor {
 	private void operate_InitDefaultGraphicPlugin() {
 		this.operate_InitDefaultSilentPlugin();
 		
-		this.service_RegisterPlugin(new DefaultFrontWindow());
+		this.service_RegisterPlugin(new SingleViewWindow());
 		this.service_RegisterPlugin(new WMenuBar());
 		this.service_RegisterPlugin(new WToolsBar());
 	}
@@ -168,9 +168,8 @@ public class WsProcessor {
 			e.printStackTrace();
 		}
 		
-		AbstractFrontWindow win = this.manager.instance_GetNewDefaultWindow("mainwindow");
+		FrontWindow win = this.manager.instance_GetNewDefaultWindow("mainwindow");
 		this.fwin = win;
-		win.displayWindow();
 	}
 	
 	/**
@@ -204,25 +203,5 @@ public class WsProcessor {
 		}
 		
 	}
-
-	/**
-	 * 两种启动方式
-	 * -w:图形界面启动，可以撰写文件，功能丰富
-	 * -s:静默启动，可以读取脚本执行，功能单一
-	 * */
-	public static void main(String[] args) {
-		if(args.length > 1 && args[0].equals("-s")) {
-			//TODO 程序的静默处理需要设计
-			WsProcessor proc = new WsProcessor();
-			proc.operate_OpenSilentModel();
-			
-			System.out.println("静默处理");
-		}else {
-			WsProcessor proc = new WsProcessor();
-			
-			proc.operate_OpenGraphicMode();
-		}
-	}
-
 
 }
