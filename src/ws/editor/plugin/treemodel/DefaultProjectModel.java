@@ -50,7 +50,7 @@ public class DefaultProjectModel extends AbstractProjectModel {
 
 		Element root = doc.getDocumentElement();
 		this.mNode = new SimpleGroupNode(this, root);
-		this.mNode.setKeyValue(NodeSymbo.NodeName_Key, 
+		this.mNode.setKeyValue(NodeSymbo.NODENAME_KEY, 
 				root.getAttribute(DefaultProjectModel.XML_ATTR_NODENAME));
 		this.mNode.setKeyValue(SimpleFileNode.FILEPATH, 
 				root.getAttribute(DefaultProjectModel.XML_ATTR_NODEFILEPATH));
@@ -84,7 +84,7 @@ public class DefaultProjectModel extends AbstractProjectModel {
 				x = new SimpleFileNode(this, ((Element)one));
 			}
 
-			x.setKeyValue(NodeSymbo.NodeName_Key, 
+			x.setKeyValue(NodeSymbo.NODENAME_KEY, 
 					((Element) one).getAttribute(DefaultProjectModel.XML_ATTR_NODENAME));
 			x.setKeyValue(SimpleFileNode.FILEPATH,
 					((Element) one).getAttribute(DefaultProjectModel.XML_ATTR_NODEFILEPATH));
@@ -207,7 +207,7 @@ class SimpleFileNode implements NodeSymbo {
 	@Override
 	public void setKeyValue(String key, String value) {
 		this.val.put(key, value);
-		if(key.equals(NodeSymbo.NodeName_Key)) {
+		if(key.equals(NodeSymbo.NODENAME_KEY)) {
 			this.elm.setAttribute(DefaultProjectModel.XML_ATTR_NODENAME,value);
 		}
 		if(key.equals(SimpleFileNode.FILEPATH)) {
