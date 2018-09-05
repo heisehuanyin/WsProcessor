@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ws.editor.common.ItemsKey;
 import ws.editor.common.PluginFeature;
 import ws.editor.plugin.ConfigPort;
 import ws.editor.plugin.FileSymbo;
@@ -19,6 +20,7 @@ import ws.editor.plugin.TreeModel;
 import ws.editor.plugin.bak.PMenuBar;
 import ws.editor.plugin.bak.ToolsBar;
 import ws.editor.plugin.filesymbo.DefaultFileSymbo;
+import ws.editor.plugin.window.SingleViewWindow;
 
 /**
  * 用于管理插件，本身不是插件，不需要两步实例化直接实例化得到的就是可用组件
@@ -74,13 +76,13 @@ public class PluginManager {
 	public PluginFeature factory_GetConfigComp(String itemsKeyDefine, String defaultf_id) {
 		String factory_id;
 		// 获取合法的factory_id,未配置的话，启用dafault_id
-		factory_id = this.schedule.service_GetMainConfigUnit().getValue(itemsKeyDefine, defaultf_id);
+		factory_id = this.schedule.instance_GetMainConfigUnit().getValue(itemsKeyDefine, defaultf_id);
 
 		// 该factory是否注册,未注册切换为default_id插件
 		PluginFeature factory = this.factory_GetExistsfactory(factory_id);
 		if (factory == null) {
 			factory = this.factory_GetExistsfactory(defaultf_id);
-			this.schedule.service_GetDefaultLogPort().errorLog(this, "配置文件错误，插件"+factory_id+"不存在");
+			this.schedule.instance_GetDefaultLogPort().errorLog(this, "配置文件错误，插件"+factory_id+"不存在");
 		}
 		return factory;
 	}
@@ -203,7 +205,8 @@ public class PluginManager {
 		
 		PluginFeature f = this.factory_GetExistsfactory(f_id);
 		if(f == null) {
-			this.schedule.service_GetDefaultLogPort().errorLog(this, "参数f_id错误，未能找到注册插件----"+f_id );
+			this.schedule.instance_GetDefaultLogPort().errorLog(this, 
+					"参数f_id错误，未能找到注册插件----"+f_id );
 			System.exit(0);
 		}
 		
@@ -222,7 +225,8 @@ public class PluginManager {
 			}
 		PluginFeature f = this.factory_GetExistsfactory(f_id);
 		if(f == null) {
-			this.schedule.service_GetDefaultLogPort().errorLog(this, "参数f_id错误，未能找到注册插件----"+f_id );
+			this.schedule.instance_GetDefaultLogPort().errorLog(this,
+					"参数f_id错误，未能找到注册插件----"+f_id );
 			System.exit(0);
 		}
 		
@@ -246,8 +250,20 @@ public class PluginManager {
 	}
 
 	public FrontWindow instance_GetNewDefaultWindow(String string) {
-		// TODO Auto-generated method stub
-		return null;
+		PluginFeature f = this.factory_GetConfigComp(ItemsKey.DefaultWindow,
+				SingleViewWindow.class.getName());
+		
+		List<PluginFeature> cList = this.instance_GetExistsChannelList(string);
+		if(cList != null)
+			for(PluginFeature x:cList) {
+				if(x.getClass().getName().equals(f.getClass().getName()))
+					return (FrontWindow) x;
+			}
+		
+		FrontWindow rtn = ((FrontWindow)f).openWindow(schedule, string);
+		this.instance_RegisterPluginInstance(string, rtn);
+		
+		return rtn;
 	}
 
 	
@@ -291,7 +307,7 @@ public class PluginManager {
 		String msg = typeName + ":" + plg.pluginMark() + 
 				"\tName:" + plg.getClass().getName() +
 				"\tUpstream:" + plg.upStreamMark();
-		this.schedule.service_GetDefaultLogPort().echoLog(this, msg);
+		this.schedule.instance_GetDefaultLogPort().echoLog(this, msg);
 	}
 
 	private class SortByMark implements Comparator<PluginFeature> {

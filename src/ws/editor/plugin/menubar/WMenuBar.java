@@ -32,7 +32,7 @@ public class WMenuBar extends PMenuBar{
 	}
 	
 	@Override
-	public PMenuBar refreshMenuBar(ArrayList<JMenu> elseMenus) {
+	public PMenuBar rebuildMenuBar(ArrayList<JMenu> elseMenus) {
 		this.removeAll();
 		if(elseMenus != null) {
 			for(JMenu i:elseMenus) {

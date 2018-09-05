@@ -48,37 +48,18 @@ public class WsProcessor {
 		this.manager.factory_RegisterPlugin(obj);
 	}
 
-	
-	/**
-	 * 获取默认的log输出接口,每次启动加载的{@link LogPort}都是最后加载的同一种插件，输出格式相同。
-	 * @return 默认的log输出接口*/
-	public LogPort service_GetDefaultLogPort() {
-		return this.manager.instance_GetLogPort(this.wsProcessor_logPath);
-	}
-	
-	/**
-	 * 获取主配置文件，每次启动加载的 {@link ConfigPort } 都是最后加载的同一种插件，输入输出的格式相同。
-	 * @return 连接向程序的主配置文件的配置端口*/
-	public ConfigPort service_GetMainConfigUnit() {
-		return this.manager.instance_GetConfigUnit(this.wsProcessor_configPath);
-	}
-	
-	
+
 	/**
 	 * 重构菜单栏服务，通常调用者：1.view视图插件，视图变化菜单栏变化
 	 * @param win TODO*/
 	public void service_Refresh_MenuBar(FrontWindow win) {
 		ArrayList<JMenu> exterl = new ArrayList<>();
-		JMenu wspace = this.rebuildMenu_WSpace();
-		exterl.add(wspace);
 		
 		exterl.addAll(this.fwin.getActivedViewsMenus());
-		
 		exterl.add(this.fwin.getCustomMenu());
 		
-		PMenuBar x = this.manager.instance_GetNewDefaultMenubar("menubar").refreshMenuBar(exterl);
-		
-		
+		PMenuBar x = this.manager.instance_GetNewDefaultMenubar(win.getGroupId())
+				.rebuildMenuBar(exterl);
 		
 		this.fwin.service_ResetMenuBar(x);
 	}
@@ -106,12 +87,21 @@ public class WsProcessor {
 		return chooser.getSelectedFile();
 	}
 	
-	private JMenu rebuildMenu_WSpace(){
-		JMenu rtn = new JMenu("WSpace");
-		return rtn;
+	
+	//instance ========================================================
+	/**
+	 * 获取默认的log输出接口,每次启动加载的{@link LogPort}都是最后加载的同一种插件，输出格式相同。
+	 * @return 默认的log输出接口*/
+	public LogPort instance_GetDefaultLogPort() {
+		return this.manager.instance_GetLogPort(this.wsProcessor_logPath);
 	}
 	
-	
+	/**
+	 * 获取主配置文件，每次启动加载的 {@link ConfigPort } 都是最后加载的同一种插件，输入输出的格式相同。
+	 * @return 连接向程序的主配置文件的配置端口*/
+	public ConfigPort instance_GetMainConfigUnit() {
+		return this.manager.instance_GetConfigUnit(this.wsProcessor_configPath);
+	}
 	
 	
 	

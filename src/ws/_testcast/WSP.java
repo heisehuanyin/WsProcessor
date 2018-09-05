@@ -39,7 +39,7 @@ public class WSP {
 	public static void main(String[] args) {
 		System.out.println("==print args============");
 		System.out.println("长度：" + args.length);
-		int index = 1;
+		int index = 0;
 		for (String a : args) {
 			System.out.println("[" + index + "]" + a);
 			index++;
@@ -60,7 +60,7 @@ public class WSP {
 				System.out.println("-r: 立即执行模式，将传入的文件作为脚本执行");
 		} 
 		
-		if(args.length < 1 || (args[1].indexOf('-') == -1))
+		if(args.length < 1 || (args[0].indexOf('-') == -1))
 			return;
 		
 		WSP c = new WSP();

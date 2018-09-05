@@ -22,6 +22,6 @@ public abstract class PMenuBar extends JMenuBar implements PluginFeature{
 	 * @param elseMenus 刷新过程中将额外菜单加入MenuBar
 	 * @return 返回合适的实例
 	 * */
-	public abstract PMenuBar refreshMenuBar(ArrayList<JMenu> elseMenus);
+	public abstract PMenuBar rebuildMenuBar(ArrayList<JMenu> elseMenus);
 
 }

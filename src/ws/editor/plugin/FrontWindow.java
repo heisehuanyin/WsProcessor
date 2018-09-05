@@ -18,6 +18,11 @@ public interface FrontWindow extends PluginFeature{
 	 * @param gId groupId，由窗口自动生成的插件全部集中与一条 "分组/通道" 中
 	 * @return 返回的实例*/
 	FrontWindow openWindow(WsProcessor schedule, String gId);
+	
+	/**
+	 * 获取GroupID
+	 * @return GroupID*/
+	String getGroupId();
 
 	/**
 	 * 将激活视图放置在本窗体上

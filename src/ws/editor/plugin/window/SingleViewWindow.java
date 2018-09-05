@@ -63,4 +63,9 @@ public class SingleViewWindow extends AbstractWindow{
 		x.add(((ContentView)this.view).getCustomMenu()); 
 		return x;
 	}
+
+	@Override
+	public String getGroupId() {
+		return this.g_id;
+	}
 }
