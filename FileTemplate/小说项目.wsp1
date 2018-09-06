@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Group和Node唯一的区别就是Node不能有子节点，Group可以有 --><!--所有节点都是简要记录了文件信息，通过filepath属性指向真正的文件，Group也可以有指向文件，用作记录信息。 -->
+<Group name="ProjectName" filepath="url_address" encoding="UTF-8">
+	<Node name="FileName" filepath="url_address" encoding="UTF-8"></Node>
+	<Group name="GroupName" filepath="url_address" encoding="UTF-8">
+		<Node name="FileName" filepath="url_address" encoding="UTF-8"></Node>
+	</Group>
+</Group>

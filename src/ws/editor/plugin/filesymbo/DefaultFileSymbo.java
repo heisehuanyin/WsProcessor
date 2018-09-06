@@ -1,5 +1,8 @@
 package ws.editor.plugin.filesymbo;
 
+import java.io.File;
+import java.io.IOException;
+
 import javax.swing.JMenu;
 
 import ws.editor.comn.PluginFeature;
@@ -21,7 +24,15 @@ public class DefaultFileSymbo implements FileSymbo{
 	@Override
 	public FileSymbo openFileModel(String fPath) {
 		DefaultFileSymbo x = new DefaultFileSymbo();
-		x.filePath = fPath;
+		
+		File xs = new File(fPath);
+		try {
+			x.filePath = xs.getCanonicalPath();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return x;
 	}
 

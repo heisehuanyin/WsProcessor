@@ -3,6 +3,7 @@ package ws.editor.plugin.contentview;
 import java.awt.Component;
 
 import javax.swing.JMenu;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import ws.editor.WsProcessor;
@@ -12,10 +13,12 @@ import ws.editor.plugin.TextModel;
 
 public class DefaultTextView extends AbstractTextView {
 	private JTextArea view = new JTextArea();
+	private JScrollPane sview = new JScrollPane(view);
 	private TextModel upStream ;
 	private WsProcessor core;
 
 	private void loadAllContent(TextModel source) {
+		
 		int rc = source.getRowsCount();
 		for(int i=0;i<rc;++i) {
 			this.view.append(source.getLine(i));
@@ -37,7 +40,7 @@ public class DefaultTextView extends AbstractTextView {
 
 	@Override
 	public Component getView() {
-		return this.view;
+		return this.sview;
 	}
 
 	@Override

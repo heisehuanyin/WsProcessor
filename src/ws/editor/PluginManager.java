@@ -392,8 +392,11 @@ public class PluginManager {
 
 		for (String f : modules) {
 			PluginFeature x = this.factory_GetExistsfactory(f);
-			if (x == null)
-				break;
+			if (x == null) {
+				this.schedule.instance_GetDefaultLogPort().errorLog(this,
+						"插件未注册，我选择崩溃。罪魁祸首："+f);
+				System.exit(0);
+			}
 			switch (x.pluginMark()) {
 			case PluginFeature.IO_FileSymbo:
 				instance = this.instance_GetFileSymbo(url);

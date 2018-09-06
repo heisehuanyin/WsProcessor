@@ -1,6 +1,8 @@
 package ws.editor;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,8 +10,11 @@ import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 import ws.editor.comn.ItemsKey;
 import ws.editor.comn.PluginFeature;
@@ -19,6 +24,7 @@ import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.LogPort;
 import ws.editor.plugin.configport.DefaultConfigPort;
 import ws.editor.plugin.contentview.DefaultTextView;
+import ws.editor.plugin.contentview.DefaultTreeView;
 import ws.editor.plugin.filesymbo.DefaultFileSymbo;
 import ws.editor.plugin.logport.DefaultLogPort;
 import ws.editor.plugin.menubar.DefaultMenuBar;
@@ -59,11 +65,16 @@ public class WsProcessor {
 	public void service_Refresh_MenuBar(FrontWindow win) {
 		ArrayList<JMenu> exterl = new ArrayList<>();
 		
+		FileMenu one = new FileMenu();
+		one.initMenus();
+		exterl.add(one);
+		
 		exterl.addAll(win.getActivedViewsMenus());
 		exterl.add(win.getCustomMenu());
 		
 		JMenuBar x = this.manager.instance_GetNewDefaultMenubar(win.getGroupId())
 				.rebuildMenuBar(exterl);
+		
 		
 		win.service_ResetMenuBar(x);
 	}
@@ -185,6 +196,7 @@ public class WsProcessor {
 		this.service_RegisterPlugin(new SingleViewWindow());
 		this.service_RegisterPlugin(new DefaultMenuBar());
 		this.service_RegisterPlugin(new DefaultTextView());
+		this.service_RegisterPlugin(new DefaultTreeView());
 		//this.service_RegisterPlugin(new WToolsBar());
 	}
 
@@ -195,8 +207,8 @@ public class WsProcessor {
 		this.control_InitDefaultGraphicPlugin();
 		this.control_LoadAllPlugins();
 		
-		if(System.getProperty("os.name").indexOf("Mac") != -1)
-			System.setProperty("apple.laf.useScreenMenuBar", "true");
+		//if(System.getProperty("os.name").indexOf("Mac") != -1)
+		//	System.setProperty("apple.laf.useScreenMenuBar", "true");
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
@@ -216,11 +228,11 @@ public class WsProcessor {
 	/**
 	 * 截获系统关闭事件，添加处理程序*/
 	private void addShutDownHook() {
-		Runtime.getRuntime().addShutdownHook(new shutdownHook(this));
+		Runtime.getRuntime().addShutdownHook(new ShutdownHook(this));
 	}
-	private class shutdownHook extends Thread{
+	private class ShutdownHook extends Thread{
 		private WsProcessor s = null;
-		public shutdownHook(WsProcessor s) {
+		public ShutdownHook(WsProcessor s) {
 			this.s = s;
 		}
 		@Override
@@ -228,6 +240,79 @@ public class WsProcessor {
 			this.s.service_SaveOperation();
 		}
 		
+	}
+	
+	private class FileMenu extends JMenu implements MenuListener{
+		private JMenu newMenu = new JMenu("New");
+		private JMenu openMenu = new JMenu("Open");
+		
+		public FileMenu() {
+			super("File");
+		}
+
+		public void initMenus() {
+			newMenu.addMenuListener(this);
+			openMenu.addMenuListener(this);
+			this.add(newMenu);
+			this.add(openMenu);
+		}
+
+		@Override
+		public void menuSelected(MenuEvent e) {
+			File ftemplate = new File("./FileTemplate");
+			File[] children = ftemplate.listFiles();
+			for(File onef:children) {
+				String url = onef.getName();
+				JMenuItem mitem = new JMenuItem(url);
+				JMenuItem mitem2 = new JMenuItem(url);
+				try {
+					mitem.addActionListener(new FileMenu_Open(onef.getCanonicalPath()));
+					mitem2.addActionListener(new FileMenu_New(onef.getCanonicalPath()));
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				openMenu.add(mitem);
+				newMenu.add(mitem2);
+			}
+		}
+
+		@Override
+		public void menuDeselected(MenuEvent e) {
+			newMenu.removeAll();
+			openMenu.removeAll();
+		}
+
+		@Override
+		public void menuCanceled(MenuEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	private class FileMenu_Open implements ActionListener{
+		private String target = null;
+		
+		public FileMenu_Open(String target) {
+			this.target = target;
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("打开文件，模板："+ this.target);
+		}
+		
+	}
+	private class FileMenu_New implements ActionListener{
+		private String target = null;
+		
+		public FileMenu_New(String target) {
+			this.target = target;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("新建文件，模板：" + this.target);
+		}
 	}
 
 }

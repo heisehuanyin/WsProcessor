@@ -107,7 +107,7 @@ public class DefaultProjectModel extends AbstractProjectModel {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document doc = builder.parse(pPath);
+			Document doc = builder.parse(rtn.pPath);
 
 			rtn.parseDom4Model(doc);
 
@@ -176,7 +176,9 @@ class SimpleGroupNode extends AbstractGroupSymbo {
 		NodeList x = this.elm.getChildNodes();
 		int i=0;
 		for(i=0; i<x.getLength(); ++i) {
-			if(((SimpleFileNode)node).getBaseElement() == x.item(i))
+			if((node instanceof SimpleFileNode) && ((SimpleFileNode)node).getBaseElement() == x.item(i))
+				return;
+			if((node instanceof SimpleGroupNode) &&((SimpleGroupNode)node).getBaseElement()== x.item(i))
 				return;
 		}
 		Document doc = this.elm.getOwnerDocument();
@@ -192,6 +194,13 @@ class SimpleGroupNode extends AbstractGroupSymbo {
 				node.getValue(SimpleFileNode.FILEENCODING));
 		
 		this.elm.appendChild(newone);
+	}
+
+	/**
+	 * 本类基于Dom作为基础模型，此函数获取基础模型
+	 * @return 内部基础模型*/
+	public Element getBaseElement() {
+		return this.elm;
 	}
 
 	@Override
