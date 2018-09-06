@@ -11,8 +11,8 @@ import javax.swing.JMenuBar;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import ws.editor.common.ItemsKey;
-import ws.editor.common.PluginFeature;
+import ws.editor.comn.ItemsKey;
+import ws.editor.comn.PluginFeature;
 import ws.editor.plugin.ConfigPort;
 import ws.editor.plugin.ContentView;
 import ws.editor.plugin.FrontWindow;

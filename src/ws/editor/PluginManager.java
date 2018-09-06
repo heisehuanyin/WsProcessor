@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ws.editor.common.ItemsKey;
-import ws.editor.common.PluginFeature;
+import ws.editor.comn.ItemsKey;
+import ws.editor.comn.PluginFeature;
 import ws.editor.plugin.ConfigPort;
 import ws.editor.plugin.ContentView;
 import ws.editor.plugin.FileSymbo;

@@ -6,7 +6,7 @@ import javax.swing.JMenu;
 import javax.swing.JTextArea;
 
 import ws.editor.WsProcessor;
-import ws.editor.common.PluginFeature;
+import ws.editor.comn.PluginFeature;
 import ws.editor.plugin.ContentView;
 import ws.editor.plugin.TextModel;
 

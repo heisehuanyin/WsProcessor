@@ -1,7 +1,8 @@
-package ws.editor.common;
+package ws.editor.comn;
 
 import javax.swing.JPopupMenu;
 
+import ws.editor.comn.event.NodeEventListener;
 import ws.editor.plugin.TreeModel;
 
 /**
@@ -59,4 +60,9 @@ public interface NodeSymbo{
 	 * 获取内置弹出菜单
 	 * @return 弹出菜单*/
 	JPopupMenu getPopupMenu();
+	
+	/**
+	 * 添加节点事件监听器
+	 * @param l 监听器*/
+	void addNodeEventListener(NodeEventListener l);
 }

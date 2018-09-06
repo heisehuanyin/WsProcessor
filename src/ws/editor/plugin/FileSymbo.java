@@ -1,6 +1,6 @@
 package ws.editor.plugin;
 
-import ws.editor.common.PluginFeature;
+import ws.editor.comn.PluginFeature;
 
 /**
  * 本插件的唯一用途就是占位，让许多插件具有相似的接口，不因为特异化造成无法互操作*/

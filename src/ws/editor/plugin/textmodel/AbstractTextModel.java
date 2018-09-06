@@ -1,6 +1,6 @@
 package ws.editor.plugin.textmodel;
 
-import ws.editor.common.PluginFeature;
+import ws.editor.comn.PluginFeature;
 import ws.editor.plugin.TextModel;
 
 public abstract class AbstractTextModel implements TextModel {

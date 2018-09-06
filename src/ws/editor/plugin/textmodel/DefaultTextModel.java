@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import javax.swing.JMenu;
 
 import ws.editor.WsProcessor;
-import ws.editor.common.PluginFeature;
+import ws.editor.comn.PluginFeature;
 import ws.editor.plugin.TextModel;
 import ws.editor.plugin.FileSymbo;
 

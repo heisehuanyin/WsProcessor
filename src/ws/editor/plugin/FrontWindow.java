@@ -8,7 +8,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
 import ws.editor.WsProcessor;
-import ws.editor.common.PluginFeature;
+import ws.editor.comn.PluginFeature;
 
 public interface FrontWindow extends PluginFeature{
 

@@ -12,7 +12,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import ws.editor.WsProcessor;
-import ws.editor.common.PluginFeature;
+import ws.editor.comn.PluginFeature;
 /**
  * 用于输出log到文件中
  * LogPort虽然也被设计成为插件模式，但是软件本身只需要一种log文件格式，

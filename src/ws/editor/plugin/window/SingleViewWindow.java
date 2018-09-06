@@ -11,7 +11,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
 import ws.editor.WsProcessor;
-import ws.editor.common.ItemsKey;
+import ws.editor.comn.ItemsKey;
 import ws.editor.plugin.ContentView;
 import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.MenuBar;

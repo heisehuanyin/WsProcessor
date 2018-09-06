@@ -1,6 +1,6 @@
 package ws.editor.plugin.logport;
 
-import ws.editor.common.PluginFeature;
+import ws.editor.comn.PluginFeature;
 import ws.editor.plugin.LogPort;
 /**
  * 用于输出log到文件中

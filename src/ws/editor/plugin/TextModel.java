@@ -1,7 +1,7 @@
 package ws.editor.plugin;
 
 import ws.editor.WsProcessor;
-import ws.editor.common.PluginFeature;
+import ws.editor.comn.PluginFeature;
 
 public interface TextModel extends PluginFeature {
 	/**

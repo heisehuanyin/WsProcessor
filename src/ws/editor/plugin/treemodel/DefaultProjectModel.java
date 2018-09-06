@@ -3,11 +3,6 @@ package ws.editor.plugin.treemodel;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 import javax.xml.parsers.DocumentBuilder;
@@ -25,8 +20,10 @@ import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.SAXException;
 
 import ws.editor.WsProcessor;
-import ws.editor.common.GroupSymbo;
-import ws.editor.common.NodeSymbo;
+import ws.editor.comn.GroupSymbo;
+import ws.editor.comn.NodeSymbo;
+import ws.editor.comn.event.AbstractGroupSymbo;
+import ws.editor.comn.event.AbstractNodeSymbo;
 import ws.editor.plugin.TreeModel;
 
 public class DefaultProjectModel extends AbstractProjectModel {
@@ -50,7 +47,7 @@ public class DefaultProjectModel extends AbstractProjectModel {
 
 		Element root = doc.getDocumentElement();
 		this.mNode = new SimpleGroupNode(this, root);
-		this.mNode.setKeyValue(NodeSymbo.NODENAME_KEY, 
+		this.mNode.setKeyValue(SimpleFileNode.NODENAME_KEY, 
 				root.getAttribute(DefaultProjectModel.XML_ATTR_NODENAME));
 		this.mNode.setKeyValue(SimpleFileNode.FILEPATH, 
 				root.getAttribute(DefaultProjectModel.XML_ATTR_NODEFILEPATH));
@@ -76,13 +73,17 @@ public class DefaultProjectModel extends AbstractProjectModel {
 			}
 
 			String tag = ((Element) one).getTagName();
-			SimpleFileNode x = null;
+			NodeSymbo x = null;
 			if (tag.equals(DefaultProjectModel.XML_GROUP_TAGNAME)) {
 				x = new SimpleGroupNode(this, ((Element)one));
-			}
-			if (tag.equals(DefaultProjectModel.XML_NODE_TAGNAME)) {
+			}else if (tag.equals(DefaultProjectModel.XML_NODE_TAGNAME)) {
 				x = new SimpleFileNode(this, ((Element)one));
+			}else {
+				this.core.instance_GetDefaultLogPort().errorLog(this,
+						"项目文件中发现未知节点：" + tag + ",无法解析，我选择崩溃。");
+				System.exit(0);
 			}
+			
 
 			x.setKeyValue(NodeSymbo.NODENAME_KEY, 
 					((Element) one).getAttribute(DefaultProjectModel.XML_ATTR_NODENAME));
@@ -146,67 +147,55 @@ public class DefaultProjectModel extends AbstractProjectModel {
 
 }
 
-class SimpleGroupNode extends SimpleFileNode implements GroupSymbo {
-	private ArrayList<NodeSymbo> con = new ArrayList<>();
+class SimpleGroupNode extends AbstractGroupSymbo {
 
-	public SimpleGroupNode(TreeModel owner, Element elm) {
-		super(owner, elm);
-	}
-	
-	@Override
-	public int kind() {
-		return NodeSymbo.KindGroup;
-	}
-
-	@Override
-	public int getChildCount() {
-		return this.con.size();
-	}
-
-	@Override
-	public NodeSymbo getChildAtIndex(int index) {
-		return this.con.get(index);
-	}
-
-	@Override
-	public void removeChild(NodeSymbo one) {
-		this.con.remove(one);
-	}
-
-	@Override
-	public void insertChildAtIndex(NodeSymbo node, int index) {
-		this.con.add(index, node);
-	}
-
-	@Override
-	public int getChildIndex(NodeSymbo child) {
-		return this.con.indexOf(child);
-	}
-}
-
-class SimpleFileNode implements NodeSymbo {
-
-	public static final String FILEENCODING = "Encoding";
-	public static final String FILEPATH = "FilePath";
-	
-	private TreeModel model ;
 	private Element elm;
-	private Map<String,String> val = new HashMap<>();
-	private GroupSymbo parent;
-	
-	public SimpleFileNode(TreeModel owner, Element elm) {
-		this.model = owner;
+
+	public SimpleGroupNode(TreeModel m, Element elm) {
+		super(m);
 		this.elm = elm;
 	}
 
 	@Override
-	public TreeModel getModel() {
-		return this.model;
+	public JPopupMenu getPopupMenu() {
+		return null;
 	}
 
 	@Override
-	public void setKeyValue(String key, String value) {
-		this.val.put(key, value);
+	protected void removeChild_External(NodeSymbo one) {
+		NodeList x = this.elm.getChildNodes();
+		for(int i=0; i<x.getLength(); ++i) {
+			if(((SimpleFileNode)one).getBaseElement() == x.item(i)) {
+				this.elm.removeChild(x.item(i));
+			}
+		}
+	}
+
+	@Override
+	protected void insertChildAtIndex_External(NodeSymbo node, int index) {
+		NodeList x = this.elm.getChildNodes();
+		int i=0;
+		for(i=0; i<x.getLength(); ++i) {
+			if(((SimpleFileNode)node).getBaseElement() == x.item(i))
+				return;
+		}
+		Document doc = this.elm.getOwnerDocument();
+		Element newone = doc.createElement((node.kind()==NodeSymbo.KindGroup)?
+					DefaultProjectModel.XML_GROUP_TAGNAME:
+					DefaultProjectModel.XML_NODE_TAGNAME);
+		
+		newone.setAttribute(DefaultProjectModel.XML_ATTR_NODENAME, 
+				node.getValue(SimpleFileNode.NODENAME_KEY));
+		newone.setAttribute(DefaultProjectModel.XML_ATTR_NODEFILEPATH, 
+				node.getValue(SimpleFileNode.FILEPATH));
+		newone.setAttribute(DefaultProjectModel.XML_ATTR_NODEENCODING,
+				node.getValue(SimpleFileNode.FILEENCODING));
+		
+		this.elm.appendChild(newone);
+	}
+
+	@Override
+	protected void setKeyValue_Exteral(String key, String value) {
 		if(key.equals(NodeSymbo.NODENAME_KEY)) {
 			this.elm.setAttribute(DefaultProjectModel.XML_ATTR_NODENAME,value);
 		}
@@ -218,40 +207,47 @@ class SimpleFileNode implements NodeSymbo {
 		}
 	}
 
-	@Override
-	public String getKey(int i) {
-		if(i >= this.val.size()) {
-			return null;
-		}
-		Set<String> keyS = this.val.keySet();
-		ArrayList<String> KA = new ArrayList<String>(keyS);
-		
-		return KA.get(i);
+}
+
+class SimpleFileNode extends AbstractNodeSymbo {
+
+	public static final String FILEENCODING = "Encoding";
+	public static final String FILEPATH = "FilePath";
+	
+	private Element elm;
+	
+	
+	public SimpleFileNode(TreeModel owner, Element elm) {
+		super(owner);
+		this.elm = elm;
 	}
 
-	@Override
-	public String getValue(String key) {
-		return this.val.get(key);
-	}
-
-	@Override
-	public int kind() {
-		return NodeSymbo.KindNode;
-	}
-
-	@Override
-	public void initParent(GroupSymbo parent) {
-		this.parent = parent;
-	}
-
-	@Override
-	public GroupSymbo getParent() {
-		return this.parent;
-	}
 
 	@Override
 	public JPopupMenu getPopupMenu() {
-		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	/**
+	 * 本类基于Dom作为基础模型，此函数获取基础模型
+	 * @return 内部基础模型*/
+	public Element getBaseElement() {
+		return this.elm;
+	}
+
+
+	@Override
+	protected void setKeyValue_Exteral(String key, String value) {
+		if(key.equals(NodeSymbo.NODENAME_KEY)) {
+			this.elm.setAttribute(DefaultProjectModel.XML_ATTR_NODENAME,value);
+		}
+		if(key.equals(SimpleFileNode.FILEPATH)) {
+			this.elm.setAttribute(DefaultProjectModel.XML_ATTR_NODEFILEPATH, value);
+		}
+		if(key.equals(SimpleFileNode.FILEENCODING)) {
+			this.elm.setAttribute(DefaultProjectModel.XML_ATTR_NODEENCODING, value);
+		}
+	}
+
+
 }

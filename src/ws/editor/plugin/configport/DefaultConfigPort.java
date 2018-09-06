@@ -13,7 +13,7 @@ import java.util.Properties;
 import javax.swing.JMenu;
 
 import ws.editor.WsProcessor;
-import ws.editor.common.PluginFeature;
+import ws.editor.comn.PluginFeature;
 /**
  * 用于获取配置文件中的信息；<br>
  *  {@link ConfigPort}虽然也被设计成为插件模式，但是软件本身只需要一种配置文件格式，

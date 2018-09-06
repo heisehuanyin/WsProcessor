@@ -1,6 +1,6 @@
 package ws.editor.plugin.configport;
 
-import ws.editor.common.PluginFeature;
+import ws.editor.comn.PluginFeature;
 import ws.editor.plugin.ConfigPort;
 /**
  * ConfigPort 无法被配置，只能加载最终加载的类型*/

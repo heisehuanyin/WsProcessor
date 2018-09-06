@@ -1,4 +1,4 @@
-package ws.editor.common;
+package ws.editor.comn;
 
 import java.io.File;
 /**

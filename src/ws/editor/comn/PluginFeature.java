@@ -1,4 +1,4 @@
-package ws.editor.common;
+package ws.editor.comn;
 
 import javax.swing.JMenu;
 

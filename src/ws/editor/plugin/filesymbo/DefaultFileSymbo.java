@@ -2,7 +2,7 @@ package ws.editor.plugin.filesymbo;
 
 import javax.swing.JMenu;
 
-import ws.editor.common.PluginFeature;
+import ws.editor.comn.PluginFeature;
 import ws.editor.plugin.FileSymbo;
 
 public class DefaultFileSymbo implements FileSymbo{

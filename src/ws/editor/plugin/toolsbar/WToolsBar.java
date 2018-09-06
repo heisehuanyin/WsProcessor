@@ -11,7 +11,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 
 import ws.editor.WsProcessor;
-import ws.editor.common.PluginFeature;
+import ws.editor.comn.PluginFeature;
 import ws.editor.plugin.MenuBar;
 import ws.editor.plugin.bak.ToolsBar;
 

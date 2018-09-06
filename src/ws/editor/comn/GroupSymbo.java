@@ -1,4 +1,4 @@
-package ws.editor.common;
+package ws.editor.comn;
 
 /**
  * 本接口用于TreeModel，自定义类型，相对于 {@link NodeSymbo} 主要拥有以下功能<br>

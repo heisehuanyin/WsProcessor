@@ -1,9 +1,9 @@
 package ws.editor.plugin;
 
 import ws.editor.WsProcessor;
-import ws.editor.common.GroupSymbo;
-import ws.editor.common.NodeSymbo;
-import ws.editor.common.PluginFeature;
+import ws.editor.comn.GroupSymbo;
+import ws.editor.comn.NodeSymbo;
+import ws.editor.comn.PluginFeature;
 
 public interface TreeModel extends PluginFeature {
 	

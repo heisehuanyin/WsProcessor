@@ -3,7 +3,7 @@ package ws.editor.plugin.window;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 
-import ws.editor.common.PluginFeature;
+import ws.editor.comn.PluginFeature;
 import ws.editor.plugin.ContentView;
 import ws.editor.plugin.FrontWindow;
 

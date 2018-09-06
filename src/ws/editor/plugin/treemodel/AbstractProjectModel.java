@@ -1,7 +1,7 @@
 package ws.editor.plugin.treemodel;
 
 import ws.editor.WsProcessor;
-import ws.editor.common.PluginFeature;
+import ws.editor.comn.PluginFeature;
 import ws.editor.plugin.FileSymbo;
 import ws.editor.plugin.TreeModel;
 

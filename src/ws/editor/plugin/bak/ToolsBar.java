@@ -1,7 +1,7 @@
 package ws.editor.plugin.bak;
 
 import ws.editor.WsProcessor;
-import ws.editor.common.PluginFeature;
+import ws.editor.comn.PluginFeature;
 import ws.editor.plugin.MenuBar;
 
 public interface ToolsBar extends PluginFeature{
