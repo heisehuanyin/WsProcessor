@@ -1,9 +1,10 @@
-package ws._testcast;
+package ws.editor;
 
 import java.util.Scanner;
-
-import ws.editor.WsProcessor;
-
+/**
+ * 参数处理模块，处理各种模式与系统的衔接，决定软件的运行模式：静默、交互、图形<br>
+ * 通过本模块是在Terminal中运行的实体，通过本模块调用核心模块实现各种功能<br>
+ * 外面还可以在包含一个启动器，处理操作系统提供的各种参数，配置固定参数，用于不同默认模式下的启动*/
 public class WSP {
 	private WsProcessor wsp = null;
 
@@ -25,11 +26,15 @@ public class WSP {
 		}
 	}
 
+	/**
+	 * 打开图形模式*/
 	private void openGraphicsModel() {
 		this.wsp = (this.wsp==null)?new WsProcessor():this.wsp;
 		wsp.control_OpenGraphicMode("MainWindow");
 	}
 
+	/**
+	 * 打开静默模式*/
 	private void openSilentModel() {
 		this.wsp = (this.wsp==null)?new WsProcessor():this.wsp;
 		wsp.control_OpenSilentModel();
@@ -39,6 +44,8 @@ public class WSP {
 
 	}
 
+	/**
+	 * 打开文件*/
 	private void openFile(String args1, String args0) {
 		this.wsp.service_OpenFile(args1, args0.indexOf('w')!=-1?
 				this.wsp.service_GetPluginManager()
