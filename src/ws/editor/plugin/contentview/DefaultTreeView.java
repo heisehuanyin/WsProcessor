@@ -7,6 +7,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 import ws.editor.WsProcessor;
 import ws.editor.comn.GroupSymbo;
@@ -32,6 +34,7 @@ public class DefaultTreeView extends AbstractTreeView {
 		
 		root.setAllowsChildren(true);
 		tm.setAsksAllowsChildren(true);
+		tree.setRootVisible(false);
 		
 		this.loopInsert(root, nodeSymbo);
 	}
@@ -40,6 +43,10 @@ public class DefaultTreeView extends AbstractTreeView {
 		
 		CustomNode xa = new CustomNode(dnode);
 		this.tm.insertNodeInto(xa , parent, parent.getChildCount());
+		
+		TreeNode[] nodes = this.tm.getPathToRoot(xa);
+		TreePath path = new TreePath(nodes);
+		tree.makeVisible(path);
 		
 		if(dnode.kind() == NodeSymbo.KindGroup) {
 			GroupSymbo gnode = (GroupSymbo) dnode;
@@ -71,7 +78,7 @@ public class DefaultTreeView extends AbstractTreeView {
 
 	@Override
 	public JMenu getCustomMenu() {
-		return new JMenu(this.getClass().getName());
+		return new JMenu("TreeView");
 	}
 
 	@Override
@@ -81,33 +88,96 @@ public class DefaultTreeView extends AbstractTreeView {
 
 	@Override
 	public void nodeInsert(NodeGeneralEvent e) {
-		// TODO Auto-generated method stub
-
+		NodeSymbo x = e.getSource();
+		GroupSymbo xp = x.getParent();
+		int index = xp.getChildIndex(x);
+		CustomNode node = new CustomNode(x);
+		
+		
+		DefaultMutableTreeNode p = this.loopAndSearchTreeNodeFrontNodeEvent(root, e);
+		if(p == null) {
+			this.core.instance_GetDefaultLogPort().errorLog(this, "TreeModel插入节点事件包含着一个错误路径，"
+					+ "无法定位插入节点，我选择崩溃。");
+			System.exit(0);
+		}
+		
+		this.tm.insertNodeInto(node, p, index);
+		
+		TreeNode[] nodes = this.tm.getPathToRoot(node);
+		TreePath path = new TreePath(nodes);
+		tree.scrollPathToVisible(path);
+	}
+	
+	private DefaultMutableTreeNode loopAndSearchTreeNodeFrontNodeEvent(
+			DefaultMutableTreeNode parent, NodeGeneralEvent e) {
+		
+		for(int i=0; i<parent.getChildCount(); ++i) {
+			CustomNode one = (CustomNode) parent.getChildAt(i);
+			NodeSymbo nodeSymbo = one.getNodeSymbo();
+			if(e.nodeContain(nodeSymbo)) {
+				if(e.getSource() == nodeSymbo)
+					return one;
+				
+				return this.loopAndSearchTreeNodeFrontNodeEvent(one, e);
+			}
+				
+		}
+		
+		return null;
 	}
 
 	@Override
 	public void nodeRemove(NodeGeneralEvent e) {
-		// TODO Auto-generated method stub
-
+		NodeSymbo x = e.getSource();
+		
+		DefaultMutableTreeNode pSNode = this.loopAndSearchTreeNodeFrontNodeEvent(root, e);
+		for(int i=0; i<pSNode.getChildCount(); ++i) {
+			CustomNode one = (CustomNode) pSNode.getChildAt(i);
+			if(one.getNodeSymbo() == e.getSource()) {
+				this.tm.removeNodeFromParent(one);
+				return;
+			}
+		}
 	}
 
 	@Override
 	public void nodeMidified(NodeModifyEvent e) {
-		// TODO Auto-generated method stub
-
+		CustomNode s = (CustomNode) this.loopAndSearchTreeNodeFrontNodeEvent(root, e);
+		
+		if(! s.refreshNodeState(e))
+			return;
+		
+		this.tm.nodeChanged(s);
 	}
 	
 	private class CustomNode extends DefaultMutableTreeNode{
 		
 		private NodeSymbo node;
 		
+		/**
+		 * 新建自定义的树节点，节点UI由此定义
+		 * @param node 本节点的绑定数据树节点*/
 		public CustomNode(NodeSymbo node) {
 			super(node.getValue(NodeSymbo.NODENAME_KEY));
 			this.node = node;
 			this.setAllowsChildren((node.kind() == NodeSymbo.KindGroup)?true:false);
 		}
+		/**
+		 * 获取本节点绑定的数据树节点，多用于判定视图树与数据树的同步问题
+		 * @return 数据树节点*/
 		public NodeSymbo getNodeSymbo() {
 			return this.node;
+		}
+		/**
+		 * 根据{@link NodeModifyEvent}信息，自由判断是否刷新，并返回操作结果指示
+		 * @param e 数据树节点修改事件
+		 * @return 刷新结果，true本节点已刷新，false本节点未刷新*/
+		public boolean refreshNodeState(NodeModifyEvent e) {
+			if(! e.getModifiedKey().equals(NodeSymbo.NODENAME_KEY))
+				return false;
+			String title = this.node.getValue(e.getModifiedKey());
+			this.setUserObject(title);
+			return true;
 		}
 	}
 

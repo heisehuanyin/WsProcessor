@@ -66,7 +66,7 @@ public class SingleViewWindow extends AbstractWindow{
 
 	@Override
 	public JMenu getCustomMenu() {
-		return new JMenu("SingleViewWindow");
+		return new JMenu("Window");
 	}
 
 	@Override

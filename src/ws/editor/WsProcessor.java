@@ -29,7 +29,6 @@ import ws.editor.plugin.filesymbo.DefaultFileSymbo;
 import ws.editor.plugin.logport.DefaultLogPort;
 import ws.editor.plugin.menubar.DefaultMenuBar;
 import ws.editor.plugin.textmodel.DefaultTextModel;
-import ws.editor.plugin.toolsbar.WToolsBar;
 import ws.editor.plugin.treemodel.DefaultProjectModel;
 import ws.editor.plugin.window.SingleViewWindow;
 
@@ -216,7 +215,8 @@ public class WsProcessor {
 			e.printStackTrace();
 		}
 		
-		this.service_GetPluginManager().instance_GetNewDefaultWindow(groupId==null?"MainWindow":groupId);
+		this.service_GetPluginManager()
+			.instance_GetNewDefaultWindow(groupId==null?"MainWindow":groupId);
 	}
 	
 	
