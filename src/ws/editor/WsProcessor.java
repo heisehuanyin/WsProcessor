@@ -4,7 +4,11 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
@@ -15,6 +19,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import javax.swing.filechooser.FileFilter;
 
 import ws.editor.comn.ItemsKey;
 import ws.editor.comn.PluginFeature;
@@ -76,7 +81,7 @@ public class WsProcessor {
 	public void service_Refresh_MenuBar(FrontWindow win) {
 		ArrayList<JMenu> exterl = new ArrayList<>();
 
-		FileMenu one = new FileMenu();
+		FileMenu one = new FileMenu(win);
 		one.initMenus();
 		exterl.add(one);
 
@@ -99,11 +104,14 @@ public class WsProcessor {
 	 *            对话框类型： 保存对话框（JFileChooser.SAVE_DIALOG）
 	 *            选择对话框（JFileChooser.OPEN_DIALOG）
 	 * @param suffix
-	 *            TODO
+	 *            指定文件后缀名筛选文件，例如： “*.txt” 取 “txt”，不需要的时候填 null
 	 * @return 选中的文件
 	 */
 	public File service_FileChooserOperate(int target_type, int dialog_type, String suffix) {
 		this.chooser.setFileSelectionMode(target_type);
+		if (suffix != null)
+			this.chooser.setFileFilter(new FileMenu_Operate_Filter(suffix));
+
 		int ret = 0;
 		if (dialog_type == JFileChooser.SAVE_DIALOG) {
 			ret = chooser.showSaveDialog((Component) null);
@@ -264,9 +272,11 @@ public class WsProcessor {
 	private class FileMenu extends JMenu implements MenuListener {
 		private JMenu newMenu = new JMenu("New");
 		private JMenu openMenu = new JMenu("Open");
+		private FrontWindow w;
 
-		public FileMenu() {
+		public FileMenu(FrontWindow w) {
 			super("File");
+			this.w = w;
 		}
 
 		public void initMenus() {
@@ -291,12 +301,12 @@ public class WsProcessor {
 			File ftemplate = new File("./FileTemplate");
 			File[] children = ftemplate.listFiles();
 			for (File onef : children) {
-				String url = onef.getName();
-				JMenuItem mitem = new JMenuItem(url);
-				JMenuItem mitem2 = new JMenuItem(url);
+				String name = onef.getName();
+				JMenuItem mitem = new JMenuItem(name);
+				JMenuItem mitem2 = new JMenuItem(name);
 				try {
-					mitem.addActionListener(new FileMenu_Open(onef.getCanonicalPath()));
-					mitem2.addActionListener(new FileMenu_New(onef.getCanonicalPath()));
+					mitem.addActionListener(new FileMenu_Open(onef.getCanonicalPath(), w));
+					mitem2.addActionListener(new FileMenu_New(onef.getCanonicalPath(), w));
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -321,28 +331,94 @@ public class WsProcessor {
 
 	private class FileMenu_Open implements ActionListener {
 		private String target = null;
+		private FrontWindow w;
 
-		public FileMenu_Open(String target) {
+		public FileMenu_Open(String target, FrontWindow owner) {
 			this.target = target;
+			this.w = owner;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			File one = WsProcessor.this.service_FileChooserOperate(JFileChooser.FILES_ONLY, JFileChooser.OPEN_DIALOG,
+					target.substring(target.lastIndexOf('.') + 1));
+			if (one == null)
+				return;
+			
+			WsProcessor.this.service_OpenFile(this.target, this.w);
 		}
 
 	}
 
 	private class FileMenu_New implements ActionListener {
 		private String target = null;
+		private FrontWindow w = null;
 
-		public FileMenu_New(String target) {
+		public FileMenu_New(String target, FrontWindow owner) {
 			this.target = target;
+			this.w = owner;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("新建文件，模板：" + this.target);
+			File dst = WsProcessor.this.service_FileChooserOperate(JFileChooser.DIRECTORIES_ONLY,
+					JFileChooser.SAVE_DIALOG, null);
+			if (dst == null)
+				return;
+			try {
+				String cpath = dst.getCanonicalPath();
+				String suffixp = this.target.substring(this.target.lastIndexOf('.'));
+
+				if (!cpath.endsWith(suffixp)) {
+					dst = new File(cpath + suffixp);
+				}
+
+				if (!dst.exists())
+					dst.createNewFile();
+
+				File source = new File(this.target);
+
+				InputStream bs = new FileInputStream(source);
+				OutputStream bd = new FileOutputStream(dst);
+
+				bd.write(bs.readAllBytes());
+				bd.flush();
+				bd.close();
+				
+				WsProcessor.this.service_OpenFile(this.target, this.w);
+
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 
+	private class FileMenu_Operate_Filter extends FileFilter {
+		private String suffix;
+
+		/**
+		 * 新建通过指定后缀名筛选文件的{@link FileFilter}
+		 * 
+		 * @param suffix
+		 *            后缀名。格式：*.txt 取 txt
+		 */
+		public FileMenu_Operate_Filter(String suffix) {
+			this.suffix = suffix;
+		}
+
+		@Override
+		public boolean accept(File f) {
+			if (f.getName().endsWith("." + this.suffix))
+				return true;
+
+			return false;
+		}
+
+		@Override
+		public String getDescription() {
+			return this.suffix.toUpperCase() + "文件";
+		}
+
+	}
 }
