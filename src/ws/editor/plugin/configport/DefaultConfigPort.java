@@ -3,21 +3,16 @@ package ws.editor.plugin.configport;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.Properties;
 
 import javax.swing.JMenu;
-
-import ws.editor.WsProcessor;
-import ws.editor.comn.PluginFeature;
 /**
  * 用于获取配置文件中的信息；<br>
- *  {@link ConfigPort}虽然也被设计成为插件模式，但是软件本身只需要一种配置文件格式，
- * 因此，不需要多种实例共存，软件中只保留一个 {@link ConfigPort} 插件*/
+ *  {@link ws.editor.plugin.ConfigPort}虽然也被设计成为插件模式，但是软件本身只需要一种配置文件格式，
+ * 因此，不需要多种实例共存，软件中只保留一个 {@link ws.editor.plugin.ConfigPort} 插件*/
 public class DefaultConfigPort extends AbstractConfigPort{
 	private Properties prop = new Properties();
 	private String cfgPath;

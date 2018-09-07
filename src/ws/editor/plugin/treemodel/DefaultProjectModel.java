@@ -158,7 +158,13 @@ class SimpleGroupNode extends AbstractGroupSymbo {
 
 	@Override
 	public JPopupMenu getPopupMenu() {
-		return null;
+		JPopupMenu rtn = new JPopupMenu("DefaultProjectModel");
+
+		rtn.add("Item_Group");
+		rtn.add("Item_Group");
+		rtn.add("Item_Group");
+		
+		return rtn;
 	}
 
 	@Override
@@ -234,7 +240,13 @@ class SimpleFileNode extends AbstractNodeSymbo {
 
 	@Override
 	public JPopupMenu getPopupMenu() {
-		return null;
+		JPopupMenu rtn = new JPopupMenu("DefaultProjectModel");
+
+		rtn.add("Item_Node");
+		rtn.add("Item_Node");
+		rtn.add("Item_Node");
+		
+		return rtn;
 	}
 	
 	/**

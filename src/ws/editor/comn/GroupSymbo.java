@@ -30,6 +30,6 @@ public interface GroupSymbo extends NodeSymbo{
 	/**
 	 * 获取指定文件在group中的位置
 	 * @param child 指定文件
-	 * @param 位序，如果为 -1 ，表明该文件不是此group的child*/
+	 * @return 位序，如果为 -1 ，表明该文件不是此group的child*/
 	int getChildIndex(NodeSymbo child);
 }

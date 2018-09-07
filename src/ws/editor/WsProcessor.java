@@ -83,7 +83,7 @@ public class WsProcessor {
 	 * @param target_type 针对的文件目标类型：
 	 * File（JFileChooser.FILE_ONLY）,
 	 * Directory(JFileChooser.DIRECTORY_ONLY)
-	 * File&Directory(JFileChooser.FILE_AND_DIRECTORY)
+	 * File&amp;Directory(JFileChooser.FILE_AND_DIRECTORY)
 	 * @param dialog_type 对话框类型：
 	 * 保存对话框（JFileChooser.SAVE_DIALOG）
 	 * 选择对话框（JFileChooser.OPEN_DIALOG）
@@ -110,7 +110,7 @@ public class WsProcessor {
 	/**
 	 * 打开指定文件，此操作将会调用工具组成链条通道，依次打开并获取内容
 	 * @param fpath 文件路径
-	 * */
+	 * @param win 发生动作的窗口，最后一步视图会放置该窗口，如果win=null，视图不会放置*/
 	public void service_OpenFile(String fpath, FrontWindow win) {
 		File one = new File(fpath);
 		if(!one.exists()) {
@@ -137,7 +137,7 @@ public class WsProcessor {
 		//source=>module1=>module2=>module3=>module4=>the last one module
 		PluginFeature x = this.service_GetPluginManager().service_BuildInstanceList(cListStr, fpath);
 		if(win != null && x.pluginMark() == PluginFeature.UI_ContentView) {
-			win.placeView(fpath, ((ContentView)x));
+			win.placeView(one.getName(), ((ContentView)x));
 			this.service_Refresh_MenuBar(win);
 		}
 	}

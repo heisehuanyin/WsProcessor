@@ -23,7 +23,9 @@ public interface NodeSymbo{
 	/**
 	 * 设置键值对,所有的内容都是由键值对存储的
 	 * 标题提供的提供由一个特殊的键关联 {@link #NODENAME_KEY}
-	 * 设置标题的时候也是设置  {@link #NODENAME_KEY} 关联值*/
+	 * 设置标题的时候也是设置  {@link #NODENAME_KEY} 关联值
+	 * @param key 键名
+	 * @param value 值*/
 	void setKeyValue(String key, String value);
 	
 	/**
@@ -52,7 +54,7 @@ public interface NodeSymbo{
 	
 	/**
 	 * 文件被添加到集合节点之后，可以用它获取父节点
-	 * @reture 父节点*/
+	 * @return 父节点*/
 	GroupSymbo getParent();
 	
 	

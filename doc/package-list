@@ -1,0 +1,16 @@
+ws._testcast
+ws.editor
+ws.editor.comn
+ws.editor.comn.event
+ws.editor.plugin
+ws.editor.plugin.bak
+ws.editor.plugin.configport
+ws.editor.plugin.contentview
+ws.editor.plugin.filesymbo
+ws.editor.plugin.logport
+ws.editor.plugin.menubar
+ws.editor.plugin.statusbar
+ws.editor.plugin.textmodel
+ws.editor.plugin.toolsbar
+ws.editor.plugin.treemodel
+ws.editor.plugin.window
