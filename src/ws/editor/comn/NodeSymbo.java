@@ -48,7 +48,7 @@ public interface NodeSymbo{
 	
 
 	/**
-	 * 文件被添加到集合节点之后，可以用它初始化父节点
+	 * 节点被添加到集合节点之后，可以用它初始化本节点的父节点参数
 	 * @param parent 父节点*/
 	void initParent(GroupSymbo parent);
 	
