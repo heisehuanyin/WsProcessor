@@ -45,6 +45,9 @@ public interface NodeSymbo{
 	 * @return 种类*/
 	int kind();
 	
+	/**
+	 * 触发操作，每个节点能够触发什么操作由节点自行定义*/
+	void doAction();
 	
 
 	/**

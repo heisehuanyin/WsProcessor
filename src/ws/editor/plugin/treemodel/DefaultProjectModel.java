@@ -222,6 +222,12 @@ class SimpleGroupNode extends AbstractGroupSymbo {
 		}
 	}
 
+	@Override
+	public void doAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
 
 class SimpleFileNode extends AbstractNodeSymbo {
@@ -268,6 +274,12 @@ class SimpleFileNode extends AbstractNodeSymbo {
 		if(key.equals(SimpleFileNode.FILEENCODING)) {
 			this.elm.setAttribute(DefaultProjectModel.XML_ATTR_NODEENCODING, value);
 		}
+	}
+
+
+	@Override
+	public void doAction() {
+		
 	}
 
 

@@ -19,6 +19,7 @@ import ws.editor.plugin.LogPort;
 import ws.editor.plugin.MenuBar;
 import ws.editor.plugin.TextModel;
 import ws.editor.plugin.TreeModel;
+import ws.editor.plugin.TableModel;
 import ws.editor.plugin.filesymbo.DefaultFileSymbo;
 import ws.editor.plugin.menubar.DefaultMenuBar;
 import ws.editor.plugin.window.SingleViewWindow;
@@ -260,26 +261,50 @@ public class PluginManager {
 
 		return rtn;
 	}
+	
+	/**
+	 * 根据提供的factory_id，获取插件实例<br>
+	 * 首先搜寻是否存在实例，如果存在返回实例，不存在的话注册新实例
+	 * 
+	 * @param f
+	 *            插件id-插件类名
+	 * @param url
+	 *            通道标识，插件分组标识
+	 * @param upStream
+	 *            上游插件
+	 * @return 正确的插件实例
+	 */
+	public TableModel instance_GetTableModelAsDescription(String f, String url, PluginFeature upStream) {
+		List<PluginFeature> cList = this.instance_GetExistsChannelList(url);
+		if (cList != null)
+			for (PluginFeature x : cList) {
+				if (x.getClass().getName().equals(f))
+					return (TableModel) x;
+			}
+		
+		PluginFeature ff = this.factory_GetExistsfactory(f);
+		if(ff == null) {
+			this.schedule.instance_GetDefaultLogPort().errorLog(this, "参数f_id错误，未能找到注册插件----" + f);
+			System.exit(0);
+		}
+		
+		TableModel rtn = ((TableModel)ff).openNewTableModel(schedule, upStream);
+		this.instance_RegisterPluginInstance(url, rtn);
+		
+		return rtn;
+	}
+
 
 	// UI
 	// Component==================================================================
 	/**
-	 * MenuBar只用来刷新和替换原有MenuBar，因此不需要找到之前的实例，直接替代
-	 * 
-	 * @param string
-	 *            组件的GroupID
-	 * @return 实例
-	 */
-	public MenuBar instance_GetNewDefaultMenubar(String string) {
-		PluginFeature f = this.factory_GetConfigComp(ItemsKey.DefaultMenuBar, DefaultMenuBar.class.getName());
-
-		MenuBar rtn = ((MenuBar) f).getNewInstance(this.schedule);
-		this.instance_RegisterPluginInstance(string, rtn);
-
-		return rtn;
-	}
-
-	public ContentView instance_GetContentView(String f_id, String url, PluginFeature upStream) {
+	 * 根据提供的factory_id，获取视图插件实例<br>
+	 * 首先搜索是否存在实例，如果存在，返回实例，不存在的话注册新实例
+	 * @param f_id 插件的id
+	 * @param url 通道标识，插件分组标识
+	 * @param upStream 上游插件
+	 * @return 正确的插件实例*/
+	public ContentView instance_GetContentViewAsDescription(String f_id, String url, PluginFeature upStream) {
 		List<PluginFeature> cList = this.instance_GetExistsChannelList(url);
 		if(cList != null)
 			for(PluginFeature x:cList)
@@ -295,6 +320,22 @@ public class PluginManager {
 		ContentView rtn = ((ContentView)f).openContentView(this.schedule, upStream);
 		this.instance_RegisterPluginInstance(url, rtn);
 		
+		return rtn;
+	}
+
+	/**
+	 * MenuBar只用来刷新和替换原有MenuBar，因此不需要找到之前的实例，直接替代
+	 * 
+	 * @param string
+	 *            组件的GroupID
+	 * @return 实例
+	 */
+	public MenuBar instance_GetNewDefaultMenubar(String string) {
+		PluginFeature f = this.factory_GetConfigComp(ItemsKey.DefaultMenuBar, DefaultMenuBar.class.getName());
+
+		MenuBar rtn = ((MenuBar) f).getNewInstance(this.schedule);
+		this.instance_RegisterPluginInstance(string, rtn);
+
 		return rtn;
 	}
 
@@ -338,6 +379,8 @@ public class PluginManager {
 			case PluginFeature.Service_LogPort:
 				this.printInfo(aplugin, "PluginFeature.Service_LogPort");
 				break;
+				
+				
 			case PluginFeature.IO_TextModel:
 				this.printInfo(aplugin, "PluginFeature.IO_TextModel");
 				break;
@@ -347,6 +390,11 @@ public class PluginManager {
 			case PluginFeature.IO_TreeModel:
 				this.printInfo(aplugin, "PluginFeature.IO_TreeModel");
 				break;
+			case PluginFeature.IO_TableModel:
+				this.printInfo(aplugin, "PluginFeature.IO_TableModel");
+				break;
+				
+				
 			case PluginFeature.UI_Window:
 				this.printInfo(aplugin, "PluginFeature.UI_Window");
 				break;
@@ -408,7 +456,10 @@ public class PluginManager {
 				instance = this.instance_GetTreeModelAsDescription(f, url, instance);
 				break;
 			case PluginFeature.UI_ContentView:
-				instance = this.instance_GetContentView(f, url, instance);
+				instance = this.instance_GetContentViewAsDescription(f, url, instance);
+				break;
+			case PluginFeature.IO_TableModel:
+				instance = this.instance_GetTableModelAsDescription(f,url,instance);
 				break;
 			default:
 				this.schedule.instance_GetDefaultLogPort().echoLog(this, "未知插件，无法实例化");

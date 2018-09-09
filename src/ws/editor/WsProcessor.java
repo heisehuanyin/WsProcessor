@@ -28,11 +28,13 @@ import ws.editor.plugin.ContentView;
 import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.LogPort;
 import ws.editor.plugin.configport.DefaultConfigPort;
+import ws.editor.plugin.contentview.DefaultTableView;
 import ws.editor.plugin.contentview.DefaultTextView;
 import ws.editor.plugin.contentview.DefaultTreeView;
 import ws.editor.plugin.filesymbo.DefaultFileSymbo;
 import ws.editor.plugin.logport.DefaultLogPort;
 import ws.editor.plugin.menubar.DefaultMenuBar;
+import ws.editor.plugin.tablemodel.DefaultCSVModel;
 import ws.editor.plugin.textmodel.DefaultTextModel;
 import ws.editor.plugin.treemodel.DefaultProjectModel;
 import ws.editor.plugin.window.SingleViewWindow;
@@ -201,6 +203,7 @@ public class WsProcessor {
 		this.service_RegisterPlugin(new DefaultConfigPort());
 		this.service_RegisterPlugin(new DefaultTextModel());
 		this.service_RegisterPlugin(new DefaultProjectModel());
+		this.service_RegisterPlugin(new DefaultCSVModel());
 	}
 
 	/**
@@ -222,6 +225,7 @@ public class WsProcessor {
 		this.service_RegisterPlugin(new DefaultMenuBar());
 		this.service_RegisterPlugin(new DefaultTextView());
 		this.service_RegisterPlugin(new DefaultTreeView());
+		this.service_RegisterPlugin(new DefaultTableView());
 		// this.service_RegisterPlugin(new WToolsBar());
 	}
 
@@ -235,8 +239,6 @@ public class WsProcessor {
 		this.control_InitDefaultGraphicPlugin();
 		this.control_LoadAllPlugins();
 
-		// if(System.getProperty("os.name").indexOf("Mac") != -1)
-		// System.setProperty("apple.laf.useScreenMenuBar", "true");
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException

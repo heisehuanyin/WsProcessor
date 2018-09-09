@@ -1,1 +1,1 @@
-Error:ws.editor.PluginManager:插件未注册，我选择崩溃。罪魁祸首：ws.editor.plugin.contentview.DefaultTreeView
+Log:ws.editor.PluginManager:[printEcho]未知插件，无法实例化
