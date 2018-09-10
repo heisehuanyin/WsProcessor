@@ -1,5 +1,5 @@
 #config items as list
-#Mon Sep 10 17:21:23 CST 2018
+#Mon Sep 10 17:30:20 CST 2018
 editor.window.description=ws.editor.plugin.window.SingleViewWindow
 editor.window.width=1114
 editor.modulelist.suffix.txt=ws.editor.plugin.filesymbo.DefaultFileSymbo\=>ws.editor.plugin.textmodel.DefaultTextModel\=>ws.editor.plugin.contentview.DefaultTextView

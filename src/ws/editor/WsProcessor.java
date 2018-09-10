@@ -343,7 +343,7 @@ public class WsProcessor {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String suffix = this.target.substring(this.target.lastIndexOf('.'));
+			String suffix = this.target.substring(this.target.lastIndexOf('.')+1);
 			
 			File one = WsProcessor.this.service_FileChooserOperate(JFileChooser.FILES_ONLY, JFileChooser.OPEN_DIALOG,
 					new FileNameExtensionFilter(suffix.toUpperCase()+"文件", suffix));
