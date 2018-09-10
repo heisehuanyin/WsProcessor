@@ -75,7 +75,7 @@ public class PluginManager {
 	 * 
 	 * @return 合适的合法的插件工厂
 	 */
-	public PluginFeature factory_GetConfigComp(String itemsKeyDefine, String defaultf_id) {
+	private PluginFeature factory_GetConfigComp(String itemsKeyDefine, String defaultf_id) {
 		String factory_id;
 		// 获取合法的factory_id,未配置的话，启用dafault_id
 		factory_id = this.schedule.instance_GetMainConfigUnit().getValue(itemsKeyDefine, defaultf_id);
@@ -95,10 +95,17 @@ public class PluginManager {
 	public void operate_SaveOperation() {
 		Set<String> aset = this.instances.keySet();
 		for (String url : aset) {
-			ArrayList<PluginFeature> cList = this.instances.get(url);
-			for (PluginFeature one : cList) {
-				one.saveOperation();
-			}
+			this.operate_SaveChannelAsGroupId(url);
+		}
+	}
+	
+	/**
+	 * 根据分组的GroupId获取一整条通道的插件实例，对其中所有插件按照顺序进行保存操作
+	 * @param gId GroupId，可能是视图插件的gId或者IOModel的URL*/
+	public void operate_SaveChannelAsGroupId(String gId) {
+		ArrayList<PluginFeature> cList = this.instances.get(gId);
+		for (PluginFeature one : cList) {
+			one.saveOperation();
 		}
 	}
 
@@ -183,7 +190,7 @@ public class PluginManager {
 	 *            文件路径
 	 * @return 返回实例
 	 */
-	public FileSymbo instance_GetFileSymbo(String path) {
+	private FileSymbo instance_GetFileSymbo(String path) {
 		ArrayList<PluginFeature> cList = this.instance_GetExistsChannelList(path);
 		if (cList != null)
 			for (PluginFeature x : cList) {
@@ -210,7 +217,7 @@ public class PluginManager {
 	 *            上游插件
 	 * @return 正确的插件实例
 	 */
-	public TextModel instance_GetTextModelAsDescription(String f_id, String url, PluginFeature upStream) {
+	private TextModel instance_GetTextModelAsDescription(String f_id, String url, PluginFeature upStream) {
 		ArrayList<PluginFeature> cList = this.instance_GetExistsChannelList(url);
 
 		if (cList != null)
@@ -243,7 +250,7 @@ public class PluginManager {
 	 *            上游插件
 	 * @return 正确的插件实例
 	 */
-	public TreeModel instance_GetTreeModelAsDescription(String f_id, String url, PluginFeature upStream) {
+	private TreeModel instance_GetTreeModelAsDescription(String f_id, String url, PluginFeature upStream) {
 		List<PluginFeature> cList = this.instance_GetExistsChannelList(url);
 		if (cList != null)
 			for (PluginFeature x : cList) {
@@ -274,7 +281,7 @@ public class PluginManager {
 	 *            上游插件
 	 * @return 正确的插件实例
 	 */
-	public TableModel instance_GetTableModelAsDescription(String f, String url, PluginFeature upStream) {
+	private TableModel instance_GetTableModelAsDescription(String f, String url, PluginFeature upStream) {
 		List<PluginFeature> cList = this.instance_GetExistsChannelList(url);
 		if (cList != null)
 			for (PluginFeature x : cList) {
@@ -304,7 +311,7 @@ public class PluginManager {
 	 * @param url 通道标识，插件分组标识
 	 * @param upStream 上游插件
 	 * @return 正确的插件实例*/
-	public ContentView instance_GetContentViewAsDescription(String f_id, String url, PluginFeature upStream) {
+	private ContentView instance_GetContentViewAsDescription(String f_id, String url, PluginFeature upStream) {
 		List<PluginFeature> cList = this.instance_GetExistsChannelList(url);
 		if(cList != null)
 			for(PluginFeature x:cList)
@@ -340,7 +347,7 @@ public class PluginManager {
 	}
 
 	/**
-	 * 获取FrontWindow
+	 * 获取FrontWindow实例
 	 * 
 	 * @param string
 	 *            组件的GroupID

@@ -1,1 +1,1 @@
-Log:ws.editor.PluginManager:[printEcho]未知插件，无法实例化
+Error:ws.editor.PluginManager:配置文件错误，插件ws.editor.plugin.menubar.DefaultMenuBar不存在

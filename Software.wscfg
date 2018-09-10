@@ -1,9 +1,9 @@
 #config items as list
-#Sun Sep 09 13:37:08 CST 2018
+#Mon Sep 10 09:03:28 CST 2018
 editor.window.description=ws.editor.plugin.window.SingleViewWindow
 editor.window.width=1348
 editor.modulelist.suffix.txt=ws.editor.plugin.filesymbo.DefaultFileSymbo\=>ws.editor.plugin.textmodel.DefaultTextModel\=>ws.editor.plugin.contentview.DefaultTextView
-editor.window.height=689
+editor.window.height=828
 editor.menubar.description=ws.editor.plugin.menubar.DefaultMenuBar
 editor.modulelist.suffix.wsrc=ws.editor.plugin.filesymbo.DefaultFileSymbo\=>ws.editor.plugin.textmodel.DefaultTextModel\=>ws.editor.plugin.contentview.DefaultTextView
 editor.modulelist.suffix.wsp1=ws.editor.plugin.filesymbo.DefaultFileSymbo\=>ws.editor.plugin.treemodel.DefaultProjectModel\=>ws.editor.plugin.contentview.DefaultTreeView
