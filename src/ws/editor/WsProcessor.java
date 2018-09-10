@@ -20,6 +20,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import ws.editor.comn.ItemsKey;
 import ws.editor.comn.PluginFeature;
@@ -105,14 +106,14 @@ public class WsProcessor {
 	 * @param dialog_type
 	 *            对话框类型： 保存对话框（JFileChooser.SAVE_DIALOG）
 	 *            选择对话框（JFileChooser.OPEN_DIALOG）
-	 * @param suffix
-	 *            指定文件后缀名筛选文件，例如： “*.txt” 取 “txt”，不需要的时候填 null
+	 * @param ff
+	 *            指定的筛选器，用于筛选视图中的文件
 	 * @return 选中的文件
 	 */
-	public File service_FileChooserOperate(int target_type, int dialog_type, String suffix) {
+	public File service_FileChooserOperate(int target_type, int dialog_type, FileFilter ff) {
 		this.chooser.setFileSelectionMode(target_type);
-		if (suffix != null)
-			this.chooser.setFileFilter(new FileMenu_Operate_Filter(suffix));
+		if (ff != null)
+			this.chooser.setFileFilter(ff);
 
 		int ret = 0;
 		if (dialog_type == JFileChooser.SAVE_DIALOG) {
@@ -342,8 +343,10 @@ public class WsProcessor {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			String suffix = this.target.substring(this.target.lastIndexOf('.'));
+			
 			File one = WsProcessor.this.service_FileChooserOperate(JFileChooser.FILES_ONLY, JFileChooser.OPEN_DIALOG,
-					target.substring(target.lastIndexOf('.') + 1));
+					new FileNameExtensionFilter(suffix.toUpperCase()+"文件", suffix));
 			if (one == null)
 				return;
 			
@@ -394,33 +397,5 @@ public class WsProcessor {
 				e1.printStackTrace();
 			}
 		}
-	}
-
-	private class FileMenu_Operate_Filter extends FileFilter {
-		private String suffix;
-
-		/**
-		 * 新建通过指定后缀名筛选文件的{@link FileFilter}
-		 * 
-		 * @param suffix
-		 *            后缀名。格式：*.txt 取 txt
-		 */
-		public FileMenu_Operate_Filter(String suffix) {
-			this.suffix = suffix;
-		}
-
-		@Override
-		public boolean accept(File f) {
-			if (f.getName().endsWith("." + this.suffix))
-				return true;
-
-			return false;
-		}
-
-		@Override
-		public String getDescription() {
-			return this.suffix.toUpperCase() + "文件";
-		}
-
 	}
 }
