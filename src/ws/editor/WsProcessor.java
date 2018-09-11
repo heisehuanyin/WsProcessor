@@ -1,6 +1,7 @@
 package ws.editor;
 
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -11,10 +12,18 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.MenuEvent;
@@ -89,10 +98,12 @@ public class WsProcessor {
 		one.initMenus();
 		exterl.add(one);
 
-		for(ContentView itor:win.getActivedViewsMenus()) {
+		for(ContentView itor:win.getActivedViews()) {
 			exterl.add(itor.getCustomMenu());
 		}
 		exterl.add(win.getCustomMenu());
+		
+		exterl.add(new CustomMenu(this, "Custom"));
 
 		JMenuBar x = this.manager.instance_GetNewDefaultMenubar(win.getGroupId()).rebuildMenuBar(exterl);
 
@@ -245,7 +256,7 @@ public class WsProcessor {
 		this.control_LoadAllPlugins();
 
 		try {
-			UIManager.setLookAndFeel(/*UIManager.getSystemLookAndFeelClassName()*/UIManager.getCrossPlatformLookAndFeelClassName());
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
@@ -401,5 +412,66 @@ public class WsProcessor {
 				e1.printStackTrace();
 			}
 		}
+	}
+	
+	private class CustomMenu extends JMenu implements ActionListener{
+		private WsProcessor core;
+		
+		public CustomMenu(WsProcessor wsProcessor, String name) {
+			super(name);
+			this.core = wsProcessor;
+			JMenuItem customPane = new JMenuItem("Perferences");
+			customPane.addActionListener(this);
+			this.add(customPane);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			CustomMenu_Dialog x = new CustomMenu_Dialog(core);
+			x.setSize(600, 400);
+			x.setVisible(true);
+		}
+		
+	}
+	private class CustomMenu_Dialog extends JDialog{
+		private WsProcessor core;
+		
+		public CustomMenu_Dialog(WsProcessor core) {
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			this.core = core;
+			
+			JPanel base = new JPanel();
+			this.setContentPane(new JScrollPane(base));
+			base.setLayout(new BoxLayout(base, BoxLayout.Y_AXIS));
+			
+			
+			//Config Default Window ================================
+			JPanel configWindow = new JPanel();
+			configWindow.setLayout(new FlowLayout(FlowLayout.LEFT));
+			configWindow.add(new JLabel("选中窗口主类名："));
+			String defaultWindow = this.core.instance_GetMainConfigUnit()
+					.getValue(ItemsKey.DefaultWindow, SingleViewWindow.class.getName());
+			ArrayList<String> windows = WsProcessor.this.service_GetPluginManager()
+					.service_QueryFactoryList(PluginFeature.UI_Window);
+			int index = windows.indexOf(defaultWindow);
+			JComboBox<?> listSelect = new JComboBox<Object>(windows.toArray());
+			listSelect.setSelectedIndex(index);
+			configWindow.add(listSelect);
+			listSelect.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String x = (String) listSelect.getSelectedItem();
+					core.instance_GetMainConfigUnit().setKeyValue(ItemsKey.DefaultWindow, x);
+				}});
+			configWindow.setBorder(BorderFactory.createTitledBorder("默认Window"));
+			base.add(configWindow);
+			
+			//Config ChannelList ==================================
+			JPanel configCList = new JPanel();
+			configCList.setBorder(BorderFactory.createTitledBorder("文件类型-处理链条"));
+			base.add(configCList);
+		}
+		
+		
 	}
 }

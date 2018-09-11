@@ -79,10 +79,11 @@ public class SingleViewWindow extends AbstractWindow{
 	}
 
 	@Override
-	public ArrayList<? extends ContentView> getActivedViewsMenus() {
+	public ArrayList<? extends ContentView> getActivedViews() {
 		ArrayList<ContentView> x = new ArrayList<>();
 		
-		x.add(view);
+		if(this.view != null)
+			x.add(view);
 		
 		return x;
 	}
@@ -94,8 +95,8 @@ public class SingleViewWindow extends AbstractWindow{
 
 	@Override
 	public void closeView(ContentView comp) {
-		// TODO Auto-generated method stub
-		
+		if(this.view == comp)
+			this.remove(this.view.getView());
 	}
 
 

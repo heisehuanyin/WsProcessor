@@ -15,6 +15,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.plaf.SplitPaneUI;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
@@ -68,8 +70,16 @@ public class TwoViewWindow extends AbstractWindow {
 		this.jsp.setDividerLocation(Integer.parseInt(leftLocation));
 
 		// CustomTabbedPane============
-		this.leftC.setBorder(new EmptyBorder(0, 0, 0, 0));
-		this.rightC.setBorder(new EmptyBorder(0, 0, 0, 0));
+		this.leftC.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				core.service_Refresh_MenuBar(TwoViewWindow.this);
+			}});
+		this.rightC.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				core.service_Refresh_MenuBar(TwoViewWindow.this);
+			}});
 		
 		
 		// LeftViewVisible=============
@@ -112,7 +122,8 @@ public class TwoViewWindow extends AbstractWindow {
 		if (!this.Views.contains(comp))
 			this.Views.add(comp);
 
-		String position = this.core.instance_GetMainConfigUnit().getValue(this.VIEWPOSITION_KEY,
+		String position = this.core.instance_GetMainConfigUnit().getValue(this.VIEWPOSITION_KEY
+				+ "." + comp.getClass().getName(),
 				"" + this.POSITION_RIGHT);
 		
 		if (Integer.parseInt(position) == this.POSITION_LEFT) {
@@ -141,7 +152,7 @@ public class TwoViewWindow extends AbstractWindow {
 	}
 
 	@Override
-	public ArrayList<? extends ContentView> getActivedViewsMenus() {
+	public ArrayList<? extends ContentView> getActivedViews() {
 		ArrayList<ContentView> list = new ArrayList<>();
 		
 		Component x = this.leftC.getSelectedComponent();

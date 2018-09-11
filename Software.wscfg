@@ -1,13 +1,15 @@
 #config items as list
-#Tue Sep 11 12:02:16 CST 2018
-editor.window.description=ws.editor.plugin.window.TwoViewWindow
-editor.window.width=1114
-editor.module.custom_setting.ws.editor.plugin.window.TwoViewWindow.VIEW_POSITION=2
-editor.module.custom_setting.ws.editor.plugin.window.TwoViewWindow.leftvisible=true
-editor.modulelist.suffix.txt=ws.editor.plugin.filesymbo.DefaultFileSymbo\=>ws.editor.plugin.textmodel.DefaultTextModel\=>ws.editor.plugin.contentview.DefaultTextView
-editor.window.height=791
-editor.module.custom_setting.ws.editor.plugin.window.TwoViewWindow.LEFTVIEW_WIDTH=252
+#Tue Sep 11 23:08:02 CST 2018
+editor.module.custom_setting.ws.editor.plugin.window.TwoViewWindow.VIEW_POSITION.ws.editor.plugin.contentview.DefaultTreeView=2
+editor.window.height=481
 editor.modulelist.suffix.wsrc=ws.editor.plugin.filesymbo.DefaultFileSymbo\=>ws.editor.plugin.textmodel.DefaultTextModel\=>ws.editor.plugin.contentview.DefaultTextView
-editor.modulelist.suffix.wsp1=ws.editor.plugin.filesymbo.DefaultFileSymbo\=>ws.editor.plugin.treemodel.DefaultProjectModel\=>ws.editor.plugin.contentview.DefaultTreeView
 editor.menubar.description=ws.editor.plugin.menubar.DefaultMenuBar
 editor.modulelist.suffix.csv=ws.editor.plugin.filesymbo.DefaultFileSymbo\=>ws.editor.plugin.textmodel.DefaultTextModel\=>ws.editor.plugin.tablemodel.DefaultCSVModel\=>ws.editor.plugin.contentview.DefaultTableView
+editor.module.custom_setting.ws.editor.plugin.window.TwoViewWindow.VIEW_POSITION.ws.editor.plugin.contentview.DefaultTextView=2
+editor.window.description=ws.editor.plugin.window.TwoViewWindow
+editor.window.width=1114
+editor.module.custom_setting.ws.editor.plugin.window.TwoViewWindow.leftvisible=true
+editor.modulelist.suffix.txt=ws.editor.plugin.filesymbo.DefaultFileSymbo\=>ws.editor.plugin.textmodel.DefaultTextModel\=>ws.editor.plugin.contentview.DefaultTextView
+editor.module.custom_setting.ws.editor.plugin.window.TwoViewWindow.LEFTVIEW_WIDTH=252
+editor.modulelist.suffix.wsp1=ws.editor.plugin.filesymbo.DefaultFileSymbo\=>ws.editor.plugin.treemodel.DefaultProjectModel\=>ws.editor.plugin.contentview.DefaultTreeView
+editor.module.custom_setting.ws.editor.plugin.window.TwoViewWindow.VIEW_POSITION.ws.editor.plugin.contentview.DefaultTableView=2

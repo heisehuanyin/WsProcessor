@@ -20,7 +20,7 @@ public class TabWithCloseButton extends JPanel {
 
 	public TabWithCloseButton(final FrontWindow win,final JTabbedPane pane, final ContentView view) {
 		// unset default FlowLayout' gaps
-		super(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		super(new FlowLayout(FlowLayout.RIGHT, 0, 0));
 		
 		this.view = view;
 		this.win = win;

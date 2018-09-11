@@ -43,5 +43,5 @@ public interface FrontWindow extends PluginFeature{
 	/**
 	 * 获取当前活动视图的菜单
 	 * @return 集合，每个视图的菜单都占据一个菜单项*/
-	ArrayList<? extends ContentView> getActivedViewsMenus();
+	ArrayList<? extends ContentView> getActivedViews();
 }

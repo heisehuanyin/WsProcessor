@@ -492,5 +492,17 @@ public class PluginManager {
 
 		return instance;
 	}
+	
+	public ArrayList<String> service_QueryFactoryList(int typeMark) {
+		ArrayList<String> list = new ArrayList<>();
+		Set<String> facSet = this.factoryContainer.keySet();
+		for(String f:facSet) {
+			PluginFeature x = this.factory_GetExistsfactory(f);
+			if(x.pluginMark() == typeMark)
+				list.add(f);
+		}
+		
+		return list;
+	}
 
 }
