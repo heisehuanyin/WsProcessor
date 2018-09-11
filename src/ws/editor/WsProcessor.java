@@ -39,6 +39,7 @@ import ws.editor.plugin.tablemodel.DefaultCSVModel;
 import ws.editor.plugin.textmodel.DefaultTextModel;
 import ws.editor.plugin.treemodel.DefaultProjectModel;
 import ws.editor.plugin.window.SingleViewWindow;
+import ws.editor.plugin.window.TwoViewWindow;
 
 /**
  * 核心模块
@@ -88,7 +89,9 @@ public class WsProcessor {
 		one.initMenus();
 		exterl.add(one);
 
-		exterl.addAll(win.getActivedViewsMenus());
+		for(ContentView itor:win.getActivedViewsMenus()) {
+			exterl.add(itor.getCustomMenu());
+		}
 		exterl.add(win.getCustomMenu());
 
 		JMenuBar x = this.manager.instance_GetNewDefaultMenubar(win.getGroupId()).rebuildMenuBar(exterl);
@@ -227,6 +230,7 @@ public class WsProcessor {
 		this.service_RegisterPlugin(new DefaultTextView());
 		this.service_RegisterPlugin(new DefaultTreeView());
 		this.service_RegisterPlugin(new DefaultTableView());
+		this.service_RegisterPlugin(new TwoViewWindow());
 		// this.service_RegisterPlugin(new WToolsBar());
 	}
 
@@ -241,7 +245,7 @@ public class WsProcessor {
 		this.control_LoadAllPlugins();
 
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			UIManager.setLookAndFeel(/*UIManager.getSystemLookAndFeelClassName()*/UIManager.getCrossPlatformLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
 			e.printStackTrace();

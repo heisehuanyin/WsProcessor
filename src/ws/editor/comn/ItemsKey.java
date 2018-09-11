@@ -1,6 +1,8 @@
 package ws.editor.comn;
 
 import java.io.File;
+
+import ws.editor.plugin.window.TwoViewWindow;
 /**
  * 软件拥有很多可配置项目，为了便于统一，将配置文件中的键名集中起来*/
 public class ItemsKey {
@@ -24,5 +26,9 @@ public class ItemsKey {
 	
 	public static String get_MODULELIST_AS_SUFFIX(String suffix) {
 		return "editor.modulelist.suffix" + suffix;
+	}
+
+	public static String get_CUSTOMSETTING_STRING(TwoViewWindow twoViewWindow, String string) {
+		return "editor.module.custom_setting." + twoViewWindow.getClass().getName()+"."+ string;
 	}
 }

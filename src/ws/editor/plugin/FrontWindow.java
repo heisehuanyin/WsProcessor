@@ -29,6 +29,11 @@ public interface FrontWindow extends PluginFeature{
 	 * @param viewTitle 视图的标题，但不一定是标签页的标签
 	 * @param comp 主视图*/
 	void placeView(String viewTitle, ContentView comp);
+	
+	/**
+	 * 关闭指定视图
+	 * @param comp 指定视图*/
+	void closeView(ContentView comp);
 
 	/**
 	 * 刷新MenuBar，将额外菜单添加到菜单栏
@@ -38,5 +43,5 @@ public interface FrontWindow extends PluginFeature{
 	/**
 	 * 获取当前活动视图的菜单
 	 * @return 集合，每个视图的菜单都占据一个菜单项*/
-	ArrayList<? extends JMenu> getActivedViewsMenus();
+	ArrayList<? extends ContentView> getActivedViewsMenus();
 }

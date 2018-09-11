@@ -46,7 +46,8 @@ public class SingleViewWindow extends AbstractWindow{
 		
 		
 		
-		this.addComponentListener(new BridgeWindowListener(this.core));
+		this.addComponentListener(new CommonComponentListener(this.core));
+		this.addWindowListener(new CommonWindowsListener(this.core));
 		
 		this.setSize(Integer.parseInt(wStr), Integer.parseInt(hStr));
 		this.setVisible(true);
@@ -74,14 +75,15 @@ public class SingleViewWindow extends AbstractWindow{
 
 	@Override
 	public void saveOperation() {
-		
+		System.out.println(".......................");
 	}
 
 	@Override
-	public ArrayList<? extends JMenu> getActivedViewsMenus() {
-		ArrayList<JMenu> x = new ArrayList<>();
-		if(this.view!=null)
-			x.add(((ContentView)this.view).getCustomMenu()); 
+	public ArrayList<? extends ContentView> getActivedViewsMenus() {
+		ArrayList<ContentView> x = new ArrayList<>();
+		
+		x.add(view);
+		
 		return x;
 	}
 
@@ -89,40 +91,12 @@ public class SingleViewWindow extends AbstractWindow{
 	public String getGroupId() {
 		return this.g_id;
 	}
-}
-
-class BridgeWindowListener implements ComponentListener{
-	private WsProcessor core;
-	
-	public BridgeWindowListener(WsProcessor core) {
-		this.core = core;
-	}
-	
-	@Override
-	public void componentResized(ComponentEvent e) {
-		JFrame win = (JFrame) e.getSource();
-		int w = win.getWidth();
-		int h = win.getHeight();
-		this.core.instance_GetMainConfigUnit().setKeyValue(ItemsKey.WindowWidth, ""+w);
-		this.core.instance_GetMainConfigUnit().setKeyValue(ItemsKey.WindowHeight, ""+h);
-	}
 
 	@Override
-	public void componentMoved(ComponentEvent e) {
+	public void closeView(ContentView comp) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	public void componentShown(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void componentHidden(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 }

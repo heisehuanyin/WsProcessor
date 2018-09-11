@@ -95,15 +95,16 @@ public class PluginManager {
 	public void operate_SaveOperation() {
 		Set<String> aset = this.instances.keySet();
 		for (String url : aset) {
-			this.operate_SaveChannelAsGroupId(url);
+			ArrayList<PluginFeature> cList = this.instances.get(url);
+			this.operate_SaveChannelAsGroupId(cList);
 		}
 	}
 	
 	/**
-	 * 根据分组的GroupId获取一整条通道的插件实例，对其中所有插件按照顺序进行保存操作
-	 * @param gId GroupId，可能是视图插件的gId或者IOModel的URL*/
-	public void operate_SaveChannelAsGroupId(String gId) {
-		ArrayList<PluginFeature> cList = this.instances.get(gId);
+	 * 对传入的一整条通道的插件按照顺序进行保存操作
+	 * @param cList，插件通道，插件组*/
+	public void operate_SaveChannelAsGroupId(ArrayList<PluginFeature> cList) {
+		
 		for (PluginFeature one : cList) {
 			one.saveOperation();
 		}
@@ -135,8 +136,22 @@ public class PluginManager {
 	 *            内容来源标识
 	 * @return 整个通道的插件组合
 	 */
-	private ArrayList<PluginFeature> instance_GetExistsChannelList(String url) {
+	private ArrayList<PluginFeature> instance_GetExistsChannel(String url) {
 		return this.instances.get(url);
+	}
+	
+	/**
+	 * 通过已知插件获取整个通道
+	 * @param plug 已知插件
+	 * @return 通道实例*/
+	public ArrayList<PluginFeature> instance_GetExisisChannel(PluginFeature plug){
+		Set<String> aset = this.instances.keySet();
+		for(String url:aset) {
+			ArrayList<PluginFeature> cList = this.instances.get(url);
+			if(cList.contains(plug))
+				return cList;
+		}
+		return null;
 	}
 
 	// 插件实例获取接口:基础===================================================================
@@ -150,7 +165,7 @@ public class PluginManager {
 	 * @return 实例
 	 */
 	public ConfigPort instance_GetConfigUnit(String path) {
-		ArrayList<PluginFeature> cList = this.instance_GetExistsChannelList(path);
+		ArrayList<PluginFeature> cList = this.instance_GetExistsChannel(path);
 		if (cList != null)
 			return (ConfigPort) cList.get(0);
 
@@ -171,7 +186,7 @@ public class PluginManager {
 	 * @return 实例
 	 */
 	public LogPort instance_GetLogPort(String path) {
-		ArrayList<PluginFeature> cList = this.instance_GetExistsChannelList(path);
+		ArrayList<PluginFeature> cList = this.instance_GetExistsChannel(path);
 		if (cList != null)
 			return (LogPort) cList.get(0);
 
@@ -191,7 +206,7 @@ public class PluginManager {
 	 * @return 返回实例
 	 */
 	private FileSymbo instance_GetFileSymbo(String path) {
-		ArrayList<PluginFeature> cList = this.instance_GetExistsChannelList(path);
+		ArrayList<PluginFeature> cList = this.instance_GetExistsChannel(path);
 		if (cList != null)
 			for (PluginFeature x : cList) {
 				if (x.getClass().getName().equals(DefaultFileSymbo.class.getName()))
@@ -218,7 +233,7 @@ public class PluginManager {
 	 * @return 正确的插件实例
 	 */
 	private TextModel instance_GetTextModelAsDescription(String f_id, String url, PluginFeature upStream) {
-		ArrayList<PluginFeature> cList = this.instance_GetExistsChannelList(url);
+		ArrayList<PluginFeature> cList = this.instance_GetExistsChannel(url);
 
 		if (cList != null)
 			for (PluginFeature x : cList) {
@@ -251,7 +266,7 @@ public class PluginManager {
 	 * @return 正确的插件实例
 	 */
 	private TreeModel instance_GetTreeModelAsDescription(String f_id, String url, PluginFeature upStream) {
-		List<PluginFeature> cList = this.instance_GetExistsChannelList(url);
+		List<PluginFeature> cList = this.instance_GetExistsChannel(url);
 		if (cList != null)
 			for (PluginFeature x : cList) {
 				if (x.getClass().getName().equals(f_id))
@@ -282,7 +297,7 @@ public class PluginManager {
 	 * @return 正确的插件实例
 	 */
 	private TableModel instance_GetTableModelAsDescription(String f, String url, PluginFeature upStream) {
-		List<PluginFeature> cList = this.instance_GetExistsChannelList(url);
+		List<PluginFeature> cList = this.instance_GetExistsChannel(url);
 		if (cList != null)
 			for (PluginFeature x : cList) {
 				if (x.getClass().getName().equals(f))
@@ -312,7 +327,7 @@ public class PluginManager {
 	 * @param upStream 上游插件
 	 * @return 正确的插件实例*/
 	private ContentView instance_GetContentViewAsDescription(String f_id, String url, PluginFeature upStream) {
-		List<PluginFeature> cList = this.instance_GetExistsChannelList(url);
+		List<PluginFeature> cList = this.instance_GetExistsChannel(url);
 		if(cList != null)
 			for(PluginFeature x:cList)
 				if(x.getClass().getName().equals(f_id))
@@ -356,7 +371,7 @@ public class PluginManager {
 	public FrontWindow instance_GetNewDefaultWindow(String string) {
 		PluginFeature f = this.factory_GetConfigComp(ItemsKey.DefaultWindow, SingleViewWindow.class.getName());
 
-		List<PluginFeature> cList = this.instance_GetExistsChannelList(string);
+		List<PluginFeature> cList = this.instance_GetExistsChannel(string);
 		if (cList != null)
 			for (PluginFeature x : cList) {
 				if (x.getClass().getName().equals(f.getClass().getName()))
