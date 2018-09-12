@@ -1,6 +1,10 @@
 package ws.editor;
 
+import java.util.ArrayList;
 import java.util.Scanner;
+
+import ws.editor.comn.PluginFeature;
+import ws.editor.comn.WsPair;
 /**
  * 参数处理模块，处理各种模式与系统的衔接，决定软件的运行模式：静默、交互、图形<br>
  * 通过本模块是在Terminal中运行的实体，通过本模块调用核心模块实现各种功能<br>
@@ -16,13 +20,55 @@ public class WSP {
 		for (;;) {
 			String cmd = s.nextLine();
 			if (cmd.equals("exit();"))
-				return;
-			if (cmd.equals("pluginList();"))
-				this.wsp.service_GetPluginManager().service_printPluginList();
+				System.exit(0);
+			if (cmd.equals("pluginList();") || cmd.equals("pluginListG();")) {
+				PluginManager x = this.wsp.service_GetPluginManager();
+				wsp.instance_GetDefaultLogPort().echoLog(this, "PluginFeature.IO_NoUpStream = "+0x20);
+				
+				ArrayList<WsPair<String, Integer>> x5 = x.service_QueryFactoryList(PluginFeature.Service_ConfigPort);
+				this.printInfo(PluginFeature.Service_ConfigPort, "PluginFeature.Service_ConfigPort", x5);
+				
+				ArrayList<WsPair<String, Integer>> x6 = x.service_QueryFactoryList(PluginFeature.Service_LogPort);
+				this.printInfo(PluginFeature.Service_LogPort, "PluginFeature.Service_LogPort", x6);
+				
+				ArrayList<WsPair<String, Integer>> x0 = x.service_QueryFactoryList(PluginFeature.IO_FileSymbo);
+				this.printInfo(PluginFeature.IO_FileSymbo, "PluginFeature.IO_FileSymbo", x0);
+			
+				ArrayList<WsPair<String, Integer>> x1 = x.service_QueryFactoryList(PluginFeature.IO_StyleModel);
+				this.printInfo(PluginFeature.IO_StyleModel, "PluginFeature.IO_StyleModel", x1);
+				
+				ArrayList<WsPair<String, Integer>> x2 = x.service_QueryFactoryList(PluginFeature.IO_TableModel);
+				this.printInfo(PluginFeature.IO_TableModel, "PluginFeature.IO_TableModel", x2);
+				
+				ArrayList<WsPair<String, Integer>> x3 = x.service_QueryFactoryList(PluginFeature.IO_TextModel);
+				this.printInfo(PluginFeature.IO_TextModel, "PluginFeature.IO_TextModel", x3);
+				
+				ArrayList<WsPair<String, Integer>> x4 = x.service_QueryFactoryList(PluginFeature.IO_TreeModel);
+				this.printInfo(PluginFeature.IO_TreeModel, "PluginFeature.IO_TreeModel", x4);
+			}
 			if (cmd.equals("pluginListG();")) {
 				this.wsp.control_OpenGraphicMode("MainWindow");
-				this.wsp.service_GetPluginManager().service_printPluginList();
+				PluginManager x = this.wsp.service_GetPluginManager();
+				
+				ArrayList<WsPair<String, Integer>> x0 = x.service_QueryFactoryList(PluginFeature.UI_ContentView);
+				this.printInfo(PluginFeature.UI_ContentView, "PluginFeature.UI_ContentView", x0);
+				
+				ArrayList<WsPair<String, Integer>> x1 = x.service_QueryFactoryList(PluginFeature.UI_MenuBar);
+				this.printInfo(PluginFeature.UI_MenuBar, "PluginFeature.UI_MenuBar", x1);
+				
+				ArrayList<WsPair<String, Integer>> x2 = x.service_QueryFactoryList(PluginFeature.UI_Window);
+				this.printInfo(PluginFeature.UI_Window, "PluginFeature.UI_Window", x2);
 			}
+		}
+	}
+	
+	private void printInfo(int mark, String type, ArrayList<WsPair<String, Integer>> plugins) {
+		String msg = "=======================================================\n"+type + " = " + mark ;
+		wsp.instance_GetDefaultLogPort().echoLog(this, msg);
+		for(int i=0;i<plugins.size();++i) {
+			WsPair<String, Integer> x = plugins.get(i);
+			msg = "        " + x.getFirstElement() + " =>\tUpStream:" + x.getLastElement();
+			wsp.instance_GetDefaultLogPort().echoLog(this, msg);
 		}
 	}
 

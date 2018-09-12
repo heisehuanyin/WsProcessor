@@ -130,11 +130,13 @@ public class TwoViewWindow extends AbstractWindow {
 			this.leftC.add(viewTitle, comp.getView());
 			this.leftC.setTabComponentAt(this.leftC.getTabCount()-1,
 					new TabWithCloseButton(this, leftC, comp));
+			this.leftC.setSelectedIndex(this.leftC.getTabCount() - 1);
 		}
 		if(Integer.parseInt(position) == this.POSITION_RIGHT) {
 			this.rightC.add(viewTitle, comp.getView());
 			this.rightC.setTabComponentAt(this.rightC.getTabCount() -1,
 					new TabWithCloseButton(this, rightC, comp));
+			this.rightC.setSelectedIndex(this.rightC.getTabCount() - 1);
 		}
 
 	}

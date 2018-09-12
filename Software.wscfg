@@ -1,13 +1,13 @@
 #config items as list
-#Tue Sep 11 23:22:59 CST 2018
+#Wed Sep 12 15:43:42 CST 2018
 editor.module.custom_setting.ws.editor.plugin.window.TwoViewWindow.VIEW_POSITION.ws.editor.plugin.contentview.DefaultTreeView=0
 editor.window.height=565
-editor.modulelist.suffix.wsrc=ws.editor.plugin.filesymbo.DefaultFileSymbo\=>ws.editor.plugin.textmodel.DefaultTextModel\=>ws.editor.plugin.contentview.DefaultTextView
 editor.menubar.description=ws.editor.plugin.menubar.DefaultMenuBar
+editor.modulelist.suffix.wsrc=ws.editor.plugin.filesymbo.DefaultFileSymbo\=>ws.editor.plugin.textmodel.DefaultTextModel\=>ws.editor.plugin.contentview.DefaultTextView
 editor.modulelist.suffix.csv=ws.editor.plugin.filesymbo.DefaultFileSymbo\=>ws.editor.plugin.textmodel.DefaultTextModel\=>ws.editor.plugin.tablemodel.DefaultCSVModel\=>ws.editor.plugin.contentview.DefaultTableView
 editor.module.custom_setting.ws.editor.plugin.window.TwoViewWindow.VIEW_POSITION.ws.editor.plugin.contentview.DefaultTextView=2
 editor.window.description=ws.editor.plugin.window.TwoViewWindow
-editor.window.width=1114
+editor.window.width=849
 editor.module.custom_setting.ws.editor.plugin.window.TwoViewWindow.leftvisible=true
 editor.modulelist.suffix.txt=ws.editor.plugin.filesymbo.DefaultFileSymbo\=>ws.editor.plugin.textmodel.DefaultTextModel\=>ws.editor.plugin.contentview.DefaultTextView
 editor.module.custom_setting.ws.editor.plugin.window.TwoViewWindow.LEFTVIEW_WIDTH=252

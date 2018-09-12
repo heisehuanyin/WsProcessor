@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ws.editor.comn.ItemsKey;
+import ws.editor.comn.WsPair;
 import ws.editor.comn.PluginFeature;
 import ws.editor.plugin.ConfigPort;
 import ws.editor.plugin.ContentView;
@@ -109,6 +110,49 @@ public class PluginManager {
 			one.saveOperation();
 		}
 	}
+	// source=>module1=>module2=>module3=>module4=>the last one module
+	/**
+	 * 通过传入的模块链字符串，构建一条内容通道
+	 * @param cListStr 通道字符串
+	 * @param url 分组标识/文件路径
+	 * @return 通道的最后一个模块实例*/
+	public PluginFeature operate_BuildInstanceList(String cListStr, String url) {
+		String[] modules = cListStr.split("=>");
+		PluginFeature instance = null;
+
+		for (String f : modules) {
+			PluginFeature x = this.factory_GetExistsfactory(f);
+			if (x == null) {
+				this.schedule.instance_GetDefaultLogPort().errorLog(this,
+						"插件未注册，我选择崩溃。罪魁祸首："+f);
+				System.exit(0);
+			}
+			switch (x.pluginMark()) {
+			case PluginFeature.IO_FileSymbo:
+				instance = this.instance_GetFileSymbo(url);
+				break;
+			case PluginFeature.IO_TextModel:
+				instance = this.instance_GetTextModelAsDescription(f, url, instance);
+				break;
+			case PluginFeature.IO_TreeModel:
+				instance = this.instance_GetTreeModelAsDescription(f, url, instance);
+				break;
+			case PluginFeature.UI_ContentView:
+				instance = this.instance_GetContentViewAsDescription(f, url, instance);
+				break;
+			case PluginFeature.IO_TableModel:
+				instance = this.instance_GetTableModelAsDescription(f,url,instance);
+				break;
+			default:
+				this.schedule.instance_GetDefaultLogPort().echoLog(this, "未知插件，无法实例化");
+				break;
+			}
+
+		}
+
+		return instance;
+	}
+	
 
 	/**
 	 * 自动注册插件实例
@@ -386,123 +430,29 @@ public class PluginManager {
 
 	// Service
 	// =============================================================================
-
-	public void service_printPluginList() {
-		Collection<PluginFeature> x = this.factoryContainer.values();
-		ArrayList<PluginFeature> alist = new ArrayList<PluginFeature>(x);
-		Collections.sort(alist, new SortByMark());
-		System.out.println("已载入插件如下============");
-		System.out.println("空插件标识：PluginFeature.IO_NoUpStream:" + PluginFeature.IO_NoUpStream);
-		for (PluginFeature aplugin : alist) {
-			switch (aplugin.pluginMark()) {
-			case PluginFeature.Service_ConfigPort:
-				this.printInfo(aplugin, "PluginFeature.Service_ConfigPort");
-				break;
-			case PluginFeature.Service_LogPort:
-				this.printInfo(aplugin, "PluginFeature.Service_LogPort");
-				break;
-				
-				
-			case PluginFeature.IO_TextModel:
-				this.printInfo(aplugin, "PluginFeature.IO_TextModel");
-				break;
-			case PluginFeature.IO_FileSymbo:
-				this.printInfo(aplugin, "PluginFeature.IO_FileSymbo");
-				break;
-			case PluginFeature.IO_TreeModel:
-				this.printInfo(aplugin, "PluginFeature.IO_TreeModel");
-				break;
-			case PluginFeature.IO_TableModel:
-				this.printInfo(aplugin, "PluginFeature.IO_TableModel");
-				break;
-				
-				
-			case PluginFeature.UI_Window:
-				this.printInfo(aplugin, "PluginFeature.UI_Window");
-				break;
-			case PluginFeature.UI_MenuBar:
-				this.printInfo(aplugin, "PluginFeature.UI_MenuBar");
-				break;
-			case PluginFeature.UI_ContentView:
-				this.printInfo(aplugin, "PluginFeature.UI_ContentView");
-				break;
-
-			default:
-				this.printInfo(aplugin, "UnrecognizedPlugin");
-				break;
-
-			}
-		}
-	}
-
 	/**
-	 * 输出插件简要信息上屏，入Log，用于简化代码，增强复用效果
-	 */
-	private void printInfo(PluginFeature plg, String typeName) {
-		String msg = typeName + ":" + plg.pluginMark() + "\tName:" + plg.getClass().getName() + "\tUpstream:"
-				+ plg.upStreamMark();
-		this.schedule.instance_GetDefaultLogPort().echoLog(this, msg);
-	}
-
-	private class SortByMark implements Comparator<PluginFeature> {
-		@Override
-		public int compare(PluginFeature o1, PluginFeature o2) {
-			if (o1.pluginMark() > o2.pluginMark())
-				return 1;
-			if (o1.pluginMark() == o2.pluginMark())
-				return 0;
-			return -1;
-		}
-	}
-
-	// source=>module1=>module2=>module3=>module4=>the last one module
-	public PluginFeature service_BuildInstanceList(String cListStr, String url) {
-		String[] modules = cListStr.split("=>");
-		PluginFeature instance = null;
-
-		for (String f : modules) {
-			PluginFeature x = this.factory_GetExistsfactory(f);
-			if (x == null) {
-				this.schedule.instance_GetDefaultLogPort().errorLog(this,
-						"插件未注册，我选择崩溃。罪魁祸首："+f);
-				System.exit(0);
-			}
-			switch (x.pluginMark()) {
-			case PluginFeature.IO_FileSymbo:
-				instance = this.instance_GetFileSymbo(url);
-				break;
-			case PluginFeature.IO_TextModel:
-				instance = this.instance_GetTextModelAsDescription(f, url, instance);
-				break;
-			case PluginFeature.IO_TreeModel:
-				instance = this.instance_GetTreeModelAsDescription(f, url, instance);
-				break;
-			case PluginFeature.UI_ContentView:
-				instance = this.instance_GetContentViewAsDescription(f, url, instance);
-				break;
-			case PluginFeature.IO_TableModel:
-				instance = this.instance_GetTableModelAsDescription(f,url,instance);
-				break;
-			default:
-				this.schedule.instance_GetDefaultLogPort().echoLog(this, "未知插件，无法实例化");
-				break;
-			}
-
-		}
-
-		return instance;
-	}
-	
-	public ArrayList<String> service_QueryFactoryList(int typeMark) {
-		ArrayList<String> list = new ArrayList<>();
+	 * 通过分类碼对{@link PluginManager}进行检索，获取所有此类插件的信息
+	 * @param typeMark 分类码
+	 * @return 插件信息组*/
+	public ArrayList<WsPair<String,Integer>> service_QueryFactoryList(int typeMark) {
+		ArrayList<WsPair<String, Integer>> list = new ArrayList<>();
 		Set<String> facSet = this.factoryContainer.keySet();
 		for(String f:facSet) {
 			PluginFeature x = this.factory_GetExistsfactory(f);
 			if(x.pluginMark() == typeMark)
-				list.add(f);
+				list.add(new WsPair<String, Integer>(f,x.upStreamMark()));
 		}
 		
 		return list;
+	}
+	
+	/**
+	 * 检索{@link PluginManager}，获取所有同类插件信息
+	 * @param onePlugin 示例插件
+	 * @return 插件信息组*/
+	public ArrayList<WsPair<String, Integer>> service_QueryFactoryList(String onePlugin){
+		int mark = this.factory_GetExistsfactory(onePlugin).pluginMark();
+		return this.service_QueryFactoryList(mark);
 	}
 
 }

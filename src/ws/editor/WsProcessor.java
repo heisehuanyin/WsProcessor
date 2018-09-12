@@ -1,5 +1,6 @@
 package ws.editor;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -32,6 +34,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import ws.editor.comn.ItemsKey;
+import ws.editor.comn.WsPair;
 import ws.editor.comn.PluginFeature;
 import ws.editor.plugin.ConfigPort;
 import ws.editor.plugin.ContentView;
@@ -176,7 +179,7 @@ public class WsProcessor {
 		}
 
 		// source=>module1=>module2=>module3=>module4=>the last one module
-		PluginFeature x = this.service_GetPluginManager().service_BuildInstanceList(cListStr, fpath);
+		PluginFeature x = this.service_GetPluginManager().operate_BuildInstanceList(cListStr, fpath);
 		if (win != null && x.pluginMark() == PluginFeature.UI_ContentView) {
 			win.placeView(one.getName(), ((ContentView) x));
 			this.service_Refresh_MenuBar(win);
@@ -435,6 +438,7 @@ public class WsProcessor {
 	}
 	private class CustomMenu_Dialog extends JDialog{
 		private WsProcessor core;
+		private JTextField suffixEnter = new JTextField(20);
 		
 		public CustomMenu_Dialog(WsProcessor core) {
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -444,17 +448,36 @@ public class WsProcessor {
 			this.setContentPane(new JScrollPane(base));
 			base.setLayout(new BoxLayout(base, BoxLayout.Y_AXIS));
 			
-			
 			//Config Default Window ================================
+			base.add(this.createConfigWindowPanel());
+			
+			//Config ChannelList ==================================
+			base.add(this.createConfigChannelListPanel());
+			
+			
+		}
+		private JPanel createConfigWindowPanel() {
 			JPanel configWindow = new JPanel();
-			configWindow.setLayout(new FlowLayout(FlowLayout.LEFT));
+			configWindow.setLayout(new FlowLayout(FlowLayout.LEADING));
 			configWindow.add(new JLabel("选中窗口主类名："));
 			String defaultWindow = this.core.instance_GetMainConfigUnit()
 					.getValue(ItemsKey.DefaultWindow, SingleViewWindow.class.getName());
-			ArrayList<String> windows = WsProcessor.this.service_GetPluginManager()
+			ArrayList<WsPair<String,Integer>> plugInfo = WsProcessor.this.service_GetPluginManager()
 					.service_QueryFactoryList(PluginFeature.UI_Window);
-			int index = windows.indexOf(defaultWindow);
-			JComboBox<?> listSelect = new JComboBox<Object>(windows.toArray());
+			
+			int index = 0;
+			ArrayList<String> names = new ArrayList<>();
+			
+			for(int wsi=0;wsi<plugInfo.size();++wsi) {
+				WsPair<String, Integer> x = plugInfo.get(wsi);
+				if(defaultWindow.equals(x.getFirstElement())) {
+					index = wsi;
+				}
+				names.add(x.getFirstElement());
+			}
+			
+			
+			JComboBox<?> listSelect = new JComboBox<Object>(names.toArray());
 			listSelect.setSelectedIndex(index);
 			configWindow.add(listSelect);
 			listSelect.addActionListener(new ActionListener() {
@@ -464,14 +487,161 @@ public class WsProcessor {
 					core.instance_GetMainConfigUnit().setKeyValue(ItemsKey.DefaultWindow, x);
 				}});
 			configWindow.setBorder(BorderFactory.createTitledBorder("默认Window"));
-			base.add(configWindow);
 			
-			//Config ChannelList ==================================
-			JPanel configCList = new JPanel();
-			configCList.setBorder(BorderFactory.createTitledBorder("文件类型-处理链条"));
-			base.add(configCList);
+			return configWindow;
 		}
 		
+		private JPanel createConfigChannelListPanel() {
+			JPanel CCList = new JPanel();
+			CCList.setBorder(BorderFactory.createTitledBorder("文件类型-处理链条"));
+			CCList.setLayout(new BoxLayout(CCList, BoxLayout.Y_AXIS));
+			
+			JPanel Cbottom = new JPanel();
+			Cbottom.setLayout(new BoxLayout(Cbottom, BoxLayout.Y_AXIS));
+			Cbottom.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+			
+			JPanel Ctop = new JPanel();
+			Ctop.setLayout(new FlowLayout(FlowLayout.LEADING));
+			Ctop.add(new JLabel("后缀名(.xxx)："));
+			Ctop.add(suffixEnter);
+			JButton query = new JButton("查询");
+			query.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Cbottom.removeAll();
+					
+					String sufstr = suffixEnter.getText();
+					String list = core.instance_GetMainConfigUnit().getValue(
+							ItemsKey.get_MODULELIST_AS_SUFFIX(sufstr),
+							"ws.editor.plugin.filesymbo.DefaultFileSymbo=>" 
+							+ "ws.editor.plugin.textmodel.DefaultTextModel=>"
+							+ "ws.editor.plugin.contentview.DefaultTextView");
+					
+					//mods msg=====================
+					String[] mods = list.split("=>");
+					ArrayList<Object> objlist = new  ArrayList<>();
+					for(int i= mods.length; i>0; --i) {
+						String mod = mods[i - 1];
+						JLabel arrow = new JLabel("Upstream ↘↘↘↘↘↘↘↘");
+						JPanel ptemp = new JPanel();
+						ptemp.setLayout(new FlowLayout(FlowLayout.LEFT));
+						ptemp.add(arrow);
+						objlist.add(ptemp);
+						Cbottom.add(ptemp);
+						
+						JComboBox<?> combo = getFullfilledComboBox(mod);
+						objlist.add(combo);
+						Cbottom.add(combo);
+						combo.addActionListener(new bottom_process_selectevent(Cbottom,objlist));
+					}
+					CustomMenu_Dialog.this.validate();
+				}});
+			Ctop.add(query);
+			
+			
+			CCList.add(Ctop);
+			CCList.add(Cbottom);
+			
+			return CCList;
+		}
+		private JComboBox<?> getFullfilledComboBox(String className) {
+			ArrayList<WsPair<String,Integer>> plugInfo = core.service_GetPluginManager()
+					.service_QueryFactoryList(className);
+			int index = 0;
+			ArrayList<String> names = new ArrayList<>();
+			
+			for(int im=0;im<plugInfo.size(); ++im) {
+				WsPair<String, Integer> x = plugInfo.get(im);
+				if(className.equals(x.getFirstElement())) {
+					index = im;
+				}
+				names.add(x.getFirstElement());
+			}
+			
+			
+			JComboBox<?> list = new JComboBox<Object>(names.toArray());
+			list.setSelectedIndex(index);
+			
+			return list;
+		}
+		
+
+		private class bottom_process_selectevent implements ActionListener{
+			private JPanel bottom;
+			private ArrayList<Object> con;
+			public bottom_process_selectevent(JPanel bottomPanel, ArrayList<Object> con) {
+				this.bottom = bottomPanel;
+				this.con = con;
+			}
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Object source = e.getSource();
+				
+				// Remove Items that behind this
+				int index = this.con.indexOf(source);
+				for(;index + 1 < this.con.size();) {
+					Object s = this.con.get(index+1);
+					con.remove(s);
+					bottom.remove((Component)s);
+				}
+				
+				//Add ComboBox=====================================
+				String cName = (String) ((JComboBox<?>)source).getSelectedItem();
+				ArrayList<WsPair<String, Integer>> xxxx = core.service_GetPluginManager()
+						.service_QueryFactoryList(cName);
+				//Query UpStreamMark accrod className==============
+				int upStreamMark = 0;
+				for(int i=0;i<xxxx.size();++i) {
+					WsPair<String, Integer> bc = xxxx.get(i);
+					if(cName.equals(bc.getFirstElement())) {
+						upStreamMark = bc.getLastElement();
+					}
+				}
+				if(upStreamMark == PluginFeature.IO_NoUpStream) {
+					System.out.println("Configration is complate");
+					
+					String list = "";
+					
+					for(int i=0; i< con.size() ; ++i) {
+						Object v = con.get(con.size() - 1 -i);
+						if(v instanceof JComboBox) {
+							list += ((JComboBox) v).getSelectedItem();
+							list += "=>";
+						}
+					}
+					
+					list = list.substring(0, list.lastIndexOf("=>"));
+					String suffix = suffixEnter.getText();
+					core.instance_GetMainConfigUnit().setKeyValue(
+							ItemsKey.get_MODULELIST_AS_SUFFIX(suffix), list);
+					return;
+				}
+				
+				//Add Label========================================
+				JLabel arrow = new JLabel("Upstream ↘↘↘↘↘↘↘↘");
+				JPanel ptemp = new JPanel();
+				ptemp.setLayout(new FlowLayout(FlowLayout.LEFT));
+				ptemp.add(arrow);
+				this.con.add(ptemp);
+				bottom.add(ptemp);
+				
+				//Get UpStreamPlugin accrod pluginMark
+				ArrayList<WsPair<String, Integer>> cp = core.service_GetPluginManager()
+						.service_QueryFactoryList(upStreamMark);
+				
+				ArrayList<String> pnames = new ArrayList<>();
+				for(WsPair<String,Integer> onep:cp) {
+					pnames.add(onep.getFirstElement());
+				}
+				
+				JComboBox<?> next = new JComboBox<Object>(pnames.toArray());
+				bottom.add(next);
+				next.addActionListener(new bottom_process_selectevent(bottom, con));
+				con.add(next);
+				
+				bottom.validate();
+			}}
 		
 	}
+	
 }
