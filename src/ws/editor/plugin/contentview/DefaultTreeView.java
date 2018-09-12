@@ -215,7 +215,7 @@ public class DefaultTreeView extends AbstractTreeView {
 					return;
 				}
 				CustomNode x2 = (CustomNode) x;
-				JPopupMenu popM = x2.getNodeSymbo().getPopupMenu();
+				JPopupMenu popM = x2.getNodeSymbo().getPopupMenu(null);
 				
 				this.holder.setComponentPopupMenu(popM);
 				popM.show(holder, e.getX(), e.getY());

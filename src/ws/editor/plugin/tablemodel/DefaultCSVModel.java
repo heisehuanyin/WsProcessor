@@ -8,6 +8,7 @@ import javax.swing.event.TableModelListener;
 
 import ws.editor.WsProcessor;
 import ws.editor.comn.PluginFeature;
+import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.TableModel;
 import ws.editor.plugin.TextModel;
 
@@ -50,7 +51,7 @@ public class DefaultCSVModel extends AbstractCSVModel{
 
 
 	@Override
-	public JPopupMenu getPopupMenu(int row, int col) {
+	public JPopupMenu getPopupMenu(int row, int col, FrontWindow owner) {
 		return new JPopupMenu("null");
 	}
 

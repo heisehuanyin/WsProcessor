@@ -1,9 +1,9 @@
 #config items as list
-#Wed Sep 12 15:43:42 CST 2018
+#Wed Sep 12 18:03:44 CST 2018
 editor.module.custom_setting.ws.editor.plugin.window.TwoViewWindow.VIEW_POSITION.ws.editor.plugin.contentview.DefaultTreeView=0
 editor.window.height=565
-editor.menubar.description=ws.editor.plugin.menubar.DefaultMenuBar
 editor.modulelist.suffix.wsrc=ws.editor.plugin.filesymbo.DefaultFileSymbo\=>ws.editor.plugin.textmodel.DefaultTextModel\=>ws.editor.plugin.contentview.DefaultTextView
+editor.menubar.description=ws.editor.plugin.menubar.DefaultMenuBar
 editor.modulelist.suffix.csv=ws.editor.plugin.filesymbo.DefaultFileSymbo\=>ws.editor.plugin.textmodel.DefaultTextModel\=>ws.editor.plugin.tablemodel.DefaultCSVModel\=>ws.editor.plugin.contentview.DefaultTableView
 editor.module.custom_setting.ws.editor.plugin.window.TwoViewWindow.VIEW_POSITION.ws.editor.plugin.contentview.DefaultTextView=2
 editor.window.description=ws.editor.plugin.window.TwoViewWindow

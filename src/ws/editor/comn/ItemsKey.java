@@ -6,10 +6,6 @@ import ws.editor.plugin.window.TwoViewWindow;
 /**
  * 软件拥有很多可配置项目，为了便于统一，将配置文件中的键名集中起来*/
 public class ItemsKey {
-	public final static String DefaultProjectPath_Value = "."+File.separator+"project.wspjt";
-	public final static String DefaultFileEncoding_Value = "UTF-8";
-	public static final String VoidFilePath_Value = "voidfile_wsdifined";
-
 	
 	
 	

@@ -3,6 +3,7 @@ package ws.editor.comn;
 import javax.swing.JPopupMenu;
 
 import ws.editor.comn.event.NodeEventListener;
+import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.TreeModel;
 
 /**
@@ -46,8 +47,9 @@ public interface NodeSymbo{
 	int kind();
 	
 	/**
-	 * 触发操作，每个节点能够触发什么操作由节点自行定义*/
-	void doAction();
+	 * 默认UI触发操作，每个节点能够触发什么操作由节点自行定义
+	 * @param owner TODO*/
+	void doAction(FrontWindow owner);
 	
 
 	/**
@@ -63,8 +65,9 @@ public interface NodeSymbo{
 	
 	/**
 	 * 获取内置弹出菜单
+	 * @param owner TODO
 	 * @return 弹出菜单*/
-	JPopupMenu getPopupMenu();
+	JPopupMenu getPopupMenu(FrontWindow owner);
 	
 	/**
 	 * 添加节点事件监听器

@@ -17,6 +17,7 @@ public interface TableModel extends PluginFeature , javax.swing.table.TableModel
 	 * 获取针对每个单元格的弹出菜单
 	 * @param row 行序
 	 * @param col 列序
+	 * @param owner TODO
 	 * @return 弹出菜单*/
-	JPopupMenu getPopupMenu(int row, int col);
+	JPopupMenu getPopupMenu(int row, int col, FrontWindow owner);
 }
