@@ -14,6 +14,9 @@ public interface TableModel extends PluginFeature , javax.swing.table.TableModel
 	TableModel openNewTableModel(WsProcessor core, PluginFeature upStream);
 	
 	/**
-	 * 获取针对每个单元格的弹出菜单*/
+	 * 获取针对每个单元格的弹出菜单
+	 * @param row 行序
+	 * @param col 列序
+	 * @return 弹出菜单*/
 	JPopupMenu getPopupMenu(int row, int col);
 }
