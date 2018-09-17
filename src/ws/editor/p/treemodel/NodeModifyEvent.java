@@ -1,4 +1,4 @@
-package ws.editor.p.treemodel.var;
+package ws.editor.p.treemodel;
 
 public class NodeModifyEvent extends NodeGeneralEvent{
 	private String mKey;

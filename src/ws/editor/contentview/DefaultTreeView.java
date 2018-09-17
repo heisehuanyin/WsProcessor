@@ -17,11 +17,11 @@ import javax.swing.tree.TreeSelectionModel;
 import ws.editor.WsProcessor;
 import ws.editor.p.PluginFeature;
 import ws.editor.p.contentview.ContentView;
+import ws.editor.p.treemodel.FeatureGroupSymbo;
+import ws.editor.p.treemodel.FeatureNodeSymbo;
+import ws.editor.p.treemodel.NodeGeneralEvent;
+import ws.editor.p.treemodel.NodeModifyEvent;
 import ws.editor.p.treemodel.TreeModel;
-import ws.editor.p.treemodel.var.FeatureGroupSymbo;
-import ws.editor.p.treemodel.var.NodeGeneralEvent;
-import ws.editor.p.treemodel.var.NodeModifyEvent;
-import ws.editor.p.treemodel.var.FeatureNodeSymbo;
 
 public class DefaultTreeView extends AbstractTreeView {
 

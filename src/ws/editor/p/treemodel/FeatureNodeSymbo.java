@@ -1,9 +1,7 @@
-package ws.editor.p.treemodel.var;
+package ws.editor.p.treemodel;
 
 import javax.swing.JPopupMenu;
 
-import ws.editor.p.treemodel.NodeEventListener;
-import ws.editor.p.treemodel.TreeModel;
 import ws.editor.p.window.FrontWindow;
 
 /**

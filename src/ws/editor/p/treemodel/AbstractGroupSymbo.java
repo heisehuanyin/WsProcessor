@@ -1,10 +1,7 @@
-package ws.editor.p.treemodel.var;
+package ws.editor.p.treemodel;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import ws.editor.p.treemodel.NodeEventListener;
-import ws.editor.p.treemodel.TreeModel;
 
 public abstract class AbstractGroupSymbo extends AbstractNodeSymbo implements FeatureGroupSymbo{
 	private ArrayList<FeatureNodeSymbo> con = new ArrayList<>();

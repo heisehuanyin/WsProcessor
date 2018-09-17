@@ -1,13 +1,10 @@
-package ws.editor.p.treemodel.var;
+package ws.editor.p.treemodel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import ws.editor.p.treemodel.NodeEventListener;
-import ws.editor.p.treemodel.TreeModel;
 
 public abstract class AbstractNodeSymbo implements FeatureNodeSymbo{
 	private List<NodeEventListener> ls = new ArrayList<>();

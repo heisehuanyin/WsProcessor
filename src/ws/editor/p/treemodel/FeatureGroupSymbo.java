@@ -1,4 +1,4 @@
-package ws.editor.p.treemodel.var;
+package ws.editor.p.treemodel;
 
 /**
  * 本接口用于TreeModel，自定义类型，相对于 {@link FeatureNodeSymbo} 主要拥有以下功能<br>

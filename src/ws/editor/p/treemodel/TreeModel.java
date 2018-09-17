@@ -2,7 +2,6 @@ package ws.editor.p.treemodel;
 
 import ws.editor.WsProcessor;
 import ws.editor.p.PluginFeature;
-import ws.editor.p.treemodel.var.FeatureNodeSymbo;
 
 public interface TreeModel extends PluginFeature {
 	

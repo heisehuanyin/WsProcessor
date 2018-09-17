@@ -1,4 +1,4 @@
-package ws.editor.p.treemodel.var;
+package ws.editor.p.treemodel;
 
 import java.util.ArrayList;
 

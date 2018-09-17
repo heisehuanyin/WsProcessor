@@ -1,8 +1,5 @@
 package ws.editor.p.treemodel;
 
-import ws.editor.p.treemodel.var.NodeGeneralEvent;
-import ws.editor.p.treemodel.var.NodeModifyEvent;
-
 public interface NodeEventListener {
 	/**
 	 * 当被监听节点插入子节点后，此函数被调用
