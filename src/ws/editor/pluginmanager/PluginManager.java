@@ -1,4 +1,4 @@
-package ws.editor;
+package ws.editor.pluginmanager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,20 +9,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ws.editor.comn.ConfigItemsKey;
-import ws.editor.comn.WsPair;
+import ws.editor.ConfigItemsKey;
+import ws.editor.WsProcessor;
 import ws.editor.filesymbo.DefaultFileSymbo;
 import ws.editor.menubar.DefaultMenuBar;
-import ws.editor.p.ConfigPort;
-import ws.editor.p.ContentView;
-import ws.editor.p.FileSymbo;
-import ws.editor.p.FrontWindow;
-import ws.editor.p.LogPort;
-import ws.editor.p.MenuBar;
-import ws.editor.p.TableModel;
-import ws.editor.p.TextModel;
+import ws.editor.p.PluginFeature;
+import ws.editor.p.configport.ConfigPort;
+import ws.editor.p.contentview.ContentView;
+import ws.editor.p.filesymbo.FileSymbo;
+import ws.editor.p.logport.LogPort;
+import ws.editor.p.menubar.MenuBar;
+import ws.editor.p.tablemodel.TableModel;
+import ws.editor.p.textmodel.TextModel;
 import ws.editor.p.treemodel.TreeModelFeature;
-import ws.editor.comn.PluginFeature;
+import ws.editor.p.window.FrontWindow;
 import ws.editor.window.SingleViewWindow;
 
 /**

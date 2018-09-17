@@ -1,4 +1,4 @@
-package ws.editor.comn;
+package ws.editor.pluginmanager;
 
 public class WsPair<K, V> {
 	private final K a;

@@ -1,9 +1,10 @@
-package ws.editor.p;
+package ws.editor.p.tablemodel;
 
 import javax.swing.JPopupMenu;
 
 import ws.editor.WsProcessor;
-import ws.editor.comn.PluginFeature;
+import ws.editor.p.PluginFeature;
+import ws.editor.p.window.FrontWindow;
 
 public interface TableModel extends PluginFeature , javax.swing.table.TableModel{
 	/**

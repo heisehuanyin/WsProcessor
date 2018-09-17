@@ -1,7 +1,7 @@
 package ws.editor.p.treemodel;
 
 import ws.editor.WsProcessor;
-import ws.editor.comn.PluginFeature;
+import ws.editor.p.PluginFeature;
 
 public interface TreeModelFeature extends PluginFeature {
 	

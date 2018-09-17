@@ -15,8 +15,8 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import ws.editor.WsProcessor;
-import ws.editor.comn.PluginFeature;
-import ws.editor.p.ContentView;
+import ws.editor.p.PluginFeature;
+import ws.editor.p.contentview.ContentView;
 import ws.editor.p.treemodel.TreeModelFeature;
 import ws.editor.p.treemodel.GroupSymboFeature;
 import ws.editor.p.treemodel.NodeGeneralEvent;

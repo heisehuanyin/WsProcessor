@@ -7,9 +7,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import ws.editor.WsProcessor;
-import ws.editor.comn.PluginFeature;
-import ws.editor.p.ContentView;
-import ws.editor.p.TableModel;
+import ws.editor.p.PluginFeature;
+import ws.editor.p.contentview.ContentView;
+import ws.editor.p.tablemodel.TableModel;
 
 public class DefaultTableView extends AbstractTableView{
 	private TableModel upS;

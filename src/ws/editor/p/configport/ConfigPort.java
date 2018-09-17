@@ -1,6 +1,6 @@
-package ws.editor.p;
+package ws.editor.p.configport;
 
-import ws.editor.comn.PluginFeature;
+import ws.editor.p.PluginFeature;
 
 public interface ConfigPort extends PluginFeature {
 

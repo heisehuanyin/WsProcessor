@@ -8,11 +8,11 @@ import java.awt.event.WindowListener;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 
+import ws.editor.ConfigItemsKey;
 import ws.editor.WsProcessor;
-import ws.editor.comn.ConfigItemsKey;
-import ws.editor.comn.PluginFeature;
-import ws.editor.p.ContentView;
-import ws.editor.p.FrontWindow;
+import ws.editor.p.PluginFeature;
+import ws.editor.p.contentview.ContentView;
+import ws.editor.p.window.FrontWindow;
 
 public abstract class AbstractWindow extends JFrame implements FrontWindow{
 

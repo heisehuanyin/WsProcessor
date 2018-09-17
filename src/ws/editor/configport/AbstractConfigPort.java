@@ -1,7 +1,7 @@
 package ws.editor.configport;
 
-import ws.editor.comn.PluginFeature;
-import ws.editor.p.ConfigPort;
+import ws.editor.p.PluginFeature;
+import ws.editor.p.configport.ConfigPort;
 /**
  * ConfigPort 无法被配置，只能加载最终加载的类型*/
 public abstract class AbstractConfigPort implements ConfigPort{

@@ -4,8 +4,8 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import ws.editor.WsProcessor;
-import ws.editor.p.ContentView;
-import ws.editor.p.FrontWindow;
+import ws.editor.p.contentview.ContentView;
+import ws.editor.p.window.FrontWindow;
 
 import java.awt.*;
 import java.awt.event.*;

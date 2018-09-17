@@ -21,10 +21,10 @@ import javax.swing.plaf.SplitPaneUI;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
+import ws.editor.ConfigItemsKey;
 import ws.editor.WsProcessor;
-import ws.editor.comn.ConfigItemsKey;
-import ws.editor.p.ContentView;
-import ws.editor.p.FrontWindow;
+import ws.editor.p.contentview.ContentView;
+import ws.editor.p.window.FrontWindow;
 
 public class TwoViewWindow extends AbstractWindow {
 	private String gId;

@@ -1,8 +1,8 @@
 package ws.editor.contentview;
 
 import ws.editor.WsProcessor;
-import ws.editor.comn.PluginFeature;
-import ws.editor.p.ContentView;
+import ws.editor.p.PluginFeature;
+import ws.editor.p.contentview.ContentView;
 
 public abstract class AbstractTextView implements ContentView{
 

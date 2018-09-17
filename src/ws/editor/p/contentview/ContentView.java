@@ -1,9 +1,9 @@
-package ws.editor.p;
+package ws.editor.p.contentview;
 
 import java.awt.Component;
 
 import ws.editor.WsProcessor;
-import ws.editor.comn.PluginFeature;
+import ws.editor.p.PluginFeature;
 
 public interface ContentView extends PluginFeature{
 	/**

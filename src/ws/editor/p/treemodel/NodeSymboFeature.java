@@ -2,7 +2,7 @@ package ws.editor.p.treemodel;
 
 import javax.swing.JPopupMenu;
 
-import ws.editor.p.FrontWindow;
+import ws.editor.p.window.FrontWindow;
 
 /**
  * 本接口用于TreeModel，自定义类型，主要拥有以下功能<br>

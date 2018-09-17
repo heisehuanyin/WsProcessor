@@ -1,4 +1,4 @@
-package ws.editor.p;
+package ws.editor.p.menubar;
 
 import java.util.ArrayList;
 
@@ -6,7 +6,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
 import ws.editor.WsProcessor;
-import ws.editor.comn.PluginFeature;
+import ws.editor.p.PluginFeature;
 
 public interface MenuBar extends PluginFeature {
 

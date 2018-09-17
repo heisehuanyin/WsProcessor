@@ -21,8 +21,8 @@ import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.SAXException;
 
 import ws.editor.WsProcessor;
-import ws.editor.p.FrontWindow;
 import ws.editor.p.treemodel.TreeModelFeature;
+import ws.editor.p.window.FrontWindow;
 import ws.editor.p.treemodel.AbstractGroupSymbo;
 import ws.editor.p.treemodel.AbstractNodeSymbo;
 import ws.editor.p.treemodel.GroupSymboFeature;

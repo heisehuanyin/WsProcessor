@@ -1,4 +1,4 @@
-package ws.editor.p;
+package ws.editor.p.window;
 
 import java.awt.Component;
 import java.util.ArrayList;
@@ -8,7 +8,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
 import ws.editor.WsProcessor;
-import ws.editor.comn.PluginFeature;
+import ws.editor.p.PluginFeature;
+import ws.editor.p.contentview.ContentView;
 
 public interface FrontWindow extends PluginFeature{
 

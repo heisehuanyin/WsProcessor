@@ -5,8 +5,8 @@ import java.io.IOException;
 
 import javax.swing.JMenu;
 
-import ws.editor.comn.PluginFeature;
-import ws.editor.p.FileSymbo;
+import ws.editor.p.PluginFeature;
+import ws.editor.p.filesymbo.FileSymbo;
 
 public class DefaultFileSymbo implements FileSymbo{
 	private String filePath=null;

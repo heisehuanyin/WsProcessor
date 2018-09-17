@@ -1,6 +1,6 @@
-package ws.editor.p;
+package ws.editor.p.filesymbo;
 
-import ws.editor.comn.PluginFeature;
+import ws.editor.p.PluginFeature;
 
 /**
  * 本插件的唯一用途就是占位，让许多插件具有相似的接口，不因为特异化造成无法互操作*/
