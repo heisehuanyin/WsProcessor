@@ -13,17 +13,17 @@ import ws.editor.comn.ConfigItemsKey;
 import ws.editor.comn.WsPair;
 import ws.editor.filesymbo.DefaultFileSymbo;
 import ws.editor.menubar.DefaultMenuBar;
+import ws.editor.p.ConfigPort;
+import ws.editor.p.ContentView;
+import ws.editor.p.FileSymbo;
+import ws.editor.p.FrontWindow;
+import ws.editor.p.LogPort;
+import ws.editor.p.MenuBar;
+import ws.editor.p.TableModel;
+import ws.editor.p.TextModel;
+import ws.editor.p.treemodel.TreeModelFeature;
 import ws.editor.comn.PluginFeature;
-import ws.editor.plugin.ConfigPort;
-import ws.editor.plugin.ContentView;
-import ws.editor.plugin.FileSymbo;
-import ws.editor.plugin.FrontWindow;
-import ws.editor.plugin.LogPort;
-import ws.editor.plugin.MenuBar;
-import ws.editor.plugin.TextModel;
-import ws.editor.plugin.TreeModel;
 import ws.editor.window.SingleViewWindow;
-import ws.editor.plugin.TableModel;
 
 /**
  * 用于管理插件，本身不是插件，不需要两步实例化直接实例化得到的就是可用组件
@@ -322,12 +322,12 @@ public class PluginManager {
 	 *            上游插件
 	 * @return 正确的插件实例
 	 */
-	private TreeModel instance_GetTreeModelAsDescription(String f_id, String url, PluginFeature upStream) {
+	private TreeModelFeature instance_GetTreeModelAsDescription(String f_id, String url, PluginFeature upStream) {
 		List<PluginFeature> cList = this.channel_GetExistsChannel(url);
 		if (cList != null)
 			for (PluginFeature x : cList) {
 				if (x.getClass().getName().equals(f_id))
-					return (TreeModel) x;
+					return (TreeModelFeature) x;
 			}
 		PluginFeature f = this.factory_GetExistsfactory(f_id);
 		if (f == null) {
@@ -335,7 +335,7 @@ public class PluginManager {
 			System.exit(0);
 		}
 
-		TreeModel rtn = ((TreeModel) f).openTreeModel(this.schedule, upStream);
+		TreeModelFeature rtn = ((TreeModelFeature) f).openTreeModel(this.schedule, upStream);
 		this.instance_RegisterPluginInstance(url, rtn);
 
 		return rtn;

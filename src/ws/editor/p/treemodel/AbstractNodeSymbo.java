@@ -1,4 +1,4 @@
-package ws.editor.comn.event;
+package ws.editor.p.treemodel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,17 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ws.editor.plugin.TreeModel;
-import ws.editor.plugin.Tree_GroupSymbo;
-import ws.editor.plugin.Tree_NodeSymbo;
-
-public abstract class AbstractNodeSymbo implements Tree_NodeSymbo{
+public abstract class AbstractNodeSymbo implements NodeSymboFeature{
 	private List<NodeEventListener> ls = new ArrayList<>();
-	private Tree_GroupSymbo parent = null;
+	private GroupSymboFeature parent = null;
 	private Map<String,String> contents = new HashMap<String,String>();
-	private TreeModel model = null;
+	private TreeModelFeature model = null;
 
-	public AbstractNodeSymbo(TreeModel m) {
+	public AbstractNodeSymbo(TreeModelFeature m) {
 		this.model = m;
 	}
 	
@@ -34,7 +30,7 @@ public abstract class AbstractNodeSymbo implements Tree_NodeSymbo{
 
 	//====================================
 	@Override
-	public TreeModel getModel() {
+	public TreeModelFeature getModel() {
 		return this.model;
 	}
 	@Override
@@ -53,14 +49,14 @@ public abstract class AbstractNodeSymbo implements Tree_NodeSymbo{
 	}
 	@Override
 	public int kind() {
-		return Tree_NodeSymbo.KindNode;
+		return NodeSymboFeature.KindNode;
 	}
 	@Override
-	public void initParent(Tree_GroupSymbo parent) {
+	public void initParent(GroupSymboFeature parent) {
 		this.parent = parent;
 	}
 	@Override
-	public Tree_GroupSymbo getParent() {
+	public GroupSymboFeature getParent() {
 		return this.parent;
 	}
 	
@@ -76,7 +72,7 @@ public abstract class AbstractNodeSymbo implements Tree_NodeSymbo{
 			e.recordTreePath(this);
 		}
 		
-		Tree_NodeSymbo x = this.getParent();
+		NodeSymboFeature x = this.getParent();
 		if(x == null)
 			return;
 		((AbstractNodeSymbo)x).pushModifyEvent(e);

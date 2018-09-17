@@ -8,8 +8,8 @@ import javax.swing.JTextArea;
 
 import ws.editor.WsProcessor;
 import ws.editor.comn.PluginFeature;
-import ws.editor.plugin.ContentView;
-import ws.editor.plugin.TextModel;
+import ws.editor.p.ContentView;
+import ws.editor.p.TextModel;
 
 public class DefaultTextView extends AbstractTextView {
 	private JTextArea view = new JTextArea();

@@ -15,8 +15,8 @@ import javax.swing.JMenu;
 
 import ws.editor.WsProcessor;
 import ws.editor.comn.PluginFeature;
-import ws.editor.plugin.TextModel;
-import ws.editor.plugin.FileSymbo;
+import ws.editor.p.FileSymbo;
+import ws.editor.p.TextModel;
 
 public class DefaultTextModel extends AbstractTextModel {
 	private ArrayList<String> content = new ArrayList<>();

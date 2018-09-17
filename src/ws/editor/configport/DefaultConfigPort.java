@@ -11,8 +11,8 @@ import java.util.Properties;
 import javax.swing.JMenu;
 /**
  * 用于获取配置文件中的信息；<br>
- *  {@link ws.editor.plugin.ConfigPort}虽然也被设计成为插件模式，但是软件本身只需要一种配置文件格式，
- * 因此，不需要多种实例共存，软件中只保留一个 {@link ws.editor.plugin.ConfigPort} 插件*/
+ *  {@link ws.editor.p.ConfigPort}虽然也被设计成为插件模式，但是软件本身只需要一种配置文件格式，
+ * 因此，不需要多种实例共存，软件中只保留一个 {@link ws.editor.p.ConfigPort} 插件*/
 public class DefaultConfigPort extends AbstractConfigPort{
 	private Properties prop = new Properties();
 	private String cfgPath;

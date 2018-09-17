@@ -21,12 +21,12 @@ import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.SAXException;
 
 import ws.editor.WsProcessor;
-import ws.editor.comn.event.AbstractGroupSymbo;
-import ws.editor.comn.event.AbstractNodeSymbo;
-import ws.editor.plugin.FrontWindow;
-import ws.editor.plugin.TreeModel;
-import ws.editor.plugin.Tree_GroupSymbo;
-import ws.editor.plugin.Tree_NodeSymbo;
+import ws.editor.p.FrontWindow;
+import ws.editor.p.treemodel.TreeModelFeature;
+import ws.editor.p.treemodel.AbstractGroupSymbo;
+import ws.editor.p.treemodel.AbstractNodeSymbo;
+import ws.editor.p.treemodel.GroupSymboFeature;
+import ws.editor.p.treemodel.NodeSymboFeature;
 
 public class DefaultProjectModel extends AbstractProjectModel {
 
@@ -44,7 +44,7 @@ public class DefaultProjectModel extends AbstractProjectModel {
 	private SimpleGroupNode mNode;
 
 	/**
-	 * 解析document节点，生成完整{@link Tree_NodeSymbo} 树内容
+	 * 解析document节点，生成完整{@link NodeSymboFeature} 树内容
 	 * 
 	 * @param doc
 	 *            文档节点
@@ -72,8 +72,8 @@ public class DefaultProjectModel extends AbstractProjectModel {
 	 * @param domNode
 	 *            穆姐点对应{@link Element}节点
 	 */
-	private void loop4ChildNodeAndContent(Tree_NodeSymbo node, Element domNode) {
-		if (node.kind() == Tree_NodeSymbo.KindNode)
+	private void loop4ChildNodeAndContent(NodeSymboFeature node, Element domNode) {
+		if (node.kind() == NodeSymboFeature.KindNode)
 			return;
 
 		NodeList nList = domNode.getChildNodes();
@@ -84,7 +84,7 @@ public class DefaultProjectModel extends AbstractProjectModel {
 			}
 
 			String tag = ((Element) one).getTagName();
-			Tree_NodeSymbo x = null;
+			NodeSymboFeature x = null;
 			if (tag.equals(DefaultProjectModel.XML_GROUP_TAGNAME)) {
 				x = new SimpleGroupNode(this, ((Element) one));
 			} else if (tag.equals(DefaultProjectModel.XML_NODE_TAGNAME)) {
@@ -94,7 +94,7 @@ public class DefaultProjectModel extends AbstractProjectModel {
 				System.exit(0);
 			}
 
-			x.setKeyValue(Tree_NodeSymbo.NODENAME_KEY, ((Element) one).getAttribute(DefaultProjectModel.XML_ATTR_NODENAME));
+			x.setKeyValue(NodeSymboFeature.NODENAME_KEY, ((Element) one).getAttribute(DefaultProjectModel.XML_ATTR_NODENAME));
 
 			// Path translate=========================================================
 			String caseStr = ((Element) one).getAttribute(DefaultProjectModel.XML_ATTR_NODEFILEPATH);
@@ -105,14 +105,14 @@ public class DefaultProjectModel extends AbstractProjectModel {
 			x.setKeyValue(SimpleFileNode.FILEENCODING,
 					((Element) one).getAttribute(DefaultProjectModel.XML_ATTR_NODEENCODING));
 
-			((Tree_GroupSymbo) node).insertChildAtIndex(x, ((Tree_GroupSymbo) node).getChildCount());
+			((GroupSymboFeature) node).insertChildAtIndex(x, ((GroupSymboFeature) node).getChildCount());
 
 			this.loop4ChildNodeAndContent(x, (Element) one);
 		}
 	}
 
 	@Override
-	protected TreeModel openProject(WsProcessor core, String pjtPath) {
+	protected TreeModelFeature openProject(WsProcessor core, String pjtPath) {
 		DefaultProjectModel rtn = new DefaultProjectModel();
 		rtn.core = core;
 		rtn.pPath = pjtPath;
@@ -131,7 +131,7 @@ public class DefaultProjectModel extends AbstractProjectModel {
 	}
 
 	@Override
-	public Tree_NodeSymbo getNodeSymbo() {
+	public NodeSymboFeature getNodeSymbo() {
 		return this.mNode;
 	}
 
@@ -161,7 +161,7 @@ public class DefaultProjectModel extends AbstractProjectModel {
 
 		private Element elm;
 
-		public SimpleGroupNode(TreeModel m, Element elm) {
+		public SimpleGroupNode(TreeModelFeature m, Element elm) {
 			super(m);
 			this.elm = elm;
 		}
@@ -178,7 +178,7 @@ public class DefaultProjectModel extends AbstractProjectModel {
 		}
 
 		@Override
-		protected void removeChild_External(Tree_NodeSymbo one) {
+		protected void removeChild_External(NodeSymboFeature one) {
 			NodeList x = this.elm.getChildNodes();
 			for (int i = 0; i < x.getLength(); ++i) {
 				if (((SimpleFileNode) one).getBaseElement() == x.item(i)) {
@@ -188,7 +188,7 @@ public class DefaultProjectModel extends AbstractProjectModel {
 		}
 
 		@Override
-		protected void insertChildAtIndex_External(Tree_NodeSymbo node, int index) {
+		protected void insertChildAtIndex_External(NodeSymboFeature node, int index) {
 			NodeList x = this.elm.getChildNodes();
 			int i = 0;
 			for (i = 0; i < x.getLength(); ++i) {
@@ -199,7 +199,7 @@ public class DefaultProjectModel extends AbstractProjectModel {
 			}
 			Document doc = this.elm.getOwnerDocument();
 			Element newone = doc
-					.createElement((node.kind() == Tree_NodeSymbo.KindGroup) ? DefaultProjectModel.XML_GROUP_TAGNAME
+					.createElement((node.kind() == NodeSymboFeature.KindGroup) ? DefaultProjectModel.XML_GROUP_TAGNAME
 							: DefaultProjectModel.XML_NODE_TAGNAME);
 
 			newone.setAttribute(DefaultProjectModel.XML_ATTR_NODENAME, node.getValue(SimpleFileNode.NODENAME_KEY));
@@ -220,7 +220,7 @@ public class DefaultProjectModel extends AbstractProjectModel {
 
 		@Override
 		protected void setKeyValue_Exteral(String key, String value) {
-			if (key.equals(Tree_NodeSymbo.NODENAME_KEY)) {
+			if (key.equals(NodeSymboFeature.NODENAME_KEY)) {
 				this.elm.setAttribute(DefaultProjectModel.XML_ATTR_NODENAME, value);
 			}
 			if (key.equals(SimpleFileNode.FILEPATH)) {
@@ -246,7 +246,7 @@ public class DefaultProjectModel extends AbstractProjectModel {
 
 		private Element elm;
 
-		public SimpleFileNode(TreeModel owner, Element elm) {
+		public SimpleFileNode(TreeModelFeature owner, Element elm) {
 			super(owner);
 			this.elm = elm;
 		}
@@ -273,7 +273,7 @@ public class DefaultProjectModel extends AbstractProjectModel {
 
 		@Override
 		protected void setKeyValue_Exteral(String key, String value) {
-			if (key.equals(Tree_NodeSymbo.NODENAME_KEY)) {
+			if (key.equals(NodeSymboFeature.NODENAME_KEY)) {
 				this.elm.setAttribute(DefaultProjectModel.XML_ATTR_NODENAME, value);
 			}
 			if (key.equals(SimpleFileNode.FILEPATH)) {

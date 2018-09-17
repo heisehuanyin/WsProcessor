@@ -12,9 +12,9 @@ import javax.swing.JMenuBar;
 
 import ws.editor.WsProcessor;
 import ws.editor.comn.ConfigItemsKey;
-import ws.editor.plugin.ContentView;
-import ws.editor.plugin.FrontWindow;
-import ws.editor.plugin.MenuBar;
+import ws.editor.p.ContentView;
+import ws.editor.p.FrontWindow;
+import ws.editor.p.MenuBar;
 
 public class SingleViewWindow extends AbstractWindow{
 	private WsProcessor core;

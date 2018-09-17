@@ -1,4 +1,4 @@
-package ws.editor.comn.event;
+package ws.editor.p.treemodel;
 
 public interface NodeEventListener {
 	/**

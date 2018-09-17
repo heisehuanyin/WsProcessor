@@ -8,9 +8,9 @@ import javax.swing.event.TableModelListener;
 
 import ws.editor.WsProcessor;
 import ws.editor.comn.PluginFeature;
-import ws.editor.plugin.FrontWindow;
-import ws.editor.plugin.TableModel;
-import ws.editor.plugin.TextModel;
+import ws.editor.p.FrontWindow;
+import ws.editor.p.TableModel;
+import ws.editor.p.TextModel;
 
 public class DefaultCSVModel extends AbstractCSVModel{
 	private ArrayList<TableModelListener> lcon = new ArrayList<>();

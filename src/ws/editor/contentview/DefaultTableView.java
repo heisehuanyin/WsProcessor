@@ -8,8 +8,8 @@ import javax.swing.JTable;
 
 import ws.editor.WsProcessor;
 import ws.editor.comn.PluginFeature;
-import ws.editor.plugin.ContentView;
-import ws.editor.plugin.TableModel;
+import ws.editor.p.ContentView;
+import ws.editor.p.TableModel;
 
 public class DefaultTableView extends AbstractTableView{
 	private TableModel upS;

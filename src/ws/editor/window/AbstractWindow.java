@@ -11,8 +11,8 @@ import javax.swing.JMenuBar;
 import ws.editor.WsProcessor;
 import ws.editor.comn.ConfigItemsKey;
 import ws.editor.comn.PluginFeature;
-import ws.editor.plugin.ContentView;
-import ws.editor.plugin.FrontWindow;
+import ws.editor.p.ContentView;
+import ws.editor.p.FrontWindow;
 
 public abstract class AbstractWindow extends JFrame implements FrontWindow{
 

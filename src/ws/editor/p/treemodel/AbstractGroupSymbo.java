@@ -1,23 +1,19 @@
-package ws.editor.comn.event;
+package ws.editor.p.treemodel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ws.editor.plugin.TreeModel;
-import ws.editor.plugin.Tree_GroupSymbo;
-import ws.editor.plugin.Tree_NodeSymbo;
-
-public abstract class AbstractGroupSymbo extends AbstractNodeSymbo implements Tree_GroupSymbo{
-	private ArrayList<Tree_NodeSymbo> con = new ArrayList<>();
+public abstract class AbstractGroupSymbo extends AbstractNodeSymbo implements GroupSymboFeature{
+	private ArrayList<NodeSymboFeature> con = new ArrayList<>();
 	
 	
-	public AbstractGroupSymbo(TreeModel m) {
+	public AbstractGroupSymbo(TreeModelFeature m) {
 		super(m);
 	}
 
 	@Override
 	public int kind() {
-		return Tree_NodeSymbo.KindGroup;
+		return NodeSymboFeature.KindGroup;
 	}
 
 	@Override
@@ -26,19 +22,19 @@ public abstract class AbstractGroupSymbo extends AbstractNodeSymbo implements Tr
 	}
 
 	@Override
-	public Tree_NodeSymbo getChildAtIndex(int index) {
+	public NodeSymboFeature getChildAtIndex(int index) {
 		return this.con.get(index);
 	}
 	
 	@Override
-	public int getChildIndex(Tree_NodeSymbo child) {
+	public int getChildIndex(NodeSymboFeature child) {
 		return this.con.indexOf(child);
 	}
 	
 	//=================================================
 
 	@Override
-	public void removeChild(Tree_NodeSymbo one) {
+	public void removeChild(NodeSymboFeature one) {
 		this.con.remove(one);
 		NodeGeneralEvent e = new NodeGeneralEvent(this,"移除子节点："+one.getClass().getName());
 		this.pushRemoveEvent(e);
@@ -46,7 +42,7 @@ public abstract class AbstractGroupSymbo extends AbstractNodeSymbo implements Tr
 		
 		one.initParent(null);
 	}
-	protected abstract void removeChild_External(Tree_NodeSymbo one);
+	protected abstract void removeChild_External(NodeSymboFeature one);
 
 	private void pushRemoveEvent(NodeGeneralEvent e) {
 		if(e.getSource() == this) {
@@ -58,14 +54,14 @@ public abstract class AbstractGroupSymbo extends AbstractNodeSymbo implements Tr
 			e.recordTreePath(this);
 		}
 		
-		Tree_GroupSymbo x = this.getParent();
+		GroupSymboFeature x = this.getParent();
 		if(x==null)
 			return;
 		((AbstractGroupSymbo)x).pushRemoveEvent(e);
 	}
 
 	@Override
-	public void insertChildAtIndex(Tree_NodeSymbo node, int index) {
+	public void insertChildAtIndex(NodeSymboFeature node, int index) {
 		this.con.add(index, node);
 		NodeGeneralEvent e = new NodeGeneralEvent(this, "插入子节点："+ node.getClass().getName());
 		this.pushInsertEvent(e);
@@ -73,7 +69,7 @@ public abstract class AbstractGroupSymbo extends AbstractNodeSymbo implements Tr
 		
 		node.initParent(this);
 	}
-	protected abstract void insertChildAtIndex_External(Tree_NodeSymbo node, int index);
+	protected abstract void insertChildAtIndex_External(NodeSymboFeature node, int index);
 
 	
 	private void pushInsertEvent(NodeGeneralEvent e) {
@@ -86,7 +82,7 @@ public abstract class AbstractGroupSymbo extends AbstractNodeSymbo implements Tr
 			e.recordTreePath(this);
 		}
 		
-		Tree_GroupSymbo x = this.getParent();
+		GroupSymboFeature x = this.getParent();
 		if(x == null)
 			return;
 		

@@ -12,7 +12,7 @@ import javax.swing.JToolBar;
 
 import ws.editor.WsProcessor;
 import ws.editor.comn.PluginFeature;
-import ws.editor.plugin.MenuBar;
+import ws.editor.p.MenuBar;
 import ws.editor.plugin.bak.ToolsBar;
 
 public class WToolsBar extends JToolBar implements ToolsBar{

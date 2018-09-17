@@ -16,23 +16,23 @@ import javax.swing.tree.TreeSelectionModel;
 
 import ws.editor.WsProcessor;
 import ws.editor.comn.PluginFeature;
-import ws.editor.comn.event.NodeGeneralEvent;
-import ws.editor.comn.event.NodeModifyEvent;
-import ws.editor.plugin.ContentView;
-import ws.editor.plugin.TreeModel;
-import ws.editor.plugin.Tree_GroupSymbo;
-import ws.editor.plugin.Tree_NodeSymbo;
+import ws.editor.p.ContentView;
+import ws.editor.p.treemodel.TreeModelFeature;
+import ws.editor.p.treemodel.GroupSymboFeature;
+import ws.editor.p.treemodel.NodeGeneralEvent;
+import ws.editor.p.treemodel.NodeModifyEvent;
+import ws.editor.p.treemodel.NodeSymboFeature;
 
 public class DefaultTreeView extends AbstractTreeView {
 
-	private TreeModel upstream = null;
+	private TreeModelFeature upstream = null;
 	private WsProcessor core = null;
 	private DefaultMutableTreeNode root = new DefaultMutableTreeNode("预设为不可见");
 	private DefaultTreeModel tm = new DefaultTreeModel(root);
 	private JTree tree = new JTree(tm);
 	private JScrollPane sview = new JScrollPane(tree);
 
-	private void initTreeView(Tree_NodeSymbo nodeSymbo) {
+	private void initTreeView(NodeSymboFeature nodeSymbo) {
 		nodeSymbo.addNodeEventListener(this);
 
 		root.setAllowsChildren(true);
@@ -44,7 +44,7 @@ public class DefaultTreeView extends AbstractTreeView {
 		this.loopInsert(root, nodeSymbo);
 	}
 
-	private void loopInsert(DefaultMutableTreeNode parent, Tree_NodeSymbo dnode) {
+	private void loopInsert(DefaultMutableTreeNode parent, NodeSymboFeature dnode) {
 
 		CustomNode xa = new CustomNode(dnode);
 		this.tm.insertNodeInto(xa, parent, parent.getChildCount());
@@ -53,10 +53,10 @@ public class DefaultTreeView extends AbstractTreeView {
 		TreePath path = new TreePath(nodes);
 		tree.makeVisible(path);
 
-		if (dnode.kind() == Tree_NodeSymbo.KindGroup) {
-			Tree_GroupSymbo gnode = (Tree_GroupSymbo) dnode;
+		if (dnode.kind() == NodeSymboFeature.KindGroup) {
+			GroupSymboFeature gnode = (GroupSymboFeature) dnode;
 			for (int i = 0; i < gnode.getChildCount(); ++i) {
-				Tree_NodeSymbo xx = gnode.getChildAtIndex(i);
+				NodeSymboFeature xx = gnode.getChildAtIndex(i);
 				this.loopInsert(xa, xx);
 			}
 		}
@@ -66,7 +66,7 @@ public class DefaultTreeView extends AbstractTreeView {
 	public ContentView openContentView(WsProcessor core, PluginFeature upStream) {
 		DefaultTreeView rtn = new DefaultTreeView();
 
-		rtn.upstream = (TreeModel) upStream;
+		rtn.upstream = (TreeModelFeature) upStream;
 		rtn.core = core;
 
 		rtn.initTreeView(rtn.upstream.getNodeSymbo());
@@ -92,8 +92,8 @@ public class DefaultTreeView extends AbstractTreeView {
 
 	@Override
 	public void nodeInsert(NodeGeneralEvent e) {
-		Tree_NodeSymbo x = e.getSource();
-		Tree_GroupSymbo xp = x.getParent();
+		NodeSymboFeature x = e.getSource();
+		GroupSymboFeature xp = x.getParent();
 		int index = xp.getChildIndex(x);
 		CustomNode node = new CustomNode(x);
 
@@ -115,7 +115,7 @@ public class DefaultTreeView extends AbstractTreeView {
 
 		for (int i = 0; i < parent.getChildCount(); ++i) {
 			CustomNode one = (CustomNode) parent.getChildAt(i);
-			Tree_NodeSymbo nodeSymbo = one.getNodeSymbo();
+			NodeSymboFeature nodeSymbo = one.getNodeSymbo();
 			if (e.nodeContain(nodeSymbo)) {
 				if (e.getSource() == nodeSymbo)
 					return one;
@@ -130,7 +130,7 @@ public class DefaultTreeView extends AbstractTreeView {
 
 	@Override
 	public void nodeRemove(NodeGeneralEvent e) {
-		Tree_NodeSymbo x = e.getSource();
+		NodeSymboFeature x = e.getSource();
 
 		DefaultMutableTreeNode pSNode = this.loopAndSearchTreeNodeFrontNodeEvent(root, e);
 		for (int i = 0; i < pSNode.getChildCount(); ++i) {
@@ -154,7 +154,7 @@ public class DefaultTreeView extends AbstractTreeView {
 
 	private class CustomNode extends DefaultMutableTreeNode {
 
-		private Tree_NodeSymbo node;
+		private NodeSymboFeature node;
 
 		/**
 		 * 新建自定义的树节点，节点UI由此定义
@@ -162,10 +162,10 @@ public class DefaultTreeView extends AbstractTreeView {
 		 * @param node
 		 *            本节点的绑定数据树节点
 		 */
-		public CustomNode(Tree_NodeSymbo node) {
-			super(node.getValue(Tree_NodeSymbo.NODENAME_KEY));
+		public CustomNode(NodeSymboFeature node) {
+			super(node.getValue(NodeSymboFeature.NODENAME_KEY));
 			this.node = node;
-			this.setAllowsChildren((node.kind() == Tree_NodeSymbo.KindGroup) ? true : false);
+			this.setAllowsChildren((node.kind() == NodeSymboFeature.KindGroup) ? true : false);
 		}
 
 		/**
@@ -173,7 +173,7 @@ public class DefaultTreeView extends AbstractTreeView {
 		 * 
 		 * @return 数据树节点
 		 */
-		public Tree_NodeSymbo getNodeSymbo() {
+		public NodeSymboFeature getNodeSymbo() {
 			return this.node;
 		}
 
@@ -185,7 +185,7 @@ public class DefaultTreeView extends AbstractTreeView {
 		 * @return 刷新结果，true本节点已刷新，false本节点未刷新
 		 */
 		public boolean refreshNodeState(NodeModifyEvent e) {
-			if (!e.getModifiedKey().equals(Tree_NodeSymbo.NODENAME_KEY))
+			if (!e.getModifiedKey().equals(NodeSymboFeature.NODENAME_KEY))
 				return false;
 			String title = this.node.getValue(e.getModifiedKey());
 			this.setUserObject(title);

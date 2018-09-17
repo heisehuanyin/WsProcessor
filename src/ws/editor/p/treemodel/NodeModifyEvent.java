@@ -1,11 +1,9 @@
-package ws.editor.comn.event;
-
-import ws.editor.plugin.Tree_NodeSymbo;
+package ws.editor.p.treemodel;
 
 public class NodeModifyEvent extends NodeGeneralEvent{
 	private String mKey;
 
-	public NodeModifyEvent(String modifiedKey, Tree_NodeSymbo obj, String exmsg) {
+	public NodeModifyEvent(String modifiedKey, NodeSymboFeature obj, String exmsg) {
 		super(obj, exmsg);
 		this.mKey = modifiedKey;
 	}
