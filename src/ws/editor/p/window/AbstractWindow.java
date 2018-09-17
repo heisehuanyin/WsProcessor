@@ -1,4 +1,4 @@
-package ws.editor.window;
+package ws.editor.p.window;
 
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -12,7 +12,6 @@ import ws.editor.ConfigItemsKey;
 import ws.editor.WsProcessor;
 import ws.editor.p.PluginFeature;
 import ws.editor.p.contentview.ContentView;
-import ws.editor.p.window.FrontWindow;
 
 public abstract class AbstractWindow extends JFrame implements FrontWindow{
 
@@ -43,7 +42,7 @@ public abstract class AbstractWindow extends JFrame implements FrontWindow{
 	
 	
 	
-	class CommonWindowsListener implements WindowListener{
+	public class CommonWindowsListener implements WindowListener{
 		private WsProcessor wsp = null;
 
 		public CommonWindowsListener(WsProcessor core) {
@@ -91,7 +90,7 @@ public abstract class AbstractWindow extends JFrame implements FrontWindow{
 		}}
 	
 	
-	class CommonComponentListener implements ComponentListener{
+	public class CommonComponentListener implements ComponentListener{
 		private WsProcessor core;
 		
 		public CommonComponentListener(WsProcessor core) {

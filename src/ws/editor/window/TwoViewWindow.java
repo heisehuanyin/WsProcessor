@@ -24,7 +24,9 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 import ws.editor.ConfigItemsKey;
 import ws.editor.WsProcessor;
 import ws.editor.p.contentview.ContentView;
+import ws.editor.p.window.AbstractWindow;
 import ws.editor.p.window.FrontWindow;
+import ws.editor.p.window.TabWithCloseButton;
 
 public class TwoViewWindow extends AbstractWindow {
 	private String gId;

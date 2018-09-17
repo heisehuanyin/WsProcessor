@@ -14,6 +14,7 @@ import ws.editor.ConfigItemsKey;
 import ws.editor.WsProcessor;
 import ws.editor.p.contentview.ContentView;
 import ws.editor.p.menubar.MenuBar;
+import ws.editor.p.window.AbstractWindow;
 import ws.editor.p.window.FrontWindow;
 
 public class SingleViewWindow extends AbstractWindow{
