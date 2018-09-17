@@ -35,23 +35,23 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import ws.editor.comn.ConfigItemsKey;
 import ws.editor.comn.WsPair;
+import ws.editor.configport.DefaultConfigPort;
+import ws.editor.contentview.DefaultTableView;
+import ws.editor.contentview.DefaultTextView;
+import ws.editor.contentview.DefaultTreeView;
+import ws.editor.filesymbo.DefaultFileSymbo;
+import ws.editor.logport.DefaultLogPort;
+import ws.editor.menubar.DefaultMenuBar;
 import ws.editor.comn.PluginFeature;
 import ws.editor.plugin.ConfigPort;
 import ws.editor.plugin.ContentView;
 import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.LogPort;
-import ws.editor.plugin.configport.DefaultConfigPort;
-import ws.editor.plugin.contentview.DefaultTableView;
-import ws.editor.plugin.contentview.DefaultTextView;
-import ws.editor.plugin.contentview.DefaultTreeView;
-import ws.editor.plugin.filesymbo.DefaultFileSymbo;
-import ws.editor.plugin.logport.DefaultLogPort;
-import ws.editor.plugin.menubar.DefaultMenuBar;
-import ws.editor.plugin.tablemodel.DefaultCSVModel;
-import ws.editor.plugin.textmodel.DefaultTextModel;
-import ws.editor.plugin.treemodel.DefaultProjectModel;
-import ws.editor.plugin.window.SingleViewWindow;
-import ws.editor.plugin.window.TwoViewWindow;
+import ws.editor.tablemodel.DefaultCSVModel;
+import ws.editor.textmodel.DefaultTextModel;
+import ws.editor.treemodel.DefaultProjectModel;
+import ws.editor.window.SingleViewWindow;
+import ws.editor.window.TwoViewWindow;
 
 /**
  * 核心模块

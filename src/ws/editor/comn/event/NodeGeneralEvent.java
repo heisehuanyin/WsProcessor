@@ -2,20 +2,20 @@ package ws.editor.comn.event;
 
 import java.util.ArrayList;
 
-import ws.editor.comn.NodeSymbo;
+import ws.editor.plugin.Tree_NodeSymbo;
 
 public class NodeGeneralEvent {
 
-	private NodeSymbo source;
+	private Tree_NodeSymbo source;
 	private String msg;
-	private ArrayList<NodeSymbo> ePath = new ArrayList<>();
+	private ArrayList<Tree_NodeSymbo> ePath = new ArrayList<>();
 
-	public NodeGeneralEvent(NodeSymbo obj, String msg) {
+	public NodeGeneralEvent(Tree_NodeSymbo obj, String msg) {
 		this.source = obj;
 		this.msg = msg;
 	}
 
-	public NodeSymbo getSource() {
+	public Tree_NodeSymbo getSource() {
 		return this.source;
 	}
 
@@ -23,11 +23,11 @@ public class NodeGeneralEvent {
 		return this.msg;
 	}
 
-	public void recordTreePath(NodeSymbo obj) {
+	public void recordTreePath(Tree_NodeSymbo obj) {
 		this.ePath .add(0, obj);
 	}
 
-	public boolean nodeContain(NodeSymbo obj) {
+	public boolean nodeContain(Tree_NodeSymbo obj) {
 		return this.ePath.contains(obj);
 	}
 

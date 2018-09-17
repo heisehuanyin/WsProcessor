@@ -1,8 +1,6 @@
 package ws.editor.plugin;
 
 import ws.editor.WsProcessor;
-import ws.editor.comn.GroupSymbo;
-import ws.editor.comn.NodeSymbo;
 import ws.editor.comn.PluginFeature;
 
 public interface TreeModel extends PluginFeature {
@@ -17,6 +15,6 @@ public interface TreeModel extends PluginFeature {
 	/**
 	 * 获取本模型的节点表示
 	 * @return 节点表示实例*/
-	NodeSymbo getNodeSymbo();
+	Tree_NodeSymbo getNodeSymbo();
 
 }

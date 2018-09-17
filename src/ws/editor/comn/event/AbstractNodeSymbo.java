@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ws.editor.comn.GroupSymbo;
-import ws.editor.comn.NodeSymbo;
 import ws.editor.plugin.TreeModel;
+import ws.editor.plugin.Tree_GroupSymbo;
+import ws.editor.plugin.Tree_NodeSymbo;
 
-public abstract class AbstractNodeSymbo implements NodeSymbo{
+public abstract class AbstractNodeSymbo implements Tree_NodeSymbo{
 	private List<NodeEventListener> ls = new ArrayList<>();
-	private GroupSymbo parent = null;
+	private Tree_GroupSymbo parent = null;
 	private Map<String,String> contents = new HashMap<String,String>();
 	private TreeModel model = null;
 
@@ -53,14 +53,14 @@ public abstract class AbstractNodeSymbo implements NodeSymbo{
 	}
 	@Override
 	public int kind() {
-		return NodeSymbo.KindNode;
+		return Tree_NodeSymbo.KindNode;
 	}
 	@Override
-	public void initParent(GroupSymbo parent) {
+	public void initParent(Tree_GroupSymbo parent) {
 		this.parent = parent;
 	}
 	@Override
-	public GroupSymbo getParent() {
+	public Tree_GroupSymbo getParent() {
 		return this.parent;
 	}
 	
@@ -76,7 +76,7 @@ public abstract class AbstractNodeSymbo implements NodeSymbo{
 			e.recordTreePath(this);
 		}
 		
-		NodeSymbo x = this.getParent();
+		Tree_NodeSymbo x = this.getParent();
 		if(x == null)
 			return;
 		((AbstractNodeSymbo)x).pushModifyEvent(e);

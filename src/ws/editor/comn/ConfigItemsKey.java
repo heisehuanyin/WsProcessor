@@ -2,7 +2,7 @@ package ws.editor.comn;
 
 import java.io.File;
 
-import ws.editor.plugin.window.TwoViewWindow;
+import ws.editor.window.TwoViewWindow;
 /**
  * 软件拥有很多可配置项目，为了便于统一，将配置文件中的键名集中起来*/
 public class ConfigItemsKey {

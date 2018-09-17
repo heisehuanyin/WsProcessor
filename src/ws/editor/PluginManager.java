@@ -11,6 +11,8 @@ import java.util.Set;
 
 import ws.editor.comn.ConfigItemsKey;
 import ws.editor.comn.WsPair;
+import ws.editor.filesymbo.DefaultFileSymbo;
+import ws.editor.menubar.DefaultMenuBar;
 import ws.editor.comn.PluginFeature;
 import ws.editor.plugin.ConfigPort;
 import ws.editor.plugin.ContentView;
@@ -20,10 +22,8 @@ import ws.editor.plugin.LogPort;
 import ws.editor.plugin.MenuBar;
 import ws.editor.plugin.TextModel;
 import ws.editor.plugin.TreeModel;
+import ws.editor.window.SingleViewWindow;
 import ws.editor.plugin.TableModel;
-import ws.editor.plugin.filesymbo.DefaultFileSymbo;
-import ws.editor.plugin.menubar.DefaultMenuBar;
-import ws.editor.plugin.window.SingleViewWindow;
 
 /**
  * 用于管理插件，本身不是插件，不需要两步实例化直接实例化得到的就是可用组件

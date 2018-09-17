@@ -2,7 +2,7 @@ package ws._testcast;
 
 import ws.editor.WsProcessor;
 import ws.editor.plugin.FrontWindow;
-import ws.editor.plugin.window.TwoViewWindow;
+import ws.editor.window.TwoViewWindow;
 
 public class WindowTest {
 	public static void main(String[] args) {
