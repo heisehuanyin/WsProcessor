@@ -5,11 +5,12 @@ import ws.editor.comn.PluginFeature;
 
 public interface TextModel extends PluginFeature {
 	/**
-	 * 获取内容，构建一个数据模型
+	 * 获取内容，构建一个数据模型，传入上游模块和字符编码
 	 * @param core 核心模块
 	 * @param upStream 上游模型插件
+	 * @param encoding 传入字符编码
 	 * @return 数据模型*/
-	TextModel openTextModel(WsProcessor core, PluginFeature upStream);
+	TextModel openTextModel(WsProcessor core, PluginFeature upStream, String encoding);
 	
 	/**
 	 * 获取内容行总数

@@ -97,19 +97,10 @@ public class PluginManager {
 		Set<String> aset = this.instances.keySet();
 		for (String url : aset) {
 			ArrayList<PluginFeature> cList = this.instances.get(url);
-			this.operate_SaveChannelAsGroupId(cList);
+			this.channel_SaveChannel(cList);
 		}
 	}
-	
-	/**
-	 * 对传入的一整条通道的插件按照顺序进行保存操作
-	 * @param cList，插件通道，插件组*/
-	public void operate_SaveChannelAsGroupId(ArrayList<PluginFeature> cList) {
-		
-		for (PluginFeature one : cList) {
-			one.saveOperation();
-		}
-	}
+
 	// source=>module1=>module2=>module3=>module4=>the last one module
 	/**
 	 * 通过传入的模块链字符串，构建一条内容通道
@@ -153,6 +144,53 @@ public class PluginManager {
 		return instance;
 	}
 	
+	/**
+	 * 对传入的一整条通道的插件按照顺序进行保存操作
+	 * @param cList，插件通道，插件组*/
+	public void channel_SaveChannel(ArrayList<PluginFeature> cList) {
+		for (PluginFeature one : cList) {
+			one.saveOperation();
+		}
+	}
+	public void channel_CloseChannel_NoSave(ArrayList<PluginFeature> cList) {
+		if(!instances.containsValue(cList))
+			return;
+		
+		Set<String> x = instances.keySet();
+		for(String s:x) {
+			ArrayList<PluginFeature> xxx = instances.get(s);
+			if(xxx == cList) {
+				instances.remove(s);
+				return;
+			}
+		}
+	}
+	
+	/**
+	 * 根据url获取关联的整条通道
+	 * 
+	 * @param url
+	 *            内容来源标识
+	 * @return 整个通道的插件组合
+	 */
+	public ArrayList<PluginFeature> channel_GetExistsChannel(String url) {
+		return this.instances.get(url);
+	}
+	
+	/**
+	 * 通过已知插件获取整个通道
+	 * @param plug 已知插件
+	 * @return 通道实例*/
+	public ArrayList<PluginFeature> channel_GetExisisChannel(PluginFeature plug){
+		Set<String> aset = this.instances.keySet();
+		for(String url:aset) {
+			ArrayList<PluginFeature> cList = this.instances.get(url);
+			if(cList.contains(plug))
+				return cList;
+		}
+		return null;
+	}
+	
 
 	/**
 	 * 自动注册插件实例
@@ -173,31 +211,6 @@ public class PluginManager {
 		con1.add(0, obj);
 	}
 
-	/**
-	 * 根据url获取关联的整条通道
-	 * 
-	 * @param url
-	 *            内容来源标识
-	 * @return 整个通道的插件组合
-	 */
-	private ArrayList<PluginFeature> instance_GetExistsChannel(String url) {
-		return this.instances.get(url);
-	}
-	
-	/**
-	 * 通过已知插件获取整个通道
-	 * @param plug 已知插件
-	 * @return 通道实例*/
-	public ArrayList<PluginFeature> instance_GetExisisChannel(PluginFeature plug){
-		Set<String> aset = this.instances.keySet();
-		for(String url:aset) {
-			ArrayList<PluginFeature> cList = this.instances.get(url);
-			if(cList.contains(plug))
-				return cList;
-		}
-		return null;
-	}
-
 	// 插件实例获取接口:基础===================================================================
 
 	/**
@@ -209,7 +222,7 @@ public class PluginManager {
 	 * @return 实例
 	 */
 	public ConfigPort instance_GetConfigUnit(String path) {
-		ArrayList<PluginFeature> cList = this.instance_GetExistsChannel(path);
+		ArrayList<PluginFeature> cList = this.channel_GetExistsChannel(path);
 		if (cList != null)
 			return (ConfigPort) cList.get(0);
 
@@ -230,7 +243,7 @@ public class PluginManager {
 	 * @return 实例
 	 */
 	public LogPort instance_GetLogPort(String path) {
-		ArrayList<PluginFeature> cList = this.instance_GetExistsChannel(path);
+		ArrayList<PluginFeature> cList = this.channel_GetExistsChannel(path);
 		if (cList != null)
 			return (LogPort) cList.get(0);
 
@@ -250,7 +263,7 @@ public class PluginManager {
 	 * @return 返回实例
 	 */
 	private FileSymbo instance_GetFileSymbo(String path) {
-		ArrayList<PluginFeature> cList = this.instance_GetExistsChannel(path);
+		ArrayList<PluginFeature> cList = this.channel_GetExistsChannel(path);
 		if (cList != null)
 			for (PluginFeature x : cList) {
 				if (x.getClass().getName().equals(DefaultFileSymbo.class.getName()))
@@ -277,7 +290,7 @@ public class PluginManager {
 	 * @return 正确的插件实例
 	 */
 	private TextModel instance_GetTextModelAsDescription(String f_id, String url, PluginFeature upStream) {
-		ArrayList<PluginFeature> cList = this.instance_GetExistsChannel(url);
+		ArrayList<PluginFeature> cList = this.channel_GetExistsChannel(url);
 
 		if (cList != null)
 			for (PluginFeature x : cList) {
@@ -291,7 +304,7 @@ public class PluginManager {
 			System.exit(0);
 		}
 
-		TextModel rtn = ((TextModel) f).openTextModel(schedule, upStream);
+		TextModel rtn = ((TextModel) f).openTextModel(schedule, upStream, "UTF-8");
 		this.instance_RegisterPluginInstance(url, rtn);
 
 		return rtn;
@@ -310,7 +323,7 @@ public class PluginManager {
 	 * @return 正确的插件实例
 	 */
 	private TreeModel instance_GetTreeModelAsDescription(String f_id, String url, PluginFeature upStream) {
-		List<PluginFeature> cList = this.instance_GetExistsChannel(url);
+		List<PluginFeature> cList = this.channel_GetExistsChannel(url);
 		if (cList != null)
 			for (PluginFeature x : cList) {
 				if (x.getClass().getName().equals(f_id))
@@ -341,7 +354,7 @@ public class PluginManager {
 	 * @return 正确的插件实例
 	 */
 	private TableModel instance_GetTableModelAsDescription(String f, String url, PluginFeature upStream) {
-		List<PluginFeature> cList = this.instance_GetExistsChannel(url);
+		List<PluginFeature> cList = this.channel_GetExistsChannel(url);
 		if (cList != null)
 			for (PluginFeature x : cList) {
 				if (x.getClass().getName().equals(f))
@@ -371,7 +384,7 @@ public class PluginManager {
 	 * @param upStream 上游插件
 	 * @return 正确的插件实例*/
 	private ContentView instance_GetContentViewAsDescription(String f_id, String url, PluginFeature upStream) {
-		List<PluginFeature> cList = this.instance_GetExistsChannel(url);
+		List<PluginFeature> cList = this.channel_GetExistsChannel(url);
 		if(cList != null)
 			for(PluginFeature x:cList)
 				if(x.getClass().getName().equals(f_id))
@@ -415,7 +428,7 @@ public class PluginManager {
 	public FrontWindow instance_GetNewDefaultWindow(String string) {
 		PluginFeature f = this.factory_GetConfigComp(ItemsKey.DefaultWindow, SingleViewWindow.class.getName());
 
-		List<PluginFeature> cList = this.instance_GetExistsChannel(string);
+		List<PluginFeature> cList = this.channel_GetExistsChannel(string);
 		if (cList != null)
 			for (PluginFeature x : cList) {
 				if (x.getClass().getName().equals(f.getClass().getName()))

@@ -21,6 +21,7 @@ import ws.editor.plugin.FileSymbo;
 public class DefaultTextModel extends AbstractTextModel {
 	private ArrayList<String> content = new ArrayList<>();
 	private String filePath;
+	private String encoding;
 
 	public void popAllText(BufferedReader reader) {
 		for (;;) {
@@ -37,12 +38,13 @@ public class DefaultTextModel extends AbstractTextModel {
 	}
 
 	@Override
-	public TextModel openTextModel(WsProcessor core, PluginFeature upStream) {
+	public TextModel openTextModel(WsProcessor core, PluginFeature upStream, String encoding) {
 		DefaultTextModel rtn = new DefaultTextModel();
 		rtn.filePath = ((FileSymbo)upStream).getFilePath();
+		rtn.encoding = encoding;
 
 		try {
-			rtn.popAllText(new BufferedReader(new InputStreamReader(new FileInputStream(rtn.filePath), "UTF-8")));
+			rtn.popAllText(new BufferedReader(new InputStreamReader(new FileInputStream(rtn.filePath), encoding)));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -78,7 +80,7 @@ public class DefaultTextModel extends AbstractTextModel {
 	public void saveOperation() {
 		try {
 			BufferedWriter writer = new BufferedWriter(
-					new OutputStreamWriter(new FileOutputStream(this.filePath), "UTF-8"));
+					new OutputStreamWriter(new FileOutputStream(this.filePath), encoding));
 			for (String line : this.content) {
 				try {
 					writer.write(line);

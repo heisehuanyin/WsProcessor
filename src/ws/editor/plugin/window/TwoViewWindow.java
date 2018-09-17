@@ -74,14 +74,15 @@ public class TwoViewWindow extends AbstractWindow {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				core.service_Refresh_MenuBar(TwoViewWindow.this);
-			}});
+			}
+		});
 		this.rightC.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				core.service_Refresh_MenuBar(TwoViewWindow.this);
-			}});
-		
-		
+			}
+		});
+
 		// LeftViewVisible=============
 		String vctrl = this.core.instance_GetMainConfigUnit().getValue(this.LEFTVISIBLE_CTRL, "true");
 		boolean vcb = Boolean.parseBoolean(vctrl);
@@ -122,20 +123,17 @@ public class TwoViewWindow extends AbstractWindow {
 		if (!this.Views.contains(comp))
 			this.Views.add(comp);
 
-		String position = this.core.instance_GetMainConfigUnit().getValue(this.VIEWPOSITION_KEY
-				+ "." + comp.getClass().getName(),
-				"" + this.POSITION_RIGHT);
-		
+		String position = this.core.instance_GetMainConfigUnit()
+				.getValue(this.VIEWPOSITION_KEY + "." + comp.getClass().getName(), "" + this.POSITION_RIGHT);
+
 		if (Integer.parseInt(position) == this.POSITION_LEFT) {
 			this.leftC.add(viewTitle, comp.getView());
-			this.leftC.setTabComponentAt(this.leftC.getTabCount()-1,
-					new TabWithCloseButton(this, leftC, comp));
+			this.leftC.setTabComponentAt(this.leftC.getTabCount() - 1, new TabWithCloseButton(this, leftC, comp));
 			this.leftC.setSelectedIndex(this.leftC.getTabCount() - 1);
 		}
-		if(Integer.parseInt(position) == this.POSITION_RIGHT) {
+		if (Integer.parseInt(position) == this.POSITION_RIGHT) {
 			this.rightC.add(viewTitle, comp.getView());
-			this.rightC.setTabComponentAt(this.rightC.getTabCount() -1,
-					new TabWithCloseButton(this, rightC, comp));
+			this.rightC.setTabComponentAt(this.rightC.getTabCount() - 1, new TabWithCloseButton(this, rightC, comp));
 			this.rightC.setSelectedIndex(this.rightC.getTabCount() - 1);
 		}
 
@@ -156,16 +154,21 @@ public class TwoViewWindow extends AbstractWindow {
 	@Override
 	public ArrayList<? extends ContentView> getActivedViews() {
 		ArrayList<ContentView> list = new ArrayList<>();
-		
-		Component x = this.leftC.getSelectedComponent();
-		for(ContentView v:this.Views)
-			if(v.getView() == x)
-				list.add(v);
-		
-		x = this.rightC.getSelectedComponent();
-		for(ContentView v:this.Views) 
-			if(v.getView() == x)
-				list.add(v);
+		Component x;
+
+		if (this.leftC.getTabCount() > 0) {
+			x = this.leftC.getSelectedComponent();
+			for (ContentView v : this.Views)
+				if (v.getView() == x)
+					list.add(v);
+		}
+
+		if (this.rightC.getTabCount() > 0) {
+			x = this.rightC.getSelectedComponent();
+			for (ContentView v : this.Views)
+				if (v.getView() == x)
+					list.add(v);
+		}
 
 		return list;
 	}
@@ -186,19 +189,18 @@ public class TwoViewWindow extends AbstractWindow {
 
 	@Override
 	public void closeView(ContentView comp) {
-		if(!this.Views.contains(comp))
+		if (!this.Views.contains(comp))
 			return;
-		
+
 		Component x = comp.getView();
-		
+
 		int i = this.leftC.indexOfComponent(x);
-		if(i != -1)
+		if (i != -1)
 			this.leftC.remove(i);
 		i = this.rightC.indexOfComponent(x);
-		if(i != -1)
+		if (i != -1)
 			this.rightC.remove(i);
 	}
-
 
 	private class ViewCubeControl implements ItemListener {
 		private JSplitPane split = null;

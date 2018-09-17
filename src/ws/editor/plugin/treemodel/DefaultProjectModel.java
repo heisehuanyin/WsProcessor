@@ -53,7 +53,8 @@ public class DefaultProjectModel extends AbstractProjectModel {
 		this.doc = doc;
 
 		Element root = doc.getDocumentElement();
-		root.setAttribute(DefaultProjectModel.XML_ATTR_NODEFILEPATH, this.pPath + File.separator + "ProjectInfo.txt");
+		root.setAttribute(DefaultProjectModel.XML_ATTR_NODEFILEPATH, 
+				new File(this.pPath).getParent() + File.separator + "ProjectInfo.txt");
 		this.mNode = new SimpleGroupNode(this, root);
 		this.mNode.setKeyValue(SimpleFileNode.NODENAME_KEY, root.getAttribute(DefaultProjectModel.XML_ATTR_NODENAME));
 		this.mNode.setKeyValue(SimpleFileNode.FILEPATH, root.getAttribute(DefaultProjectModel.XML_ATTR_NODEFILEPATH));
