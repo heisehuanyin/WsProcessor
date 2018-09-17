@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 
 import ws.editor.WsProcessor;
-import ws.editor.comn.ItemsKey;
+import ws.editor.comn.ConfigItemsKey;
 import ws.editor.comn.PluginFeature;
 import ws.editor.plugin.ContentView;
 import ws.editor.plugin.FrontWindow;
@@ -103,8 +103,8 @@ public abstract class AbstractWindow extends JFrame implements FrontWindow{
 			JFrame win = (JFrame) e.getSource();
 			int w = win.getWidth();
 			int h = win.getHeight();
-			this.core.instance_GetMainConfigUnit().setKeyValue(ItemsKey.WindowWidth, ""+w);
-			this.core.instance_GetMainConfigUnit().setKeyValue(ItemsKey.WindowHeight, ""+h);
+			this.core.instance_GetMainConfigUnit().setKeyValue(ConfigItemsKey.WindowWidth, ""+w);
+			this.core.instance_GetMainConfigUnit().setKeyValue(ConfigItemsKey.WindowHeight, ""+h);
 		}
 
 		@Override

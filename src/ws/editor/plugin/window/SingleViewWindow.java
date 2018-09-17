@@ -11,7 +11,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
 import ws.editor.WsProcessor;
-import ws.editor.comn.ItemsKey;
+import ws.editor.comn.ConfigItemsKey;
 import ws.editor.plugin.ContentView;
 import ws.editor.plugin.FrontWindow;
 import ws.editor.plugin.MenuBar;
@@ -35,8 +35,8 @@ public class SingleViewWindow extends AbstractWindow{
 	private void customWindow() {
 		this.setTitle("SingleViewWindow - " + this.g_id + " ");
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		String wStr = this.core.instance_GetMainConfigUnit().getValue(ItemsKey.WindowWidth, "800");
-		String hStr = this.core.instance_GetMainConfigUnit().getValue(ItemsKey.WindowHeight, "600");
+		String wStr = this.core.instance_GetMainConfigUnit().getValue(ConfigItemsKey.WindowWidth, "800");
+		String hStr = this.core.instance_GetMainConfigUnit().getValue(ConfigItemsKey.WindowHeight, "600");
 		
 		//MenuBar=======================
 		this.core.service_Refresh_MenuBar(this);

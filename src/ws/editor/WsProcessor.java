@@ -33,7 +33,7 @@ import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import ws.editor.comn.ItemsKey;
+import ws.editor.comn.ConfigItemsKey;
 import ws.editor.comn.WsPair;
 import ws.editor.comn.PluginFeature;
 import ws.editor.plugin.ConfigPort;
@@ -175,7 +175,7 @@ public class WsProcessor {
 			String regx = ".txt";
 
 			regx = one.getName().substring(one.getName().lastIndexOf('.'));
-			cListStr = this.instance_GetMainConfigUnit().getValue(ItemsKey.get_MODULELIST_AS_SUFFIX(regx),
+			cListStr = this.instance_GetMainConfigUnit().getValue(ConfigItemsKey.get_MODULELIST_AS_SUFFIX(regx),
 					"ws.editor.plugin.filesymbo.DefaultFileSymbo=>" + "ws.editor.plugin.textmodel.DefaultTextModel=>"
 							+ "ws.editor.plugin.contentview.DefaultTextView");
 		}
@@ -483,7 +483,7 @@ public class WsProcessor {
 			JPanel configWindow = new JPanel();
 			configWindow.setLayout(new FlowLayout(FlowLayout.LEADING));
 			configWindow.add(new JLabel("选中窗口主类名："));
-			String defaultWindow = this.core.instance_GetMainConfigUnit().getValue(ItemsKey.DefaultWindow,
+			String defaultWindow = this.core.instance_GetMainConfigUnit().getValue(ConfigItemsKey.DefaultWindow,
 					SingleViewWindow.class.getName());
 			ArrayList<WsPair<String, Integer>> plugInfo = WsProcessor.this.service_GetPluginManager()
 					.service_QueryFactoryList(PluginFeature.UI_Window);
@@ -506,7 +506,7 @@ public class WsProcessor {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					String x = (String) listSelect.getSelectedItem();
-					core.instance_GetMainConfigUnit().setKeyValue(ItemsKey.DefaultWindow, x);
+					core.instance_GetMainConfigUnit().setKeyValue(ConfigItemsKey.DefaultWindow, x);
 				}
 			});
 			configWindow.setBorder(BorderFactory.createTitledBorder("默认Window"));
@@ -534,7 +534,7 @@ public class WsProcessor {
 					Cbottom.removeAll();
 
 					String sufstr = suffixEnter.getText();
-					String list = core.instance_GetMainConfigUnit().getValue(ItemsKey.get_MODULELIST_AS_SUFFIX(sufstr),
+					String list = core.instance_GetMainConfigUnit().getValue(ConfigItemsKey.get_MODULELIST_AS_SUFFIX(sufstr),
 							"ws.editor.plugin.filesymbo.DefaultFileSymbo=>"
 									+ "ws.editor.plugin.textmodel.DefaultTextModel=>"
 									+ "ws.editor.plugin.contentview.DefaultTextView");
@@ -635,7 +635,7 @@ public class WsProcessor {
 
 					list = list.substring(0, list.lastIndexOf("=>"));
 					String suffix = suffixEnter.getText();
-					core.instance_GetMainConfigUnit().setKeyValue(ItemsKey.get_MODULELIST_AS_SUFFIX(suffix), list);
+					core.instance_GetMainConfigUnit().setKeyValue(ConfigItemsKey.get_MODULELIST_AS_SUFFIX(suffix), list);
 					return;
 				}
 

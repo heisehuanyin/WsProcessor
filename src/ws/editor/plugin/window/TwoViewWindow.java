@@ -22,7 +22,7 @@ import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 import ws.editor.WsProcessor;
-import ws.editor.comn.ItemsKey;
+import ws.editor.comn.ConfigItemsKey;
 import ws.editor.plugin.ContentView;
 import ws.editor.plugin.FrontWindow;
 
@@ -35,9 +35,9 @@ public class TwoViewWindow extends AbstractWindow {
 	private JSplitPane jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftC, rightC);
 	private JCheckBoxMenuItem leftVisible = new JCheckBoxMenuItem("LeftVisible");
 
-	private String LEFTVIEW_WIDTH_KEY = ItemsKey.get_CUSTOMSETTING_STRING(this, "LEFTVIEW_WIDTH");
-	private String LEFTVISIBLE_CTRL = ItemsKey.get_CUSTOMSETTING_STRING(this, "leftvisible");
-	private String VIEWPOSITION_KEY = ItemsKey.get_CUSTOMSETTING_STRING(this, "VIEW_POSITION");
+	private String LEFTVIEW_WIDTH_KEY = ConfigItemsKey.get_CUSTOMSETTING_STRING(this, "LEFTVIEW_WIDTH");
+	private String LEFTVISIBLE_CTRL = ConfigItemsKey.get_CUSTOMSETTING_STRING(this, "leftvisible");
+	private String VIEWPOSITION_KEY = ConfigItemsKey.get_CUSTOMSETTING_STRING(this, "VIEW_POSITION");
 
 	private static final int POSITION_LEFT = 0x0;
 	private static final int POSITION_RIGHT = 0x02;
@@ -60,8 +60,8 @@ public class TwoViewWindow extends AbstractWindow {
 
 		// WindowSize====================
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		String wStr = this.core.instance_GetMainConfigUnit().getValue(ItemsKey.WindowWidth, "800");
-		String hStr = this.core.instance_GetMainConfigUnit().getValue(ItemsKey.WindowHeight, "600");
+		String wStr = this.core.instance_GetMainConfigUnit().getValue(ConfigItemsKey.WindowWidth, "800");
+		String hStr = this.core.instance_GetMainConfigUnit().getValue(ConfigItemsKey.WindowHeight, "600");
 		this.setSize(Integer.parseInt(wStr), Integer.parseInt(hStr));
 
 		// CustomSplitPane==============

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ws.editor.comn.ItemsKey;
+import ws.editor.comn.ConfigItemsKey;
 import ws.editor.comn.WsPair;
 import ws.editor.comn.PluginFeature;
 import ws.editor.plugin.ConfigPort;
@@ -410,7 +410,7 @@ public class PluginManager {
 	 * @return 实例
 	 */
 	public MenuBar instance_GetNewDefaultMenubar(String string) {
-		PluginFeature f = this.factory_GetConfigComp(ItemsKey.DefaultMenuBar, DefaultMenuBar.class.getName());
+		PluginFeature f = this.factory_GetConfigComp(ConfigItemsKey.DefaultMenuBar, DefaultMenuBar.class.getName());
 
 		MenuBar rtn = ((MenuBar) f).getNewInstance(this.schedule);
 		this.instance_RegisterPluginInstance(string, rtn);
@@ -426,7 +426,7 @@ public class PluginManager {
 	 * @return 实例
 	 */
 	public FrontWindow instance_GetNewDefaultWindow(String string) {
-		PluginFeature f = this.factory_GetConfigComp(ItemsKey.DefaultWindow, SingleViewWindow.class.getName());
+		PluginFeature f = this.factory_GetConfigComp(ConfigItemsKey.DefaultWindow, SingleViewWindow.class.getName());
 
 		List<PluginFeature> cList = this.channel_GetExistsChannel(string);
 		if (cList != null)
