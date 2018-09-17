@@ -1,7 +1,9 @@
-package ws.editor.p.treemodel;
+package ws.editor.p.treemodel.var;
 
 import javax.swing.JPopupMenu;
 
+import ws.editor.p.treemodel.NodeEventListener;
+import ws.editor.p.treemodel.TreeModel;
 import ws.editor.p.window.FrontWindow;
 
 /**
@@ -9,15 +11,15 @@ import ws.editor.p.window.FrontWindow;
  * 1.构建树模型，提供图标和标题<br>
  * 2.对内部所有内容（几乎全部是键值对）提供迭代器<br>
  * 3.如果需要将修改行为与其他行为进行关联，需要自行实现*/
-public interface NodeSymboFeature{
+public interface FeatureNodeSymbo{
 	public final static int KindGroup = 0;
 	public final static int KindNode = 1;
 	public final static String NODENAME_KEY = "NODE_TITLE";
 	
 	/**
-	 * 获取该节点绑定的{@link TreeModelFeature}
-	 * @return 绑定的{@link TreeModelFeature}*/
-	TreeModelFeature getModel();
+	 * 获取该节点绑定的{@link TreeModel}
+	 * @return 绑定的{@link TreeModel}*/
+	TreeModel getModel();
 	
 	/**
 	 * 设置键值对,所有的内容都是由键值对存储的
@@ -53,12 +55,12 @@ public interface NodeSymboFeature{
 	/**
 	 * 节点被添加到集合节点之后，可以用它初始化本节点的父节点参数
 	 * @param parent 父节点*/
-	void initParent(GroupSymboFeature parent);
+	void initParent(FeatureGroupSymbo parent);
 	
 	/**
 	 * 文件被添加到集合节点之后，可以用它获取父节点
 	 * @return 父节点*/
-	GroupSymboFeature getParent();
+	FeatureGroupSymbo getParent();
 	
 	
 	/**

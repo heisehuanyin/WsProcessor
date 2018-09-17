@@ -1,4 +1,4 @@
-package ws.editor.p.textmodel;
+package ws.editor.p.textmodel.var;
 
 import ws.editor.p.FileFeature;
 

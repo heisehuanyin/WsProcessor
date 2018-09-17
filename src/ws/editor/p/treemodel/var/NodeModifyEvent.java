@@ -1,9 +1,9 @@
-package ws.editor.p.treemodel;
+package ws.editor.p.treemodel.var;
 
 public class NodeModifyEvent extends NodeGeneralEvent{
 	private String mKey;
 
-	public NodeModifyEvent(String modifiedKey, NodeSymboFeature obj, String exmsg) {
+	public NodeModifyEvent(String modifiedKey, FeatureNodeSymbo obj, String exmsg) {
 		super(obj, exmsg);
 		this.mKey = modifiedKey;
 	}

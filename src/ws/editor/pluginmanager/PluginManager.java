@@ -21,7 +21,7 @@ import ws.editor.p.logport.LogPort;
 import ws.editor.p.menubar.MenuBar;
 import ws.editor.p.tablemodel.TableModel;
 import ws.editor.p.textmodel.TextModel;
-import ws.editor.p.treemodel.TreeModelFeature;
+import ws.editor.p.treemodel.TreeModel;
 import ws.editor.p.window.FrontWindow;
 import ws.editor.window.SingleViewWindow;
 
@@ -322,12 +322,12 @@ public class PluginManager {
 	 *            上游插件
 	 * @return 正确的插件实例
 	 */
-	private TreeModelFeature instance_GetTreeModelAsDescription(String f_id, String url, PluginFeature upStream) {
+	private TreeModel instance_GetTreeModelAsDescription(String f_id, String url, PluginFeature upStream) {
 		List<PluginFeature> cList = this.channel_GetExistsChannel(url);
 		if (cList != null)
 			for (PluginFeature x : cList) {
 				if (x.getClass().getName().equals(f_id))
-					return (TreeModelFeature) x;
+					return (TreeModel) x;
 			}
 		PluginFeature f = this.factory_GetExistsfactory(f_id);
 		if (f == null) {
@@ -335,7 +335,7 @@ public class PluginManager {
 			System.exit(0);
 		}
 
-		TreeModelFeature rtn = ((TreeModelFeature) f).openTreeModel(this.schedule, upStream);
+		TreeModel rtn = ((TreeModel) f).openTreeModel(this.schedule, upStream);
 		this.instance_RegisterPluginInstance(url, rtn);
 
 		return rtn;
