@@ -10,8 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
-import ws.editor.ConfigItemsKey;
 import ws.editor.WsProcessor;
+import ws.editor.p.configport.ConfigItemsKey;
 import ws.editor.p.contentview.ContentView;
 import ws.editor.p.menubar.MenuBar;
 import ws.editor.p.window.AbstractWindow;

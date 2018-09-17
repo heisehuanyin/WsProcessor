@@ -41,6 +41,7 @@ import ws.editor.filesymbo.DefaultFileSymbo;
 import ws.editor.logport.DefaultLogPort;
 import ws.editor.menubar.DefaultMenuBar;
 import ws.editor.p.PluginFeature;
+import ws.editor.p.configport.ConfigItemsKey;
 import ws.editor.p.configport.ConfigPort;
 import ws.editor.p.contentview.ContentView;
 import ws.editor.p.logport.LogPort;

@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ws.editor.ConfigItemsKey;
 import ws.editor.WsProcessor;
 import ws.editor.filesymbo.DefaultFileSymbo;
 import ws.editor.menubar.DefaultMenuBar;
 import ws.editor.p.PluginFeature;
+import ws.editor.p.configport.ConfigItemsKey;
 import ws.editor.p.configport.ConfigPort;
 import ws.editor.p.contentview.ContentView;
 import ws.editor.p.filesymbo.FileSymbo;

@@ -21,8 +21,8 @@ import javax.swing.plaf.SplitPaneUI;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
-import ws.editor.ConfigItemsKey;
 import ws.editor.WsProcessor;
+import ws.editor.p.configport.ConfigItemsKey;
 import ws.editor.p.contentview.ContentView;
 import ws.editor.p.window.AbstractWindow;
 import ws.editor.p.window.FrontWindow;

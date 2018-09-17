@@ -1,4 +1,4 @@
-package ws.editor;
+package ws.editor.p.configport;
 
 import java.io.File;
 
