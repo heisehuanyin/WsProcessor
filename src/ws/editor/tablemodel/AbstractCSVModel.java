@@ -1,7 +1,7 @@
 package ws.editor.tablemodel;
 
-import ws.editor.p.PluginFeature;
-import ws.editor.p.tablemodel.TableModel;
+import ws.editor.x.PluginFeature;
+import ws.editor.x.tablemodel.TableModel;
 
 /**
  * 因为CSV是逗号分割的，文本文件，本身并未标注数据格式，

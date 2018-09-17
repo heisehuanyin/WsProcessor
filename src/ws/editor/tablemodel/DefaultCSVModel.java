@@ -7,10 +7,10 @@ import javax.swing.JPopupMenu;
 import javax.swing.event.TableModelListener;
 
 import ws.editor.WsProcessor;
-import ws.editor.p.PluginFeature;
-import ws.editor.p.tablemodel.TableModel;
-import ws.editor.p.textmodel.TextModel;
-import ws.editor.p.window.FrontWindow;
+import ws.editor.x.PluginFeature;
+import ws.editor.x.tablemodel.TableModel;
+import ws.editor.x.textmodel.TextModel;
+import ws.editor.x.window.FrontWindow;
 
 public class DefaultCSVModel extends AbstractCSVModel{
 	private ArrayList<TableModelListener> lcon = new ArrayList<>();

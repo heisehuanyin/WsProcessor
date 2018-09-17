@@ -7,9 +7,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import ws.editor.WsProcessor;
-import ws.editor.p.PluginFeature;
-import ws.editor.p.contentview.ContentView;
-import ws.editor.p.textmodel.TextModel;
+import ws.editor.x.PluginFeature;
+import ws.editor.x.contentview.ContentView;
+import ws.editor.x.textmodel.TextModel;
 
 public class DefaultTextView extends AbstractTextView {
 	private JTextArea view = new JTextArea();

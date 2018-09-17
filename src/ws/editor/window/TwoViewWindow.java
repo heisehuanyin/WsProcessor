@@ -22,11 +22,11 @@ import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 import ws.editor.WsProcessor;
-import ws.editor.p.configport.ConfigItemsKey;
-import ws.editor.p.contentview.ContentView;
-import ws.editor.p.window.AbstractWindow;
-import ws.editor.p.window.FrontWindow;
-import ws.editor.p.window.TabWithCloseButton;
+import ws.editor.x.configport.ConfigItemsKey;
+import ws.editor.x.contentview.ContentView;
+import ws.editor.x.window.AbstractWindow;
+import ws.editor.x.window.FrontWindow;
+import ws.editor.x.window.TabWithCloseButton;
 
 public class TwoViewWindow extends AbstractWindow {
 	private String gId;

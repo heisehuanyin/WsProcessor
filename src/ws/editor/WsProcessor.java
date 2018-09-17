@@ -40,12 +40,6 @@ import ws.editor.contentview.DefaultTreeView;
 import ws.editor.filesymbo.DefaultFileSymbo;
 import ws.editor.logport.DefaultLogPort;
 import ws.editor.menubar.DefaultMenuBar;
-import ws.editor.p.PluginFeature;
-import ws.editor.p.configport.ConfigItemsKey;
-import ws.editor.p.configport.ConfigPort;
-import ws.editor.p.contentview.ContentView;
-import ws.editor.p.logport.LogPort;
-import ws.editor.p.window.FrontWindow;
 import ws.editor.pluginmanager.PluginManager;
 import ws.editor.pluginmanager.WsPair;
 import ws.editor.tablemodel.DefaultCSVModel;
@@ -53,6 +47,12 @@ import ws.editor.textmodel.DefaultTextModel;
 import ws.editor.treemodel.DefaultProjectModel;
 import ws.editor.window.SingleViewWindow;
 import ws.editor.window.TwoViewWindow;
+import ws.editor.x.PluginFeature;
+import ws.editor.x.configport.ConfigItemsKey;
+import ws.editor.x.configport.ConfigPort;
+import ws.editor.x.contentview.ContentView;
+import ws.editor.x.logport.LogPort;
+import ws.editor.x.window.FrontWindow;
 
 /**
  * 核心模块

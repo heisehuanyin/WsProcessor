@@ -1,8 +1,8 @@
 package ws._testcast;
 
 import ws.editor.WsProcessor;
-import ws.editor.p.window.FrontWindow;
 import ws.editor.window.TwoViewWindow;
+import ws.editor.x.window.FrontWindow;
 
 public class WindowTest {
 	public static void main(String[] args) {

@@ -1,9 +1,9 @@
 package ws.editor.contentview;
 
 import ws.editor.WsProcessor;
-import ws.editor.p.PluginFeature;
-import ws.editor.p.contentview.ContentView;
-import ws.editor.p.treemodel.NodeEventListener;
+import ws.editor.x.PluginFeature;
+import ws.editor.x.contentview.ContentView;
+import ws.editor.x.treemodel.NodeEventListener;
 
 public abstract class AbstractTreeView implements ContentView , NodeEventListener{
 

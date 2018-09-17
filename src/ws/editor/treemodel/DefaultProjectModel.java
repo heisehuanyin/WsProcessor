@@ -21,12 +21,12 @@ import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.SAXException;
 
 import ws.editor.WsProcessor;
-import ws.editor.p.treemodel.AbstractGroupSymbo;
-import ws.editor.p.treemodel.AbstractNodeSymbo;
-import ws.editor.p.treemodel.FeatureGroupSymbo;
-import ws.editor.p.treemodel.FeatureNodeSymbo;
-import ws.editor.p.treemodel.TreeModel;
-import ws.editor.p.window.FrontWindow;
+import ws.editor.x.treemodel.AbstractGroupSymbo;
+import ws.editor.x.treemodel.AbstractNodeSymbo;
+import ws.editor.x.treemodel.FeatureGroupSymbo;
+import ws.editor.x.treemodel.FeatureNodeSymbo;
+import ws.editor.x.treemodel.TreeModel;
+import ws.editor.x.window.FrontWindow;
 
 public class DefaultProjectModel extends AbstractProjectModel {
 

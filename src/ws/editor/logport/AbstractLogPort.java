@@ -1,7 +1,7 @@
 package ws.editor.logport;
 
-import ws.editor.p.PluginFeature;
-import ws.editor.p.logport.LogPort;
+import ws.editor.x.PluginFeature;
+import ws.editor.x.logport.LogPort;
 /**
  * 用于输出log到文件中
  * LogPort虽然也被设计成为插件模式，但是软件本身只需要一种log文件格式，可以利用配置文件进行配置*/

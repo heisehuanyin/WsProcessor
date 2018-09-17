@@ -1,9 +1,9 @@
 package ws.editor.treemodel;
 
 import ws.editor.WsProcessor;
-import ws.editor.p.PluginFeature;
-import ws.editor.p.filesymbo.FileSymbo;
-import ws.editor.p.treemodel.TreeModel;
+import ws.editor.x.PluginFeature;
+import ws.editor.x.filesymbo.FileSymbo;
+import ws.editor.x.treemodel.TreeModel;
 
 public abstract class AbstractProjectModel implements TreeModel {
 

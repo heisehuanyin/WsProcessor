@@ -11,11 +11,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
 import ws.editor.WsProcessor;
-import ws.editor.p.configport.ConfigItemsKey;
-import ws.editor.p.contentview.ContentView;
-import ws.editor.p.menubar.MenuBar;
-import ws.editor.p.window.AbstractWindow;
-import ws.editor.p.window.FrontWindow;
+import ws.editor.x.configport.ConfigItemsKey;
+import ws.editor.x.contentview.ContentView;
+import ws.editor.x.menubar.MenuBar;
+import ws.editor.x.window.AbstractWindow;
+import ws.editor.x.window.FrontWindow;
 
 public class SingleViewWindow extends AbstractWindow{
 	private WsProcessor core;

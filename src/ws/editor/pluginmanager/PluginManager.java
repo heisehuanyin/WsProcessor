@@ -12,18 +12,18 @@ import java.util.Set;
 import ws.editor.WsProcessor;
 import ws.editor.filesymbo.DefaultFileSymbo;
 import ws.editor.menubar.DefaultMenuBar;
-import ws.editor.p.PluginFeature;
-import ws.editor.p.configport.ConfigItemsKey;
-import ws.editor.p.configport.ConfigPort;
-import ws.editor.p.contentview.ContentView;
-import ws.editor.p.filesymbo.FileSymbo;
-import ws.editor.p.logport.LogPort;
-import ws.editor.p.menubar.MenuBar;
-import ws.editor.p.tablemodel.TableModel;
-import ws.editor.p.textmodel.TextModel;
-import ws.editor.p.treemodel.TreeModel;
-import ws.editor.p.window.FrontWindow;
 import ws.editor.window.SingleViewWindow;
+import ws.editor.x.PluginFeature;
+import ws.editor.x.configport.ConfigItemsKey;
+import ws.editor.x.configport.ConfigPort;
+import ws.editor.x.contentview.ContentView;
+import ws.editor.x.filesymbo.FileSymbo;
+import ws.editor.x.logport.LogPort;
+import ws.editor.x.menubar.MenuBar;
+import ws.editor.x.tablemodel.TableModel;
+import ws.editor.x.textmodel.TextModel;
+import ws.editor.x.treemodel.TreeModel;
+import ws.editor.x.window.FrontWindow;
 
 /**
  * 用于管理插件，本身不是插件，不需要两步实例化直接实例化得到的就是可用组件

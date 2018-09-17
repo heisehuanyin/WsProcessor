@@ -6,8 +6,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
 import ws.editor.WsProcessor;
-import ws.editor.p.PluginFeature;
-import ws.editor.p.menubar.MenuBar;
+import ws.editor.x.PluginFeature;
+import ws.editor.x.menubar.MenuBar;
 
 public class DefaultMenuBar extends JMenuBar implements MenuBar{
 	private WsProcessor sch = null;

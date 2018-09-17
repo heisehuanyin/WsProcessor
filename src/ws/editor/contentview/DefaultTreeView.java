@@ -15,13 +15,13 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import ws.editor.WsProcessor;
-import ws.editor.p.PluginFeature;
-import ws.editor.p.contentview.ContentView;
-import ws.editor.p.treemodel.FeatureGroupSymbo;
-import ws.editor.p.treemodel.FeatureNodeSymbo;
-import ws.editor.p.treemodel.NodeGeneralEvent;
-import ws.editor.p.treemodel.NodeModifyEvent;
-import ws.editor.p.treemodel.TreeModel;
+import ws.editor.x.PluginFeature;
+import ws.editor.x.contentview.ContentView;
+import ws.editor.x.treemodel.FeatureGroupSymbo;
+import ws.editor.x.treemodel.FeatureNodeSymbo;
+import ws.editor.x.treemodel.NodeGeneralEvent;
+import ws.editor.x.treemodel.NodeModifyEvent;
+import ws.editor.x.treemodel.TreeModel;
 
 public class DefaultTreeView extends AbstractTreeView {
 

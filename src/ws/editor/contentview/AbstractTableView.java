@@ -5,8 +5,8 @@ import java.awt.Component;
 import javax.swing.JMenu;
 
 import ws.editor.WsProcessor;
-import ws.editor.p.PluginFeature;
-import ws.editor.p.contentview.ContentView;
+import ws.editor.x.PluginFeature;
+import ws.editor.x.contentview.ContentView;
 
 public abstract class AbstractTableView implements ContentView {
 	private String gid;

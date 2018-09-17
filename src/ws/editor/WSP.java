@@ -3,9 +3,9 @@ package ws.editor;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import ws.editor.p.PluginFeature;
 import ws.editor.pluginmanager.PluginManager;
 import ws.editor.pluginmanager.WsPair;
+import ws.editor.x.PluginFeature;
 /**
  * 参数处理模块，处理各种模式与系统的衔接，决定软件的运行模式：静默、交互、图形<br>
  * 通过本模块是在Terminal中运行的实体，通过本模块调用核心模块实现各种功能<br>
