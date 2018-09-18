@@ -2,7 +2,9 @@ package ws.editor.x.treemodel;
 
 import java.util.ArrayList;
 
-public class NodeGeneralEvent {
+import ws.editor.x.PluginEvent;
+
+public class NodeGeneralEvent implements PluginEvent{
 
 	private FeatureNodeSymbo source;
 	private String msg;
