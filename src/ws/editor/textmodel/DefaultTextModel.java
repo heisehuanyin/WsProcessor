@@ -2,6 +2,8 @@ package ws.editor.textmodel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.SortedMap;
 
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.event.MenuEvent;
@@ -169,14 +172,23 @@ public class DefaultTextModel extends AbstractTextModel {
 			SortedMap<String, Charset> xc = Charset.availableCharsets();
 			
 			Set<String> set = xc.keySet();
-			for(String name : set) {
-				JMenuItem nameKey = new JMenuItem(name);
+			JMenu target = pMenu;
+			for(int i=0; i<set.size(); ++i) {
+				if(i>39 && i%40 == 0) {
+					JMenu f = new JMenu("其他");
+					target.add(f);
+					target = f;
+				}
+				
+				String name = (String) set.toArray()[i];
+				JCheckBoxMenuItem nameKey = new JCheckBoxMenuItem(name, encoding == name);
 				nameKey.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
+						((JCheckBoxMenuItem)e.getSource()).setSelected(true);
 						encoding = name;
 					}});
-				pMenu.add(nameKey);
+				target.add(nameKey);
 			}
 		}
 

@@ -287,8 +287,8 @@ public class WsProcessor {
 		this.control_LoadAllPlugins();
 
 		try {
-			UIManager.setLookAndFeel(/*UIManager.getSystemLookAndFeelClassName()*/
-					UIManager.getCrossPlatformLookAndFeelClassName());
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+					//UIManager.getCrossPlatformLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
@@ -338,6 +338,14 @@ public class WsProcessor {
 			openMenu.addMenuListener(this);
 			this.add(newMenu);
 			this.add(openMenu);
+			this.addSeparator();
+			JMenuItem save = new JMenuItem("SaveAll");
+			this.add(save);
+			save.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					service_SaveOperation();
+				}});
 			this.addSeparator();
 
 			JMenuItem exitMenu = new JMenuItem("Exit");
