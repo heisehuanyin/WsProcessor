@@ -287,7 +287,8 @@ public class WsProcessor {
 		this.control_LoadAllPlugins();
 
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			UIManager.setLookAndFeel(/*UIManager.getSystemLookAndFeelClassName()*/
+					UIManager.getCrossPlatformLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
 			e.printStackTrace();

@@ -64,21 +64,25 @@ public class DefaultTextView extends AbstractTextView implements TextModelListen
 
 	@Override
 	public void contentChanged(TextContentEvent e) {
+		this.view.setText("");
 		this.loadAllContent(upStream);
 	}
 
 	@Override
 	public void lineInserted(TextLineEvent e) {
+		this.view.setText("");
 		this.loadAllContent(upStream);
 	}
 
 	@Override
 	public void lineUpdated(TextLineEvent e) {
+		this.view.setText("");
 		this.loadAllContent(upStream);
 	}
 
 	@Override
 	public void lineBelowsRemoved(TextLineEvent e) {
+		this.view.setText("");
 		this.loadAllContent(upStream);
 	}
 

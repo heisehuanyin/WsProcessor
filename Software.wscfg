@@ -1,12 +1,12 @@
 #config items as list
-#Wed Sep 19 13:10:35 CST 2018
+#Wed Sep 19 14:12:07 CST 2018
 editor.window.description=ws.editor.window.TwoViewWindow
 editor.module.custom_setting.ws.editor.window.TwoViewWindow.VIEW_POSITION.ws.editor.contentview.DefaultTextView=2
-editor.window.width=1000
+editor.window.width=1382
 editor.modulelist.suffix.txt=ws.editor.filesymbo.DefaultFileSymbo\=>ws.editor.textmodel.DefaultTextModel\=>ws.editor.contentview.DefaultTextView
 editor.module.custom_setting.ws.editor.window.TwoViewWindow.VIEW_POSITION.ws.editor.contentview.DefaultTableView=2
 editor.module.custom_setting.ws.editor.window.TwoViewWindow.leftvisible=true
-editor.window.height=600
+editor.window.height=877
 editor.menubar.description=ws.editor.menubar.DefaultMenuBar
 editor.module.custom_setting.ws.editor.window.TwoViewWindow.LEFTVIEW_WIDTH=218
 editor.modulelist.suffix.csv=ws.editor.filesymbo.DefaultFileSymbo\=>ws.editor.textmodel.DefaultTextModel\=>ws.editor.tablemodel.DefaultCSVModel\=>ws.editor.contentview.DefaultTableView

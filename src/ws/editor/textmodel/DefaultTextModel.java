@@ -1,5 +1,7 @@
 package ws.editor.textmodel;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -9,14 +11,21 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.SortedMap;
 
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 import ws.editor.WsProcessor;
 import ws.editor.x.PluginFeature;
 import ws.editor.x.filesymbo.FileSymbo;
 import ws.editor.x.textmodel.AbstractTextModel;
+import ws.editor.x.textmodel.TextContentEvent;
 import ws.editor.x.textmodel.TextModel;
 
 public class DefaultTextModel extends AbstractTextModel {
@@ -95,7 +104,32 @@ public class DefaultTextModel extends AbstractTextModel {
 	}
 	@Override
 	public JMenu getCustomMenu() {
-		return new JMenu(this.getClass().getName());
+		JMenu xrtn = new JMenu("DefaultTextModel");
+		
+		JMenu encodeConfig = new JMenu("编码配置");
+		encodeConfig.addMenuListener(new ChangeTextCharset(encodeConfig));
+		
+		
+		
+		JMenuItem reLoad = new JMenuItem("重新载入");
+		reLoad.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					content.clear();
+					popAllText(new BufferedReader(new InputStreamReader(
+							new FileInputStream(filePath), encoding)));
+					DefaultTextModel.this.pushContentChangedEvent(
+							new TextContentEvent(this, "文字完全变化"), DefaultTextModel.this);
+				} catch (UnsupportedEncodingException | FileNotFoundException e1) {
+					e1.printStackTrace();
+				}
+			}});
+		
+		xrtn.add(encodeConfig);
+		xrtn.add(reLoad);
+		
+		return xrtn;
 	}
 
 	@Override
@@ -123,4 +157,39 @@ public class DefaultTextModel extends AbstractTextModel {
 		}
 	}
 
+	public class ChangeTextCharset implements MenuListener{
+		private JMenu pMenu;
+
+		public ChangeTextCharset(JMenu pMenu) {
+			this.pMenu = pMenu;
+		}
+
+		@Override
+		public void menuSelected(MenuEvent e) {
+			SortedMap<String, Charset> xc = Charset.availableCharsets();
+			
+			Set<String> set = xc.keySet();
+			for(String name : set) {
+				JMenuItem nameKey = new JMenuItem(name);
+				nameKey.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						encoding = name;
+					}});
+				pMenu.add(nameKey);
+			}
+		}
+
+		@Override
+		public void menuDeselected(MenuEvent e) {
+			pMenu.removeAll();
+		}
+
+		@Override
+		public void menuCanceled(MenuEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
 }
