@@ -33,6 +33,7 @@ import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import ws.editor.comn.WsPair;
 import ws.editor.configport.DefaultConfigPort;
 import ws.editor.contentview.DefaultTableView;
 import ws.editor.contentview.DefaultTextView;
@@ -41,7 +42,6 @@ import ws.editor.filesymbo.DefaultFileSymbo;
 import ws.editor.logport.DefaultLogPort;
 import ws.editor.menubar.DefaultMenuBar;
 import ws.editor.pluginmanager.PluginManager;
-import ws.editor.pluginmanager.WsPair;
 import ws.editor.tablemodel.DefaultCSVModel;
 import ws.editor.textmodel.DefaultTextModel;
 import ws.editor.treemodel.DefaultProjectModel;

@@ -3,8 +3,8 @@ package ws.editor;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import ws.editor.comn.WsPair;
 import ws.editor.pluginmanager.PluginManager;
-import ws.editor.pluginmanager.WsPair;
 import ws.editor.x.PluginFeature;
 /**
  * 参数处理模块，处理各种模式与系统的衔接，决定软件的运行模式：静默、交互、图形<br>

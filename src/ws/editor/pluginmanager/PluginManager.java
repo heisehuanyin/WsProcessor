@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ws.editor.WsProcessor;
+import ws.editor.comn.WsPair;
 import ws.editor.filesymbo.DefaultFileSymbo;
 import ws.editor.menubar.DefaultMenuBar;
 import ws.editor.window.SingleViewWindow;
