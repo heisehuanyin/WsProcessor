@@ -16,6 +16,7 @@ import javax.swing.JMenu;
 import ws.editor.WsProcessor;
 import ws.editor.x.PluginFeature;
 import ws.editor.x.filesymbo.FileSymbo;
+import ws.editor.x.textmodel.AbstractTextModel;
 import ws.editor.x.textmodel.TextModel;
 
 public class DefaultTextModel extends AbstractTextModel {
@@ -23,6 +24,16 @@ public class DefaultTextModel extends AbstractTextModel {
 	private String filePath;
 	private String encoding;
 
+	@Override
+	public int pluginMark() {
+		return PluginFeature.IO_TextModel;
+	}
+
+	@Override
+	public int upStreamMark() {
+		return PluginFeature.IO_FileSymbo;
+	}
+	
 	public void popAllText(BufferedReader reader) {
 		for (;;) {
 			try {
@@ -67,10 +78,21 @@ public class DefaultTextModel extends AbstractTextModel {
 	}
 
 	@Override
-	public void updateLine(int index, String str) {
+	protected void updateLine_E(int index, String str)  {
 		this.content.set(index, str);
 	}
 
+	@Override
+	protected void insertLine_E(int index, String str) {
+		this.content.add(index, str);
+	}
+
+	@Override
+	protected void removeLines_E(int indexStart) {
+		for(int i=this.content.size();i > indexStart; --i ) {
+			this.content.remove(i-1);
+		}
+	}
 	@Override
 	public JMenu getCustomMenu() {
 		return new JMenu(this.getClass().getName());
@@ -98,18 +120,6 @@ public class DefaultTextModel extends AbstractTextModel {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void insertLine(int index, String str) {
-		this.content.add(index, str);
-	}
-
-	@Override
-	public void removeLines(int indexStart) {
-		for(int i=this.content.size();i > indexStart; --i ) {
-			this.content.remove(i-1);
 		}
 	}
 

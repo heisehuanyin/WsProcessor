@@ -52,9 +52,9 @@ public class DefaultTextView extends AbstractTextView {
 	public void saveOperation() {
 		String tc = this.view.getText();
 		String[] lines = tc.split("\n");
-		this.upStream.removeLines(0);
+		this.upStream.removeLines(this, 0);
 		for(String line:lines) {
-			this.upStream.insertLine(this.upStream.getRowsCount(), line);
+			this.upStream.insertLine(this, this.upStream.getRowsCount(), line);
 		}
 	}
 

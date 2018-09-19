@@ -62,7 +62,7 @@ public class DefaultCSVModel extends AbstractCSVModel{
 
 	@Override
 	public void saveOperation() {
-			this.upS.removeLines(0);
+			this.upS.removeLines(this, 0);
 			
 		for(ArrayList<String> row:this.tcon) {
 			String lineContent = "";
@@ -71,7 +71,7 @@ public class DefaultCSVModel extends AbstractCSVModel{
 				lineContent += val + ",";
 			}
 			
-			this.upS.insertLine(this.upS.getRowsCount(), lineContent);
+			this.upS.insertLine(this, this.upS.getRowsCount(), lineContent);
 		}
 	}
 
