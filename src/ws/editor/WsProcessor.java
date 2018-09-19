@@ -98,19 +98,42 @@ public class WsProcessor {
 	public void service_Refresh_MenuBar(FrontWindow win) {
 		ArrayList<JMenu> exterl = new ArrayList<>();
 
+		//FileOperation Menu
 		FileMenu one = new FileMenu(win);
 		one.initMenus();
 		exterl.add(one);
 
+		//ActiveView's Configration Menu
 		for (ContentView itor : win.getActivedViews()) {
-			exterl.add(itor.getCustomMenu());
+			JMenu xone = itor.getCustomMenu();
+			if(xone == null)
+				continue;
+			
+			JMenu plugins = new JMenu("Plugins");
+			xone.add(plugins);
+			
+			//Channel's Plugin Configration Menu
+			ArrayList<PluginFeature> xpx = this.service_GetPluginManager()
+					.channel_GetExisisChannel(itor);
+			for(PluginFeature x:xpx) {
+				if(x == itor)
+					continue;
+				JMenu xps = x.getCustomMenu();
+				if(xps == null)
+					continue;
+				plugins.add(xps);
+			}
+			
+			exterl.add(xone);
 		}
+		
+		//Window's Configration Menu
 		exterl.add(win.getCustomMenu());
 
+		//Frame's Configration Menu
 		exterl.add(new CustomMenu(this, "Custom"));
 
 		JMenuBar x = this.manager.instance_GetNewDefaultMenubar(win.getGroupId()).rebuildMenuBar(exterl);
-
 		win.service_ResetMenuBar(x);
 	}
 
@@ -177,8 +200,7 @@ public class WsProcessor {
 
 			regx = one.getName().substring(one.getName().lastIndexOf('.'));
 			cListStr = this.instance_GetMainConfigUnit().getValue(ConfigItemsKey.get_MODULELIST_AS_SUFFIX(regx),
-					"ws.editor.plugin.filesymbo.DefaultFileSymbo=>" + "ws.editor.plugin.textmodel.DefaultTextModel=>"
-							+ "ws.editor.plugin.contentview.DefaultTextView");
+					ConfigItemsKey.DefaultTextProcList);
 		}
 
 		// source=>module1=>module2=>module3=>module4=>the last one module
@@ -536,9 +558,7 @@ public class WsProcessor {
 
 					String sufstr = suffixEnter.getText();
 					String list = core.instance_GetMainConfigUnit().getValue(ConfigItemsKey.get_MODULELIST_AS_SUFFIX(sufstr),
-							"ws.editor.plugin.filesymbo.DefaultFileSymbo=>"
-									+ "ws.editor.plugin.textmodel.DefaultTextModel=>"
-									+ "ws.editor.plugin.contentview.DefaultTextView");
+							ConfigItemsKey.DefaultTextProcList);
 
 					// mods msg=====================
 					String[] mods = list.split("=>");

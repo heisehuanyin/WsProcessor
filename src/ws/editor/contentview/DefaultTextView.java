@@ -9,9 +9,12 @@ import javax.swing.JTextArea;
 import ws.editor.WsProcessor;
 import ws.editor.x.PluginFeature;
 import ws.editor.x.contentview.ContentView;
+import ws.editor.x.textmodel.TextContentEvent;
+import ws.editor.x.textmodel.TextLineEvent;
 import ws.editor.x.textmodel.TextModel;
+import ws.editor.x.textmodel.TextModelListener;
 
-public class DefaultTextView extends AbstractTextView {
+public class DefaultTextView extends AbstractTextView implements TextModelListener {
 	private JTextArea view = new JTextArea();
 	private JScrollPane sview = new JScrollPane(view);
 	private TextModel upStream ;
@@ -32,6 +35,7 @@ public class DefaultTextView extends AbstractTextView {
 		
 		rtn.upStream = (TextModel) upStream;
 		rtn.core = core;
+		((TextModel)upStream).addListener(rtn);
 		
 		rtn.loadAllContent((TextModel) upStream);
 		
@@ -56,6 +60,26 @@ public class DefaultTextView extends AbstractTextView {
 		for(String line:lines) {
 			this.upStream.insertLine(this, this.upStream.getRowsCount(), line);
 		}
+	}
+
+	@Override
+	public void contentChanged(TextContentEvent e) {
+		this.loadAllContent(upStream);
+	}
+
+	@Override
+	public void lineInserted(TextLineEvent e) {
+		this.loadAllContent(upStream);
+	}
+
+	@Override
+	public void lineUpdated(TextLineEvent e) {
+		this.loadAllContent(upStream);
+	}
+
+	@Override
+	public void lineBelowsRemoved(TextLineEvent e) {
+		this.loadAllContent(upStream);
 	}
 
 }

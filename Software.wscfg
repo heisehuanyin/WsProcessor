@@ -1,17 +1,12 @@
 #config items as list
-#Tue Sep 18 17:49:57 CST 2018
-editor.module.custom_setting.ws.editor.plugin.window.TwoViewWindow.VIEW_POSITION.ws.editor.plugin.contentview.DefaultTreeView=0
-editor.module.custom_setting.ws.editor.window.TwoViewWindow.leftvisible=true
-editor.window.height=583
-editor.modulelist.suffix.wsrc=ws.editor.plugin.filesymbo.DefaultFileSymbo\=>ws.editor.plugin.textmodel.DefaultTextModel\=>ws.editor.plugin.contentview.DefaultTextView
-editor.menubar.description=ws.editor.menubar.DefaultMenuBar
-editor.module.custom_setting.ws.editor.window.TwoViewWindow.LEFTVIEW_WIDTH=241
-editor.modulelist.suffix.csv=ws.editor.plugin.filesymbo.DefaultFileSymbo\=>ws.editor.plugin.textmodel.DefaultTextModel\=>ws.editor.plugin.tablemodel.DefaultCSVModel\=>ws.editor.plugin.contentview.DefaultTableView
-editor.module.custom_setting.ws.editor.plugin.window.TwoViewWindow.VIEW_POSITION.ws.editor.plugin.contentview.DefaultTextView=2
+#Wed Sep 19 13:10:35 CST 2018
 editor.window.description=ws.editor.window.TwoViewWindow
-editor.window.width=934
-editor.module.custom_setting.ws.editor.plugin.window.TwoViewWindow.leftvisible=true
-editor.modulelist.suffix.txt=ws.editor.plugin.filesymbo.DefaultFileSymbo\=>ws.editor.plugin.textmodel.DefaultTextModel\=>ws.editor.plugin.contentview.DefaultTextView
-editor.module.custom_setting.ws.editor.plugin.window.TwoViewWindow.LEFTVIEW_WIDTH=252
-editor.modulelist.suffix.wsp1=ws.editor.plugin.filesymbo.DefaultFileSymbo\=>ws.editor.plugin.treemodel.DefaultProjectModel\=>ws.editor.plugin.contentview.DefaultTreeView
-editor.module.custom_setting.ws.editor.plugin.window.TwoViewWindow.VIEW_POSITION.ws.editor.plugin.contentview.DefaultTableView=2
+editor.module.custom_setting.ws.editor.window.TwoViewWindow.VIEW_POSITION.ws.editor.contentview.DefaultTextView=2
+editor.window.width=1000
+editor.modulelist.suffix.txt=ws.editor.filesymbo.DefaultFileSymbo\=>ws.editor.textmodel.DefaultTextModel\=>ws.editor.contentview.DefaultTextView
+editor.module.custom_setting.ws.editor.window.TwoViewWindow.VIEW_POSITION.ws.editor.contentview.DefaultTableView=2
+editor.module.custom_setting.ws.editor.window.TwoViewWindow.leftvisible=true
+editor.window.height=600
+editor.menubar.description=ws.editor.menubar.DefaultMenuBar
+editor.module.custom_setting.ws.editor.window.TwoViewWindow.LEFTVIEW_WIDTH=218
+editor.modulelist.suffix.csv=ws.editor.filesymbo.DefaultFileSymbo\=>ws.editor.textmodel.DefaultTextModel\=>ws.editor.tablemodel.DefaultCSVModel\=>ws.editor.contentview.DefaultTableView

@@ -1,1 +1,1 @@
-Error:ws.editor.pluginmanager.PluginManager:配置文件错误，插件ws.editor.plugin.menubar.DefaultMenuBar不存在
+Error:ws.editor.pluginmanager.PluginManager:插件未注册，我选择崩溃。罪魁祸首：ws.editor.plugin.filesymbo.DefaultFileSymbo

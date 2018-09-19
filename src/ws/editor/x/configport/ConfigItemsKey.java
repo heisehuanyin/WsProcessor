@@ -1,12 +1,11 @@
 package ws.editor.x.configport;
 
-import java.io.File;
-
-import ws.editor.window.TwoViewWindow;
+import ws.editor.x.PluginFeature;
 /**
  * 软件拥有很多可配置项目，为了便于统一，将配置文件中的键名集中起来*/
 public class ConfigItemsKey {
-	
+	public final static String DefaultTextProcList = "ws.editor.filesymbo.DefaultFileSymbo=>" + "ws.editor.textmodel.DefaultTextModel=>"
+			+ "ws.editor.contentview.DefaultTextView";
 	
 	
 	public final static String WindowWidth = "editor.window.width";
@@ -24,7 +23,7 @@ public class ConfigItemsKey {
 		return "editor.modulelist.suffix" + suffix;
 	}
 
-	public static String get_CUSTOMSETTING_STRING(TwoViewWindow twoViewWindow, String string) {
-		return "editor.module.custom_setting." + twoViewWindow.getClass().getName()+"."+ string;
+	public static String get_CUSTOMSETTING_STRING(PluginFeature plugin, String string) {
+		return "editor.module.custom_setting." + plugin.getClass().getName()+"."+ string;
 	}
 }
