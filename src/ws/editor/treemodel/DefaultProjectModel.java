@@ -1,10 +1,13 @@
 package ws.editor.treemodel;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -255,7 +258,16 @@ public class DefaultProjectModel extends AbstractProjectModel {
 		public JPopupMenu getPopupMenu(FrontWindow owner) {
 			JPopupMenu rtn = new JPopupMenu("DefaultProjectModel");
 
+			JMenuItem rename = new JMenuItem("ReName");
+			rename.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					JOperationDialogs
+					
+					SimpleFileNode.this.setKeyValue(SimpleFileNode.NODENAME_KEY, value);
+				}});
 			rtn.add("Item_Node");
+			
 			rtn.add("Item_Node");
 			rtn.add("Item_Node");
 
