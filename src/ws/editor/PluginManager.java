@@ -1,9 +1,6 @@
 package ws.editor;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +20,7 @@ import ws.editor.plugin.TreeModel;
 import ws.editor.plugin.TableModel;
 import ws.editor.plugin.filesymbo.DefaultFileSymbo;
 import ws.editor.plugin.menubar.DefaultMenuBar;
-import ws.editor.plugin.window.SingleViewWindow;
+import ws.editor.plugin.window.FSBrowser;
 
 /**
  * 用于管理插件，本身不是插件，不需要两步实例化直接实例化得到的就是可用组件
@@ -426,7 +423,7 @@ public class PluginManager {
 	 * @return 实例
 	 */
 	public FrontWindow instance_GetNewDefaultWindow(String string) {
-		PluginFeature f = this.factory_GetConfigComp(ItemsKey.DefaultWindow, SingleViewWindow.class.getName());
+		PluginFeature f = this.factory_GetConfigComp(ItemsKey.DefaultWindow, FSBrowser.class.getName());
 
 		List<PluginFeature> cList = this.channel_GetExistsChannel(string);
 		if (cList != null)

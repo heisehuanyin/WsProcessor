@@ -50,8 +50,7 @@ import ws.editor.plugin.menubar.DefaultMenuBar;
 import ws.editor.plugin.tablemodel.DefaultCSVModel;
 import ws.editor.plugin.textmodel.DefaultTextModel;
 import ws.editor.plugin.treemodel.DefaultProjectModel;
-import ws.editor.plugin.window.SingleViewWindow;
-import ws.editor.plugin.window.TwoViewWindow;
+import ws.editor.plugin.window.FSBrowser;
 
 /**
  * 核心模块
@@ -244,12 +243,11 @@ public class WsProcessor {
 	private void control_InitDefaultGraphicPlugin() {
 		this.control_InitDefaultSilentPlugin();
 
-		this.service_RegisterPlugin(new SingleViewWindow());
+		this.service_RegisterPlugin(new FSBrowser());
 		this.service_RegisterPlugin(new DefaultMenuBar());
 		this.service_RegisterPlugin(new DefaultTextView());
 		this.service_RegisterPlugin(new DefaultTreeView());
 		this.service_RegisterPlugin(new DefaultTableView());
-		this.service_RegisterPlugin(new TwoViewWindow());
 		// this.service_RegisterPlugin(new WToolsBar());
 	}
 
@@ -484,7 +482,7 @@ public class WsProcessor {
 			configWindow.setLayout(new FlowLayout(FlowLayout.LEADING));
 			configWindow.add(new JLabel("选中窗口主类名："));
 			String defaultWindow = this.core.instance_GetMainConfigUnit().getValue(ItemsKey.DefaultWindow,
-					SingleViewWindow.class.getName());
+					FSBrowser.class.getName());
 			ArrayList<WsPair<String, Integer>> plugInfo = WsProcessor.this.service_GetPluginManager()
 					.service_QueryFactoryList(PluginFeature.UI_Window);
 
