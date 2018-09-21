@@ -262,11 +262,10 @@ public class DefaultProjectModel extends AbstractProjectModel {
 			rename.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					JOperationDialogs
 					
-					SimpleFileNode.this.setKeyValue(SimpleFileNode.NODENAME_KEY, value);
+					SimpleFileNode.this.setKeyValue(SimpleFileNode.NODENAME_KEY, "Rename");
 				}});
-			rtn.add("Item_Node");
+			rtn.add(rename);
 			
 			rtn.add("Item_Node");
 			rtn.add("Item_Node");
