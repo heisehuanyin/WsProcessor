@@ -240,6 +240,18 @@ public class DefaultProjectModel extends AbstractProjectModel {
 
 		}
 
+		@Override
+		public void GroupExplanded() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void GroupFolded() {
+			// TODO Auto-generated method stub
+			
+		}
+
 	}
 
 	class SimpleFileNode extends AbstractNodeSymbo {

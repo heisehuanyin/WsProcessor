@@ -32,4 +32,8 @@ public interface FeatureGroupSymbo extends FeatureNodeSymbo{
 	 * @param child 指定节点
 	 * @return 位序，如果为 -1 ，表明该文件不是此group的child*/
 	int getChildIndex(FeatureNodeSymbo child);
+	
+	void GroupExplanded();
+	
+	void GroupFolded();
 }
