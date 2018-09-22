@@ -136,6 +136,7 @@ public class WSP {
 			c.openSilentModel();
 		}
 
+		
 		if (args.length >= 2) {
 			if (args[0].indexOf('s') != -1) {
 				c.openFile(args[1],args[0]);
