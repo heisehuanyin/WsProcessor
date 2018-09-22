@@ -1,6 +1,6 @@
 #config items as list
-#Sat Sep 22 11:52:19 CST 2018
-editor.window.description=ws.editor.window.SingleViewWindow
+#Sat Sep 22 13:33:52 GMT+08:00 2018
+editor.window.description=ws.editor.window.TwoViewWindow
 editor.module.custom_setting.ws.editor.window.TwoViewWindow.VIEW_POSITION.ws.editor.contentview.DefaultTextView=2
 editor.window.width=1218
 editor.modulelist.suffix.txt=ws.editor.filesymbo.DefaultFileSymbo\=>ws.editor.textmodel.DefaultTextModel\=>ws.editor.contentview.DefaultTextView
